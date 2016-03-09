@@ -1,0 +1,9 @@
+# ====================
+# = Project-Specific =
+# ====================
+
+# generated Dockerfiles
+/dockerfiles
+
+# package output directory
+/packages

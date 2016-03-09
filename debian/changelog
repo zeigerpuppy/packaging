@@ -1,0 +1,6 @@
+citus (5.0.0~rc.2-1) unstable; urgency=low
+
+  * Initial release
+
+ -- Jason Petersen <jason@citusdata.com>  Fri, 04 Mar 2016 22:37:56 +0000
+ 

@@ -1,0 +1,26 @@
+# vim:set ft=dockerfile:
+FROM %%os%%:%%release%%
+
+RUN yum -y update \
+    && yum groupinstall -y 'Development Tools' \
+    && yum install -y \
+        curl \
+        flex \
+        libxml2-devel \
+        libxslt-devel \
+        openssl-devel \
+        pam-devel \
+        readline-devel \
+        rpm-build \
+        wget \
+    && yum clean all
+
+COPY scripts /scripts
+COPY rpm/citus.spec /
+
+ENV OS=%%os%% \
+    RELEASE=%%release%%
+
+VOLUME /packages
+
+CMD ["/scripts/build_rpm.sh"]

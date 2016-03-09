@@ -1,0 +1,6 @@
+# vim:set ft=dockerfile:
+FROM citusdata/buildbox-%%os%%-base:%%release%%
+
+ENV PGVERSION=%%pgversion%%
+
+RUN /scripts/install_postgresql.sh
