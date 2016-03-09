@@ -1,9 +1,11 @@
+centos,7
+centos,6
 debian,jessie
 debian,wheezy
+fedora,23
+fedora,22
+oraclelinux,7
+oraclelinux,6
 ubuntu,wily
 ubuntu,trusty
 ubuntu,precise
-centos,6
-centos,7
-fedora,22
-fedora,23

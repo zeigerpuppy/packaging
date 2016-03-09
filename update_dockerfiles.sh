@@ -9,6 +9,8 @@ topdir=`pwd`
 dockerfiles_dir="${topdir}/dockerfiles"
 templates_dir="${topdir}"/templates
 
+badusage=64
+
 while read line; do
     IFS=',' read os release <<< "$line"
 
@@ -21,7 +23,7 @@ while read line; do
 
         template="${templates_dir}"/Dockerfile-deb.tmpl
         sed 's/%%os%%/'"${os}"'/g; s/%%release%%/'"${release}"'/g' ${template} > ${target_subdir}/Dockerfile
-    elif [[ "${os}" = 'centos' ]] || [[ "${os}" = 'fedora' ]]; then
+    elif [[ "${os}" = 'centos' ]] || [[ "${os}" = 'fedora' ]] || [[ "${os}" = 'oraclelinux' ]]; then
         # redhat variants need a base Dockerfile...
         target_subdir="${dockerfiles_dir}/${os}-base/${release}"
         mkdir -p ${target_subdir}
@@ -39,5 +41,8 @@ while read line; do
             template="${templates_dir}"/Dockerfile-rpm-child.tmpl
             sed "$sed_cmd; s/%%pgversion%%/${pgversion}/g" ${template} > ${target_subdir}/Dockerfile
         done
+    else
+        echo "$0: unrecognized OS -- ${os}" >&2
+        exit $badusage
     fi
 done <${topdir}/os-list.csv
