@@ -4,7 +4,7 @@
 Summary:    PostgreSQL-based distributed RDBMS
 Name:       %{sname}_%{pgmajorversion}
 Version:    %{rpmversion}
-Release:    1
+Release:    %{rpmrelease}
 License:    GPLv2+
 Group:      Applications/Databases
 Source0:    https://api.github.com/repos/citusdata/citus/tarball/%{ghtag}
@@ -19,7 +19,7 @@ a traditional relational database with the ability to scale to 100s of
 billions of events with ease.
 
 %prep
-%setup -q -n citusdata-%{sname}-%{ghtag}
+%setup -q -n citusdata-%{sname}-%{ghsha}
 
 %build
 %configure PG_CONFIG=%{pgconfig}
@@ -42,5 +42,5 @@ make %{?_smp_mflags}
 %{pginstdir}/share/extension/%{sname}.control
 
 %changelog
-* Mon Mar 7 2016 - Jason Petersen <jason@citusdata.com> 5.0.0-1
+* Mon Mar 7 2016 - Jason Petersen <jason@citusdata.com> %{rpmversion}-%{rpmrelease}
 - Initial RPM packaging for PostgreSQL RPM Repository

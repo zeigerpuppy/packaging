@@ -4,9 +4,9 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-gh_version="5.0.0-rc.2"
-gh_tag="3039a584ad78c6f843c079484f9e6dfbddf65087"
-deb_version=${gh_version//'-'/'~'}
+package_version="5.0.0-rc.3"
+deb_version=${package_version//'-'/'~'}
+gh_tag="v${package_version}"
 
 tarball="citus_${deb_version}.orig.tar.gz"
 download="https://api.github.com/repos/citusdata/citus/tarball/${gh_tag}?access_token=${GITHUB_TOKEN}"
