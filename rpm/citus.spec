@@ -9,8 +9,10 @@ License:    GPLv2+
 Group:      Applications/Databases
 Source0:    https://api.github.com/repos/citusdata/citus/tarball/%{ghtag}
 URL:        https://github.com/citusdata/citus
-BuildRequires:  postgresql%{pgmajorversion}-devel libxml2-devel libxslt-devel openssl-devel pam-devel readline-devel
-Requires:   postgresql%{pgmajorversion}-server
+BuildRequires:    postgresql%{pgmajorversion}-devel libxml2-devel libxslt-devel openssl-devel pam-devel readline-devel
+Requires:         postgresql%{pgmajorversion}-server
+Requires(post):   %{_sbindir}/update-alternatives
+Requires(postun): %{_sbindir}/update-alternatives
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %description
@@ -30,6 +32,20 @@ make %{?_smp_mflags}
 
 %clean
 %{__rm} -rf %{buildroot}
+
+%post
+%{_sbindir}/update-alternatives --install %{_bindir}/csql \
+    %{sname}-csql %{pginstdir}/bin/csql %{pgmajorversion}0
+%{_sbindir}/update-alternatives --install %{_bindir}/copy_to_distributed_table \
+    %{sname}-copy_to_distributed_table %{pginstdir}/bin/copy_to_distributed_table %{pgmajorversion}0
+
+%postun
+if [ $1 -eq 0 ] ; then
+    %{_sbindir}/update-alternatives --remove %{sname}-csql \
+        %{pginstdir}/bin/csql
+    %{_sbindir}/update-alternatives --remove %{sname}-copy_to_distributed_table \
+        %{pginstdir}/bin/copy_to_distributed_table
+fi
 
 %files
 %defattr(-,root,root,-)
