@@ -6,6 +6,12 @@ class Citus < Formula
 
   head "https://github.com/citusdata/citus.git"
 
+  bottle do
+    root_url "https://s3.amazonaws.com/packages.citusdata.com/homebrew"
+    cellar :any
+    sha256 "b3674e884b60b9f2d846bf857e3fc53e9b51a2e13dae2ced44d5a2844296d764" => :el_capitan
+  end
+
   depends_on "postgresql"
 
   def install
