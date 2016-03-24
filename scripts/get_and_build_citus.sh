@@ -4,7 +4,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-package_version="5.0.0-rc.3"
+package_version="5.0.0"
 deb_version=${package_version//'-'/'~'}
 gh_tag="v${package_version}"
 

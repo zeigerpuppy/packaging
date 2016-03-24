@@ -5,7 +5,7 @@ Summary:    PostgreSQL-based distributed RDBMS
 Name:       %{sname}_%{pgmajorversion}
 Version:    %{rpmversion}
 Release:    %{rpmrelease}
-License:    GPLv2+
+License:    AGPLv3+
 Group:      Applications/Databases
 Source0:    https://api.github.com/repos/citusdata/citus/tarball/%{ghtag}
 URL:        https://github.com/citusdata/citus
@@ -58,5 +58,5 @@ fi
 %{pginstdir}/share/extension/%{sname}.control
 
 %changelog
-* Mon Mar 7 2016 - Jason Petersen <jason@citusdata.com> %{rpmversion}-%{rpmrelease}
+* Thu Mar 24 2016 - Jason Petersen <jason@citusdata.com> %{rpmversion}-%{rpmrelease}
 - Initial RPM packaging for PostgreSQL RPM Repository

@@ -4,9 +4,9 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-package_version="5.0.0-rc.3"
+package_version="5.0.0"
 gh_tag="v${package_version}"
-gh_sha="c018fbd73a0e8ac070a03c9ff0b8134ddbce3631"
+gh_sha="62273b40b1a5da763cdab9d718dae58e14b1c329"
 
 # it's impossible to put prerelease portions of our version tag into
 # the rpm version (i.e. "-rc.2"). So for e.g. 5.0.0-rc.<n>, we set the

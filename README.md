@@ -6,10 +6,6 @@ A set of scripts that generate a set of Dockerfiles that generate a set of Docke
 
 Unless you have a reason to change the Dockerfiles, just use the images hosted on Docker Hub. They’ll be pulled automatically as they’re needed. To build all packages, run the `build_packages.sh` script from the project root. Output will be put in OS/release-specific subdirectories of a `packages` directory in the project root.
 
-### Config
-
-Until the Citus repo is public, you’ll need a `GITHUB_TOKEN` environment variable set to a GitHub OAuth token to permit downloads of private repos.
-
 The list of supported OSes comes from `os-list.csv`.
 
 ### Updating Dockerfiles

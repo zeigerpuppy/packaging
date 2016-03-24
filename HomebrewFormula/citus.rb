@@ -1,7 +1,7 @@
 class Citus < Formula
   desc "PostgreSQL-based distributed RDBMS"
   homepage "https://www.citusdata.com"
-  version "5.0.0-rc.3"
+  version "5.0.0"
   url "https://api.github.com/repos/citusdata/citus/tarball/v#{version}?access_token=#{ENV["GITHUB_TOKEN"]}"
   sha256 "e6d55066a721c64d677c1325778e6466892610836bec56e9d588d945a0286682"
 
