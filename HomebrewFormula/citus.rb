@@ -1,15 +1,10 @@
 class Citus < Formula
   desc "PostgreSQL-based distributed RDBMS"
   homepage "https://www.citusdata.com"
-  version "5.0.0"
-  url "https://api.github.com/repos/citusdata/citus/tarball/v#{version}?access_token=#{ENV["GITHUB_TOKEN"]}"
-  sha256 "e6d55066a721c64d677c1325778e6466892610836bec56e9d588d945a0286682"
+  url "https://github.com/citusdata/citus/archive/v5.0.0.tar.gz"
+  sha256 "a72bd7e9020c11f19d08e58f1f8aa8e83e7f1f377facb6c8020fcaa917f9a3ee"
 
-  bottle do
-    root_url "https://s3.amazonaws.com/packages.citusdata.com/homebrew"
-    cellar :any
-    sha256 "e5a7988f14f3dfb65f516190d0818c66388c198a80691f5db9f3d92d1262bfba" => :el_capitan
-  end
+  head "https://github.com/citusdata/citus.git"
 
   depends_on "postgresql"
 
@@ -32,6 +27,29 @@ class Citus < Formula
   end
 
   test do
-    system "true"
+    pg_bin = Formula["postgresql"].opt_bin
+    pg_port = "55561"
+    system "#{pg_bin}/initdb", testpath/"test"
+    pid = fork do
+      exec("#{pg_bin}/postgres",
+           "-D", testpath/"test",
+           "-c", "shared_preload_libraries=citus",
+           "-p", pg_port)
+    end
+
+    begin
+      sleep 2
+
+      count_workers_query = "SELECT COUNT(*) FROM master_get_active_worker_nodes();"
+
+      system "#{pg_bin}/createdb", "-p", pg_port, "test"
+      system "#{pg_bin}/psql", "-p", pg_port, "-d", "test", "--command", "CREATE EXTENSION citus;"
+
+      assert_equal "0", shell_output("#{pg_bin}/psql -p #{pg_port} -d test -Atc" \
+                                     "'#{count_workers_query}'").strip
+    ensure
+      Process.kill 9, pid
+      Process.wait pid
+    end
   end
 end
