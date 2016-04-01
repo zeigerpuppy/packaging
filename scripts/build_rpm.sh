@@ -4,23 +4,21 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-package_version="5.0.0"
-gh_tag="v${package_version}"
-gh_sha="62273b40b1a5da763cdab9d718dae58e14b1c329"
+timestamp=`date +'%Y%m%d'`
+rpm_version=${upcoming}
+rpm_release="0.0.pre.${timestamp}.${gitsha:0:7}"
 
 # it's impossible to put prerelease portions of our version tag into
 # the rpm version (i.e. "-rc.2"). So for e.g. 5.0.0-rc.<n>, we set the
 # rpm version to 5.0.0 and the release to 0.<n>.rc.<n>.
-IFS='-' read rpm_version prerelease_version <<< "${package_version}"
-if [ -n "${prerelease_version}" ]; then
-    rc_version=${prerelease_version/rc./}
-    rpm_release="0.${rc_version}.${prerelease_version}"
-else
-    # stable releases just have the rpm release set to 1
-    rpm_release="1"
-fi
-
-download="https://api.github.com/repos/citusdata/citus/tarball/${gh_tag}?access_token=${GITHUB_TOKEN}"
+# IFS='-' read rpm_version prerelease_version <<< "${package_version}"
+# if [ -n "${prerelease_version}" ]; then
+#     rc_version=${prerelease_version/rc./}
+#     rpm_release="0.${rc_version}.${prerelease_version}"
+# else
+#     # stable releases just have the rpm release set to 1
+#     rpm_release="1"
+# fi
 
 export_dest=/packages/${OS}/${RELEASE}
 
@@ -30,8 +28,7 @@ pwd=`pwd`
 
 cp /citus.spec .
 
-# TODO: use spectool to download source after public
-wget -O ${gh_tag} ${download}
+spectool -d "gitsha ${gitsha}" -g citus.spec
 
 rpmbuild --define "_sourcedir ${pwd}" \
 --define "_specdir ${pwd}" \
@@ -42,8 +39,7 @@ rpmbuild --define "_sourcedir ${pwd}" \
 --define "pgmajorversion ${PGVERSION//'.'/}" \
 --define "rpmversion ${rpm_version}" \
 --define "rpmrelease ${rpm_release}" \
---define "ghsha ${gh_sha}" \
---define "ghtag ${gh_tag}" \
+--define "gitsha ${gitsha}" \
 -bb citus.spec
 
 mkdir -p ${export_dest}
