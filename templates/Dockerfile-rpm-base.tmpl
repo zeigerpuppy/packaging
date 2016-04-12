@@ -4,7 +4,6 @@ FROM %%os%%:%%release%%
 RUN yum -y update \
     && yum groupinstall -y 'Development Tools' \
     && yum install -y \
-        curl \
         flex \
         libxml2-devel \
         libxslt-devel \
@@ -13,7 +12,6 @@ RUN yum -y update \
         readline-devel \
         rpm-build \
         spectool \
-        tar \
     && yum clean all
 
 COPY scripts /scripts

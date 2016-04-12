@@ -11,6 +11,35 @@ templates_dir="${topdir}"/templates
 
 badusage=64
 
+function update_rpm_child {
+    os=$1
+    release=$2
+    pgversion=$3
+
+    pgshort=${pgversion//./}
+    target_subdir="${dockerfiles_dir}/${os}-${pgshort}/${release}"
+
+    dl_prefix="download.postgresql.org/pub/repos/yum/${pgversion}"
+    file_pattern="^pgdg-${os}${pgshort}-${pgversion}.*rpm"
+
+    if [[ "${os}" = 'centos' ]] || [[ "${os}" = 'oraclelinux' ]]; then
+        rpms_url="${dl_prefix}/redhat/rhel-${release}-x86_64/"
+    elif [[ "${os}" = 'fedora' ]]; then
+        rpms_url="${dl_prefix}/fedora/fedora-${release}-x86_64/"
+    else
+        echo "$0: unrecognized OS -- ${os}" >&2
+        exit $badusage
+    fi
+
+    rpm=`curl -s -l --ftp-ssl "ftp://${rpms_url}" | egrep "$file_pattern" | sort -t'-' -k4 -nr | head -n1`
+    rpm_url=${rpms_url}${rpm}
+
+    mkdir -p ${target_subdir}
+
+    template="${templates_dir}"/Dockerfile-rpm-child.tmpl
+    sed "$sed_cmd; s#%%rpm_url%%#${rpm_url}#g; s/%%pgshort%%/${pgshort}/g; s/%%pgversion%%/${pgversion}/g" ${template} > ${target_subdir}/Dockerfile
+}
+
 while read line; do
     IFS=',' read os release <<< "$line"
 
@@ -34,12 +63,7 @@ while read line; do
         # and a child Dockerfile for each PostgreSQL version
         IFS=' '
         for pgversion in ${pgversions}; do
-            pgshort=${pgversion//./}
-            target_subdir="${dockerfiles_dir}/${os}-${pgshort}/${release}"
-            mkdir -p ${target_subdir}
-
-            template="${templates_dir}"/Dockerfile-rpm-child.tmpl
-            sed "$sed_cmd; s/%%pgversion%%/${pgversion}/g" ${template} > ${target_subdir}/Dockerfile
+            update_rpm_child ${os} ${release} ${pgversion}
         done
     else
         echo "$0: unrecognized OS -- ${os}" >&2

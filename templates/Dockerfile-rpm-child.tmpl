@@ -3,4 +3,11 @@ FROM citusdata/buildbox-%%os%%-base:%%release%%
 
 ENV PGVERSION=%%pgversion%%
 
-RUN /scripts/install_postgresql.sh
+RUN yum install -y https://%%rpm_url%% \
+    && yum install -y postgresql%%pgshort%%-devel \
+    && yum clean all
+
+COPY scripts /scripts
+COPY rpm/citus.spec /
+
+CMD ["/scripts/build_rpm.sh"]
