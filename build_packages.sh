@@ -17,13 +17,16 @@ fi
 
 gitsha=$1
 
+name=`git config --get user.name`
+email=`git config --get user.email`
+
 mkdir -p ${packagesdir}
 
 while read line; do
     IFS=',' read os release <<< "$line"
 
     if [[ "${os}" = 'debian' ]] || [[ "${os}" = 'ubuntu' ]]; then
-        docker run --rm -v ${packagesdir}:/packages -e "upcoming=${upcoming}" -e "gitsha=${gitsha}" citusdata/buildbox-${os}:${release}
+        docker run --rm -v ${packagesdir}:/packages -e "DEBFULLNAME=${name}" -e "DEBEMAIL=${email}" -e "upcoming=${upcoming}" -e "gitsha=${gitsha}" citusdata/buildbox-${os}:${release}
     elif [[ "${os}" = 'centos' ]] || [[ "${os}" = 'fedora' ]] || [[ "${os}" = 'oraclelinux' ]]; then
         # redhat variants need to build each PostgreSQL version separately
         IFS=' '
