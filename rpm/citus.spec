@@ -3,7 +3,7 @@
 Summary:	PostgreSQL-based distributed RDBMS
 Name:		%{sname}_%{pgmajorversion}
 Version:	%{rpmversion}
-Release:	%{rpmrelease}%{dist}
+Release:	%{rpmrelease}%{?dist}
 License:	AGPLv3+
 Group:		Applications/Databases
 Source0:	https://github.com/citusdata/citus/archive/%{gitsha}.tar.gz
@@ -67,6 +67,6 @@ fi
 %{pginstdir}/share/extension/%{sname}.control
 
 %changelog
-* Fri Mar 25 2016 - Devrim Gündüz <devrim@gunduz.org> 5.0.0-1
+* Fri Mar 25 2016 - Devrim Gunduz <devrim@gunduz.org> 5.0.0-1
 - Initial RPM packaging for PostgreSQL RPM Repository,
   based on the spec file of Jason Petersen @ Citus.

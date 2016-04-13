@@ -12,10 +12,8 @@ RUN yum -y update \
         readline-devel \
         rpm-build \
         spectool \
+        tar \
     && yum clean all
-
-COPY scripts /scripts
-COPY rpm/citus.spec /
 
 ENV OS=%%os%% \
     RELEASE=%%release%%

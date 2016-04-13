@@ -19,6 +19,7 @@ gitsha=$1
 
 name=`git config --get user.name`
 email=`git config --get user.email`
+packager="${name} <${email}>"
 
 mkdir -p ${packagesdir}
 
@@ -32,7 +33,7 @@ while read line; do
         IFS=' '
         for pgversion in ${pgversions}; do
             pgshort=${pgversion//./}
-            docker run --rm -v ${packagesdir}:/packages -e "upcoming=${upcoming}" -e "gitsha=${gitsha}" citusdata/buildbox-${os}-${pgshort}:${release}
+            docker run --rm -v ${packagesdir}:/packages -e "RPM_PACKAGER=${packager}" -e "upcoming=${upcoming}" -e "gitsha=${gitsha}" citusdata/buildbox-${os}-${pgshort}:${release}
         done
     else
         echo "$0: unrecognized OS -- ${os}" >&2
