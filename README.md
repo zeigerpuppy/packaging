@@ -6,6 +6,8 @@ A set of scripts that generate a set of Dockerfiles that generate a set of Docke
 
 Unless you have a reason to change the Dockerfiles, just use the images hosted on Docker Hub. They’ll be pulled automatically as they’re needed. To build all packages, run the `build_packages.sh` script from the project root. Output will be put in OS/release-specific subdirectories of a `packages` directory in the project root.
 
+`build_packages.sh` takes one argument, the precise (full) SHA commit identifier for a git commit. This commit must have been pushed to GitHub already. The script builds that commit on _all_ supported OSes and places them in the directory specified in the last paragraph.
+
 The list of supported OSes comes from `os-list.csv`.
 
 ### Updating Dockerfiles
