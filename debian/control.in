@@ -10,7 +10,9 @@ XS-Testsuite: autopkgtest
 Package: postgresql-PGVERSION-citus
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, postgresql-PGVERSION
-Description: PostgreSQL-based distributed RDBMS
- CitusDB gives developers and enterprises the control, power and familiarity of
- a traditional relational database with the ability to scale to 100s of
- billions of events with ease.
+Description: sharding and distributed joins for PostgreSQL
+ Citus is a distributed database implemented as a PostgreSQL extension. It
+ provides functions to easily split a PostgreSQL table into shards to be
+ placed on remote worker nodes. Citus can replicate shards, update their
+ schemas, and keep track of shard health. An advanced distributed planner
+ is included which handles queries and modifications against sharded tables.
