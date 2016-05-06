@@ -1,0 +1,155 @@
+#!/bin/bash
+
+# make bash behave
+set -euo pipefail
+set -x
+IFS=$'\n\t'
+
+# constants
+stdout=1
+stderr=2
+success=0
+failure=1
+badusage=64
+noinput=66
+
+nextversion='0.0.0'
+
+# outputs usage message on specified device before exiting with provided status
+usage() {
+	cat << 'E_O_USAGE' >&"$1"
+usage: fetch_and_build_deb project build_type build_directory
+
+    project : 'citus', 'enterprise', or 'rebalancer'
+    build_type: 'release', 'nightly', or a valid git reference
+
+fetch_and_build_deb builds Debian packages for a specified project. The build
+type 'release' builds the latest release tag, 'nightly' builds a nightly from
+the latest 'master' commit, and any other type is interpreted as a git ref to
+facilitate building one-off packages for customers.
+E_O_USAGE
+
+	exit "${2}";
+}
+
+# sets the next version variable used during non-release builds
+setnextversion() {
+    baseversion=$(echo "$1" | tr '~' '-' | cut -d- -f1)
+    nextversion=$(echo "$baseversion" | perl -pe 's/^(\d+\.)(\d+)(\.\d+)$/$1.($2+1).".0"/e')
+}
+
+if [ "$#" -eq 1 ] && [ "${1}" = '-h' ]; then
+	usage $stdout $success
+fi
+
+if [ "$#" -ne 3 ]; then
+	usage $stderr $badusage
+fi
+
+case "${1}" in
+    citus|enterprise|rebalancer)
+        project=${1}
+        ;;
+    *)
+		echo "$0: unknown project -- ${1}" >&2
+		usage $stderr $badusage
+		;;
+esac
+
+builddir=$3
+# validate inputs
+if ! [ -d "${builddir}" ]; then
+	echo "$0: ${builddir}: Is not a directory" >&2
+	exit $noinput
+elif [ ! -e "${builddir}" ]; then
+	echo "$0: ${builddir}: No such file" >&2
+	exit $noinput
+elif [ ! -r "${builddir}" ]; then
+	echo "$0: ${builddir}: Permission denied" >&2
+	exit $noinput
+fi
+
+fetch_build_files "${project}" deb "${builddir}"
+
+latest=$(parse_latest_release "${project}" deb "${builddir}")
+repopath=$(parse_repo_path "${project}" deb "${builddir}")
+
+case "${2}" in
+    release)
+        packageversion=${latest%-*}
+        releasetag="v${packageversion/'~'/-}"
+
+        gitsha=$(curl -s "https://api.github.com/repos/${repopath}/git/refs/tags/${releasetag}" | \
+                 jq -r '.object.sha')
+        if [ "${gitsha}" == 'null' ]; then
+        	echo "$0: could not determine commit for git tag ${releasetag}" >&2
+            exit $failure
+        fi
+
+        verified=$(curl -sH 'Accept:application/vnd.github.cryptographer-preview+sha' \
+                   "https://api.github.com/repos/${repopath}/git/tags/${gitsha}" | \
+                   jq -r '.verification.verified')
+        if [ "${verified}" != 'true' ]; then
+        	echo "$0: could not verify signature for git tag ${releasetag}" >&2
+            exit $failure
+        fi
+        ;;
+    *)
+        if [ "${2}" == 'nightly' ]; then
+            ref='master'
+            infix='git'
+        else
+            ref=${2}
+            infix='pre'
+        fi
+
+        setnextversion "$latest"
+
+        set +e
+        gitsha=$(curl -sfH 'Accept:application/vnd.github.v3.sha' \
+                 "https://api.github.com/repos/${repopath}/commits/${ref}")
+        if [ "${?}" -ne 0 ]; then
+        	echo "$0: could not determine commit for git ref ${ref}" >&2
+            exit $failure
+        fi
+        set -e
+
+        timestamp=$(date +'%Y%m%d')
+
+        packageversion="${nextversion}~${infix}.${timestamp}.${gitsha:0:7}"
+        ;;
+esac
+
+tarballpath="${builddir}/citus_${packageversion}.orig.tar.gz"
+packagepath="${builddir}/${packageversion}"
+
+curl -sL "https://api.github.com/repos/${repopath}/tarball/${gitsha}" \
+     -o "${tarballpath}"
+
+mkdir -p "${packagepath}"
+tar xf "${tarballpath}" -C "${packagepath}" --strip-components 1
+
+cp -R "${builddir}/debian" "${packagepath}/debian"
+
+cd "${packagepath}"
+
+case "${2}" in
+    release)
+        # nothing to do
+        ;;
+    nightly)
+        msg="Nightly package. Built from master "
+        msg+=$(date +'on %l:%M %p (%Z) on %A, %B %Y' | tr -s ' ')
+        dch -v "${packageversion}-1" -D experimental -u low "${msg}"
+        ;;
+    *)
+        msg="Custom package. Built from ${gitsha:0:7} "
+        msg+=$(date +'on %l:%M %p (%Z) on %A, %B %Y' | tr -s ' ')
+        dch -v "${packageversion}-1" -D UNRELEASED -u low "${msg}"
+        ;;
+esac
+
+
+pg_buildext updatecontrol && debuild -uc -us -sa
+
+cp ../*.deb /packages
