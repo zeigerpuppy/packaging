@@ -57,6 +57,8 @@ case "${1}" in
 		;;
 esac
 
+echo "header=\"Authorization: token ${GITHUB_TOKEN}\"" > ~/.curlrc
+
 fetch_build_files "${project}" rpm "${builddir}"
 
 latest=$(parse_latest_release "${project}" rpm "${builddir}")
