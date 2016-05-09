@@ -13,6 +13,5 @@ RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 
 
 ENV PATH /scripts:$PATH
 COPY scripts /scripts
-COPY rpm/citus.spec /
 
-CMD ["/scripts/build_rpm.sh"]
+ENTRYPOINT ["/scripts/fetch_and_build_rpm"]
