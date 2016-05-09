@@ -19,10 +19,13 @@ RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys B97B0AFCAA1A4
         libselinux1-dev \
         libxslt-dev \
         lintian \
-        jq \
         postgresql-server-dev-all \
         wget \
     && rm -rf /var/lib/apt/lists/*
+
+RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 \
+         -o /usr/bin/jq \
+    && chmod +x /usr/bin/jq
 
 ENV PATH /scripts:$PATH
 COPY scripts /scripts

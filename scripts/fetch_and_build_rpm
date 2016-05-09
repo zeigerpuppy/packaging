@@ -133,6 +133,13 @@ sed -i -E -e "\\|^Source0:|s|https:.*|${tarballurl}|" \
           -e "/^%global pgpackageversion/s/[0-9.]+$/${PGVERSION}/" \
     "${builddir}/citus.spec"
 
+osname=$(awk '{print $1}' /etc/system-release)
+if [ "${osname}" == 'Oracle' ]; then
+    locale='C'
+else
+    locale='en_US.utf8'
+fi
+
 case "${2}" in
     release)
         # nothing to do
@@ -140,13 +147,13 @@ case "${2}" in
     nightly)
         msg="Nightly package. Built from master "
         msg+=$(date +'on %l:%M %p (%Z) on %A, %B %Y' | tr -s ' ')
-        rpmdev-bumpspec -c "${msg}" "${builddir}/citus.spec"
+        LC_ALL=${locale} rpmdev-bumpspec -c "${msg}" "${builddir}/citus.spec"
         sed -i -E 's/0.1.git/0.0.git/' "${builddir}/citus.spec"
         ;;
     *)
         msg="Custom package. Built from ${gitsha:0:7} "
         msg+=$(date +'on %l:%M %p (%Z) on %A, %B %Y' | tr -s ' ')
-        rpmdev-bumpspec -c "${msg}" "${builddir}/citus.spec"
+        LC_ALL=${locale} rpmdev-bumpspec -c "${msg}" "${builddir}/citus.spec"
         sed -i -E 's/0.1.git/0.0.pre/' "${builddir}/citus.spec"
         ;;
 esac
