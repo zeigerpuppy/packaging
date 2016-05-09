@@ -4,6 +4,7 @@ FROM %%os%%:%%release%%
 RUN yum -y update \
     && yum groupinstall -y 'Development Tools' \
     && yum install -y \
+        curl \
         flex \
         libxml2-devel \
         libxslt-devel \

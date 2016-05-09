@@ -7,6 +7,11 @@ RUN yum install -y https://%%rpm_url%% \
     && yum install -y postgresql%%pgshort%%-devel \
     && yum clean all
 
+RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 \
+         -o /usr/bin/jq \
+    && chmod +x /usr/bin/jq
+
+ENV PATH /scripts:$PATH
 COPY scripts /scripts
 COPY rpm/citus.spec /
 
