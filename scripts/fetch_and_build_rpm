@@ -48,8 +48,17 @@ if [ "$#" -ne 2 ]; then
 fi
 
 case "${1}" in
-    citus|enterprise|rebalancer)
+    citus)
         project=${1}
+        packagename='citus'
+        ;;
+    enterprise)
+        project=${1}
+        packagename='citus-enterprise'
+        ;;
+    rebalancer)
+        project=${1}
+        packagename='citus-rebalancer'
         ;;
     *)
 		echo "$0: unknown project -- ${1}" >&2
@@ -116,7 +125,7 @@ case "${2}" in
 
         sed -i -E -e "/^Version:/s/[^ \\t]*$/${packageversion}/" \
                   -e "/^Release:/s/[^ \\t]*$/${packagerelease}%{dist}/" \
-            "${builddir}/citus.spec"
+            "${builddir}/${packagename}.spec"
         ;;
 esac
 
@@ -133,7 +142,7 @@ sed -i -E -e "\\|^Source0:|s|https:.*|${tarballurl}|" \
           -e "/^%setup/s/-n.*/-n citusdata-%{sname}-${gitsha:0:7}/" \
           -e "/^%global pgmajorversion/s/[0-9]+$/${PGVERSION//'.'/}/" \
           -e "/^%global pgpackageversion/s/[0-9.]+$/${PGVERSION}/" \
-    "${builddir}/citus.spec"
+    "${builddir}/${packagename}.spec"
 
 osname=$(awk '{print $1}' /etc/system-release)
 if [ "${osname}" == 'Oracle' ]; then
@@ -149,14 +158,14 @@ case "${2}" in
     nightly)
         msg="Nightly package. Built from master "
         msg+=$(date +'on %l:%M %p (%Z) on %A, %B %Y' | tr -s ' ')
-        LC_ALL=${locale} rpmdev-bumpspec -c "${msg}" "${builddir}/citus.spec"
-        sed -i -E 's/0.1.git/0.0.git/' "${builddir}/citus.spec"
+        LC_ALL=${locale} rpmdev-bumpspec -c "${msg}" "${builddir}/${packagename}.spec"
+        sed -i -E 's/0.1.git/0.0.git/' "${builddir}/${packagename}.spec"
         ;;
     *)
         msg="Custom package. Built from ${gitsha:0:7} "
         msg+=$(date +'on %l:%M %p (%Z) on %A, %B %Y' | tr -s ' ')
-        LC_ALL=${locale} rpmdev-bumpspec -c "${msg}" "${builddir}/citus.spec"
-        sed -i -E 's/0.1.git/0.0.pre/' "${builddir}/citus.spec"
+        LC_ALL=${locale} rpmdev-bumpspec -c "${msg}" "${builddir}/${packagename}.spec"
+        sed -i -E 's/0.1.git/0.0.pre/' "${builddir}/${packagename}.spec"
         ;;
 esac
 
@@ -165,6 +174,6 @@ rpmbuild --define "_sourcedir ${rpmbuilddir}" \
 --define "_builddir ${rpmbuilddir}" \
 --define "_srcrpmdir ${rpmbuilddir}" \
 --define "_rpmdir ${rpmbuilddir}" \
--bb "${builddir}/citus.spec"
+-bb "${builddir}/${packagename}.spec"
 
 cp /citus-rpm-build/x86_64/*.rpm /packages
