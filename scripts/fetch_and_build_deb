@@ -48,8 +48,17 @@ if [ "$#" -ne 2 ]; then
 fi
 
 case "${1}" in
-    citus|enterprise|rebalancer)
+    citus)
         project=${1}
+        packagename='citus'
+        ;;
+    enterprise)
+        project=${1}
+        packagename='citus-enterprise'
+        ;;
+    rebalancer)
+        project=${1}
+        packagename='citus-rebalancer'
         ;;
     *)
 		echo "$0: unknown project -- ${1}" >&2
@@ -110,7 +119,7 @@ case "${2}" in
         ;;
 esac
 
-tarballpath="${builddir}/citus_${packageversion}.orig.tar.gz"
+tarballpath="${builddir}/${packagename}_${packageversion}.orig.tar.gz"
 packagepath="${builddir}/${packageversion}"
 
 curl -sL "https://api.github.com/repos/${repopath}/tarball/${gitsha}" \
