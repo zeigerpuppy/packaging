@@ -15,7 +15,7 @@ override_dh_auto_configure:
 	+pg_buildext configure build-%v
 
 override_dh_auto_install:
-	+pg_buildext install build-%v postgresql-%v-citus
+	+pg_buildext install build-%v postgresql-%v-citus-enterprise
 
 	# Install alternatives for our binaries. Could simply link to pg_wrapper,
 	# but there's no harm in just using the binary installed with the latest
@@ -25,8 +25,8 @@ override_dh_auto_install:
 	for v in $(shell pg_buildext supported-versions); do \
 		i=$$(echo $$v | tr -d .); \
 		for bin in $$binaries; do \
-			echo "update-alternatives --install /usr/bin/$$bin citus-$$bin /usr/lib/postgresql/$$v/bin/$$bin $$i" >> debian/postgresql-$$v-citus.postinst.debhelper; \
-			echo "update-alternatives --remove citus-$$bin /usr/lib/postgresql/$$v/bin/$$bin" >> debian/postgresql-$$v-citus.prerm.debhelper; \
+			echo "update-alternatives --install /usr/bin/$$bin citus-$$bin /usr/lib/postgresql/$$v/bin/$$bin $$i" >> debian/postgresql-$$v-citus-enterprise.postinst.debhelper; \
+			echo "update-alternatives --remove citus-$$bin /usr/lib/postgresql/$$v/bin/$$bin" >> debian/postgresql-$$v-citus-enterprise.prerm.debhelper; \
 		done \
 	done
 

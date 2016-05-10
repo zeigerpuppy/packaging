@@ -1,17 +1,5 @@
-citus (5.1.0~rc.1-1) unstable; urgency=low
+citus-enterprise (5.1.0~rc.1-1) unstable; urgency=low
 
   * Release candidate for 5.1.
 
- -- Jason Petersen <jason@citusdata.com>  Wed, 04 May 2016 19:26:23 +0000
-
-citus (5.0.1-1) unstable; urgency=low
-
-  * Fixes issues on 32-bit systems
-
- -- Jason Petersen <jason@citusdata.com>  Fri, 15 Apr 2016 19:17:35 +0000
-
-citus (5.0.0-1) unstable; urgency=low
-
-  * Initial release
-
- -- Jason Petersen <jason@citusdata.com>  Thu, 24 Mar 2016 10:12:52 -0400
+ -- Jason Petersen <jason@citusdata.com>  Tue, 10 May 2016 19:26:23 +0000
