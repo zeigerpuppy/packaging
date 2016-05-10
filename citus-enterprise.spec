@@ -1,7 +1,7 @@
 %global pgmajorversion 95
 %global pgpackageversion 9.5
 %global pginstdir /usr/pgsql-%{pgpackageversion}
-%global sname citus
+%global sname citus-enterprise
 
 Summary:	PostgreSQL-based distributed RDBMS
 Name:		%{sname}_%{pgmajorversion}
@@ -9,11 +9,12 @@ Version:	5.1.0
 Release:	0.1.rc.1%{dist}
 License:	AGPLv3+
 Group:		Applications/Databases
-Source0:	https://github.com/citusdata/citus/archive/v5.1.0-rc.1.tar.gz
-URL:		https://github.com/citusdata/citus
+Source0:	https://github.com/citusdata/citus-enterprise/archive/v5.1.0-rc.1.tar.gz
+URL:		https://github.com/citusdata/citus-enterprise
 BuildRequires:	postgresql%{pgmajorversion}-devel libxml2-devel
 BuildRequires:	libxslt-devel openssl-devel pam-devel readline-devel
 Requires:	postgresql%{pgmajorversion}-server
+Conflicts:	citus_%{pgmajorversion}
 Requires(post):	%{_sbindir}/update-alternatives
 Requires(postun):	%{_sbindir}/update-alternatives
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -63,16 +64,12 @@ fi
 %defattr(-,root,root,-)
 %{pginstdir}/include/server/citus_config.h
 %{pginstdir}/include/server/distributed/*.h
-%{pginstdir}/lib/%{sname}.so
+%{pginstdir}/lib/citus.so
 %{pginstdir}/bin/copy_to_distributed_table
 %{pginstdir}/bin/csql
-%{pginstdir}/share/extension/%{sname}-*.sql
-%{pginstdir}/share/extension/%{sname}.control
+%{pginstdir}/share/extension/citus-*.sql
+%{pginstdir}/share/extension/citus.control
 
 %changelog
-* Wed May 4 2016 - Jason Petersen <jason@citusdata.com> 5.1.0-0.1.rc.1
+* Tue May 10 2016 - Jason Petersen <jason@citusdata.com> 5.1.0-0.1.rc.1
 - Release candidate for 5.1.
-
-* Fri Mar 25 2016 - Devrim Gündüz <devrim@gunduz.org> 5.0.0-1
-- Initial RPM packaging for PostgreSQL RPM Repository,
-  based on the spec file of Jason Petersen @ Citus.
