@@ -11,7 +11,6 @@ stderr=2
 success=0
 failure=1
 badusage=64
-noinput=66
 
 nextversion='0.0.0'
 builddir=$(pwd)

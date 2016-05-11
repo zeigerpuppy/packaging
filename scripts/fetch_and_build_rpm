@@ -11,7 +11,6 @@ stderr=2
 success=0
 failure=1
 badusage=64
-noinput=66
 
 nextversion='0.0.0'
 builddir=$(pwd)
@@ -76,7 +75,7 @@ repopath=$(parse_repo_path "${project}" rpm "${builddir}")
 case "${2}" in
     release)
         packageversion=${latest%-*}
-        packagerelease=$(echo ${latest#*-} | sed -E 's/^[0-9.]+//')
+        packagerelease=$(echo "${latest#*-}" | sed -E 's/^[0-9.]+//')
 
         if [ -z "${packagerelease}" ]; then
             releasetag="v${packageversion}"
@@ -131,7 +130,7 @@ esac
 
 # this should all take place in a package-build directory
 rpmbuilddir="${builddir}/citus-rpm-build"
-mkdir -p ${rpmbuilddir}
+mkdir -p "${rpmbuilddir}"
 
 pkgsrcdir="${builddir}/${packagename}-${packageversion}"
 mkdir "${pkgsrcdir}"
