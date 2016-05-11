@@ -2,7 +2,6 @@
 
 # make bash behave
 set -euo pipefail
-set -x
 IFS=$'\n\t'
 
 # constants
