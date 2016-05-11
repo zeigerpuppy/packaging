@@ -5,8 +5,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 pgversions='9.4 9.5'
-upcoming='5.1.0'
-topdir=`pwd`
+topdir=$(pwd)
 packagesdir=${topdir}/packages
 badusage=64
 
@@ -18,29 +17,35 @@ fi
 project=$1
 buildtype=$2
 
-name=`git config --get user.name`
-email=`git config --get user.email`
+name=$(git config --get user.name)
+email=$(git config --get user.email)
 packager="${name} <${email}>"
 
-mkdir -p ${packagesdir}
+mkdir -p "${packagesdir}"
 
-while read line; do
-    IFS=',' read os release <<< "$line"
+while read -r line; do
+    IFS=',' read -r os release <<< "$line"
 
     outputdir="${packagesdir}/${os}-${release}"
     mkdir -p "${outputdir}"
 
     if [[ "${os}" = 'debian' ]] || [[ "${os}" = 'ubuntu' ]]; then
-        docker run --rm -v ${outputdir}:/packages -e "GITHUB_TOKEN=${GITHUB_TOKEN}" -e "DEBFULLNAME=${name}" -e "DEBEMAIL=${email}" citusdata/buildbox-${os}:${release} "$project" "$buildtype"
+        docker run --rm -v "${outputdir}:/packages" \
+                   -e "GITHUB_TOKEN=${GITHUB_TOKEN}" \
+                   -e "DEBFULLNAME=${name}" -e "DEBEMAIL=${email}" \
+                   "citusdata/buildbox-${os}:${release}" "$project" "$buildtype"
     elif [[ "${os}" = 'centos' ]] || [[ "${os}" = 'fedora' ]] || [[ "${os}" = 'oraclelinux' ]]; then
         # redhat variants need to build each PostgreSQL version separately
         IFS=' '
         for pgversion in ${pgversions}; do
             pgshort=${pgversion//./}
-            docker run --rm -v ${outputdir}:/packages -e "GITHUB_TOKEN=${GITHUB_TOKEN}" -e "RPM_PACKAGER=${packager}" citusdata/buildbox-${os}-${pgshort}:${release} "$project" "$buildtype"
+            docker run --rm -v "${outputdir}:/packages" \
+                   -e "GITHUB_TOKEN=${GITHUB_TOKEN}" \
+                   -e "RPM_PACKAGER=${packager}" \
+                   "citusdata/buildbox-${os}-${pgshort}:${release}" "$project" "$buildtype"
         done
     else
         echo "$0: unrecognized OS -- ${os}" >&2
         exit $badusage
     fi
-done <${topdir}/os-list.csv
+done <"${topdir}/os-list.csv"

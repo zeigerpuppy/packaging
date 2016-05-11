@@ -5,7 +5,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 pgversions='9.4 9.5'
-topdir=`pwd`
+topdir=$(pwd)
 dockerfiles_dir="${topdir}/dockerfiles"
 templates_dir="${topdir}"/templates
 
@@ -31,35 +31,37 @@ function update_rpm_dockerfile {
         exit $badusage
     fi
 
-    rpm=`curl -s -l --ftp-ssl "ftp://${rpms_url}" | egrep "$file_pattern" | sort -t'-' -k4 -nr | head -n1`
+    rpm=$(curl -s -l --ftp-ssl "ftp://${rpms_url}" | egrep "$file_pattern" | sort -t'-' -k4 -nr | head -n1)
     rpm_url=${rpms_url}${rpm}
 
-    mkdir -p ${target_subdir}
+    mkdir -p "${target_subdir}"
 
     template="${templates_dir}"/Dockerfile-rpm.tmpl
-    sed "$sed_cmd; s#%%rpm_url%%#${rpm_url}#g; s/%%pgshort%%/${pgshort}/g; s/%%pgversion%%/${pgversion}/g" ${template} > ${target_subdir}/Dockerfile
+    sed "$sed_cmd; s#%%rpm_url%%#${rpm_url}#g; s/%%pgshort%%/${pgshort}/g; s/%%pgversion%%/${pgversion}/g" \
+        "${template}" > "${target_subdir}/Dockerfile"
 }
 
-while read line; do
-    IFS=',' read os release <<< "$line"
+while read -r line; do
+    IFS=',' read -r os release <<< "$line"
 
     sed_cmd='s/%%os%%/'"${os}"'/g; s/%%release%%/'"${release}"'/g'
 
     if [[ "${os}" = 'debian' ]] || [[ "${os}" = 'ubuntu' ]]; then
         # debian variants have a single Dockerfile
         target_subdir="${dockerfiles_dir}/${os}/${release}"
-        mkdir -p ${target_subdir}
+        mkdir -p "${target_subdir}"
 
         template="${templates_dir}"/Dockerfile-deb.tmpl
-        sed 's/%%os%%/'"${os}"'/g; s/%%release%%/'"${release}"'/g' ${template} > ${target_subdir}/Dockerfile
+        sed 's/%%os%%/'"${os}"'/g; s/%%release%%/'"${release}"'/g' \
+            "${template}" > "${target_subdir}/Dockerfile"
     elif [[ "${os}" = 'centos' ]] || [[ "${os}" = 'fedora' ]] || [[ "${os}" = 'oraclelinux' ]]; then
         # redhat variants need a Dockerfile for each PostgreSQL version
         IFS=' '
         for pgversion in ${pgversions}; do
-            update_rpm_dockerfile ${os} ${release} ${pgversion}
+            update_rpm_dockerfile "${os}" "${release}" "${pgversion}"
         done
     else
         echo "$0: unrecognized OS -- ${os}" >&2
         exit $badusage
     fi
-done <${topdir}/os-list.csv
+done <"${topdir}/os-list.csv"
