@@ -133,13 +133,19 @@ esac
 rpmbuilddir="${builddir}/citus-rpm-build"
 mkdir -p ${rpmbuilddir}
 
-tarballpath="${rpmbuilddir}/${gitsha}"
+pkgsrcdir="${builddir}/${packagename}-${packageversion}"
+mkdir "${pkgsrcdir}"
+
+download=$(mktemp)
 tarballurl="https://api.github.com/repos/${repopath}/tarball/${gitsha}"
-curl -sL "${tarballurl}" -o "${tarballpath}"
+curl -sL "${tarballurl}" -o "${download}"
+
+tarballpath="${rpmbuilddir}/${gitsha}"
+tar xf "${download}" -C "${pkgsrcdir}" --strip-components 1
+tar czf "${tarballpath}" "${pkgsrcdir}"
 
 # force our URL and expanded folder names into spec
 sed -i -E -e "\\|^Source0:|s|https:.*|${tarballurl}|" \
-          -e "/^%setup/s/-n.*/-n citusdata-%{sname}-${gitsha:0:7}/" \
           -e "/^%global pgmajorversion/s/[0-9]+$/${PGVERSION//'.'/}/" \
           -e "/^%global pgpackageversion/s/[0-9.]+$/${PGVERSION}/" \
     "${builddir}/${packagename}.spec"
