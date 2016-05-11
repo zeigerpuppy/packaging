@@ -1,0 +1,5 @@
+citus-ha (1.0.0) testing; urgency=low
+
+  * First release of HA
+
+ -- Burak Velioglu <velioglub@citusdata.com>  Sun, 21 Oct 2018 10:21:18 +0000

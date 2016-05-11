@@ -1,0 +1,16 @@
+Source: citus-ha
+Section: database
+Priority: optional
+Maintainer: Citus Data <packaging@citusdata.com>
+Uploaders: Burak Velioglu <velioglub@citusdata.com>
+Build-Depends: debhelper (>= 9), autotools-dev, flex, postgresql-server-dev-all (>= 158~), libedit-dev, libpam0g-dev, libselinux1-dev, libxslt1-dev
+Standards-Version: 3.9.7
+Homepage: https://github.com/citusdata/citus-ha
+
+Package: postgresql-PGVERSION-citus-ha
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, postgresql-PGVERSION
+Provides: postgresql-PGVERSION-citus-ha
+Conflicts: postgresql-PGVERSION-citus-ha
+Description: Citus high availability support
+ This extension implements a set of functions for HA on Citus clusters.
