@@ -16,10 +16,7 @@ while read line; do
     if [[ "${os}" = 'debian' ]] || [[ "${os}" = 'ubuntu' ]]; then
         docker build -t citusdata/buildbox-${os}:${release} -f dockerfiles/${os}/${release}/Dockerfile .
     elif [[ "${os}" = 'centos' ]] || [[ "${os}" = 'fedora' ]] || [[ "${os}" = 'oraclelinux' ]]; then
-        # redhat variants need a base image...
-        docker build -t citusdata/buildbox-${os}-base:${release} -f dockerfiles/${os}-base/${release}/Dockerfile .
-
-        # and a child image for each PostgreSQL version
+        # redhat variants need an image for each PostgreSQL version
         IFS=' '
         for pgversion in ${pgversions}; do
             pgshort=${pgversion//./}
