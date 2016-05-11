@@ -11,6 +11,10 @@ RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 
          -o /usr/bin/jq \
     && chmod +x /usr/bin/jq
 
+RUN curl -s https://packagecloud.io/install/repositories/citusdata/community/script.rpm.sh | bash \
+    && yum install -y citus_%%pgshort%% \
+    && yum clean all
+
 ENV PATH /scripts:$PATH
 COPY scripts /scripts
 

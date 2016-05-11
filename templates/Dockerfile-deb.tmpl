@@ -27,6 +27,10 @@ RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 
          -o /usr/bin/jq \
     && chmod +x /usr/bin/jq
 
+RUN curl -s https://packagecloud.io/install/repositories/citusdata/community/script.deb.sh | bash \
+    && apt-get install -y postgresql-9.4-citus postgresql-9.5-citus \
+    && rm -rf /var/lib/apt/lists/*
+
 ENV PATH /scripts:$PATH
 COPY scripts /scripts
 VOLUME /packages
