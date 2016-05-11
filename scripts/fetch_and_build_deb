@@ -94,7 +94,11 @@ case "${2}" in
         ;;
     *)
         if [ "${2}" == 'nightly' ]; then
-            ref='master'
+            if [ "${project}" == 'enterprise' ]; then
+                ref='enterprise-master'
+            else
+                ref='master'
+            fi
             infix='git'
         else
             ref=${2}
