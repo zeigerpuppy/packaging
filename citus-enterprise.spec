@@ -60,6 +60,12 @@ if [ $1 -eq 0 ] ; then
 	%{pginstdir}/bin/copy_to_distributed_table
 fi
 
+%triggerpostun -- citus_%{pgmajorversion}
+%{_sbindir}/update-alternatives --install %{_bindir}/csql \
+    %{sname}-csql %{pginstdir}/bin/csql %{pgmajorversion}0
+%{_sbindir}/update-alternatives --install %{_bindir}/copy_to_distributed_table \
+    %{sname}-copy_to_distributed_table %{pginstdir}/bin/copy_to_distributed_table %{pgmajorversion}0
+
 %files
 %defattr(-,root,root,-)
 %{pginstdir}/include/server/citus_config.h
