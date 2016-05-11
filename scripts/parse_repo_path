@@ -14,7 +14,7 @@ noinput=66
 
 # outputs usage message on specified device before exiting with provided status
 usage() {
-	cat << 'E_O_USAGE' >&"$1"
+    cat << 'E_O_USAGE' >&"$1"
 usage: parse_repo_path project format build_directory
 
     project : 'citus', 'enterprise', or 'rebalancer'
@@ -24,29 +24,29 @@ parse_repo_path extracts the GitHub repo path (owner/project) for a specified
 project and software packaging system.
 E_O_USAGE
 
-	exit "${2}";
+    exit "${2}";
 }
 
 # validates file containing source
 validatefile() {
     if [ -d "$1" ]; then
-    	echo "$0: $1: Is a directory" >&2
-    	exit $noinput
+        echo "$0: $1: Is a directory" >&2
+        exit $noinput
     elif [ ! -e "$1" ]; then
-    	echo "$0: $1: No such file" >&2
-    	exit $noinput
+        echo "$0: $1: No such file" >&2
+        exit $noinput
     elif [ ! -r "$1" ]; then
-    	echo "$0: $1: Permission denied" >&2
-    	exit $noinput
+        echo "$0: $1: Permission denied" >&2
+        exit $noinput
     fi
 }
 
 if [ "$#" -eq 1 ] && [ "${1}" = '-h' ]; then
-	usage $stdout $success
+    usage $stdout $success
 fi
 
 if [ "$#" -ne 3 ]; then
-	usage $stderr $badusage
+    usage $stderr $badusage
 fi
 
 case "${1}" in
@@ -60,35 +60,35 @@ case "${1}" in
         specfile='citus-rebalancer.spec'
         ;;
     *)
-		echo "$0: unknown project -- ${1}" >&2
-		usage $stderr $badusage
-		;;
+        echo "$0: unknown project -- ${1}" >&2
+        usage $stderr $badusage
+        ;;
 esac
 
 builddir=$3
 case "${2}" in
-	deb)
+    deb)
         copyright="${builddir}/debian/copyright"
         validatefile "${copyright}"
         set +e
         repopath=$(awk '/^Source:/{print $NF}' "${copyright}" | egrep -o '[^/]+/[^/]+$')
         set -e
-		;;
-	rpm)
+        ;;
+    rpm)
         specfile="${builddir}/${specfile}"
         validatefile "${specfile}"
         set +e
         repopath=$(awk '/^Source0:/{print $NF}' "${specfile}" | egrep -o 'citusdata/[^/]+')
         set -e
-		;;
+        ;;
     *)
-		echo "$0: unknown format -- ${2}" >&2
-		usage $stderr $badusage
-		;;
+        echo "$0: unknown format -- ${2}" >&2
+        usage $stderr $badusage
+        ;;
 esac
 
 if [ -z "${repopath}" ]; then
-	echo "$0: could not determine repo path" >&2
+    echo "$0: could not determine repo path" >&2
     exit $failure
 fi
 
