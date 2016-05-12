@@ -39,6 +39,8 @@ function update_rpm_dockerfile {
     template="${templates_dir}"/Dockerfile-rpm.tmpl
     sed "$sed_cmd; s#%%rpm_url%%#${rpm_url}#g; s/%%pgshort%%/${pgshort}/g; s/%%pgversion%%/${pgversion}/g" \
         "${template}" > "${target_subdir}/Dockerfile"
+
+    cp -R make_pg_buildext_parallel.patch scripts "${target_subdir}"
 }
 
 while read -r line; do
@@ -54,6 +56,8 @@ while read -r line; do
         template="${templates_dir}"/Dockerfile-deb.tmpl
         sed 's/%%os%%/'"${os}"'/g; s/%%release%%/'"${release}"'/g' \
             "${template}" > "${target_subdir}/Dockerfile"
+
+        cp -R make_pg_buildext_parallel.patch scripts "${target_subdir}"
     elif [[ "${os}" = 'centos' ]] || [[ "${os}" = 'fedora' ]] || [[ "${os}" = 'oraclelinux' ]]; then
         # redhat variants need a Dockerfile for each PostgreSQL version
         IFS=' '

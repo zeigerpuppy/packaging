@@ -1,0 +1,17 @@
+--- /usr/bin/pg_buildext	2016-05-12 17:02:52.260285571 +0000
++++ /usr/bin/pg_buildext	2016-05-12 17:03:15.570947662 +0000
+@@ -63,11 +63,13 @@
+ build() {
+     prepare_env $1
+     cflags="`$pgc --cflags` `echo $opt | sed -e "s:%v:$version:g"`"
++    procs="$(nproc)"
++    mjobs="$(expr $procs + 1)"
+ 
+     mkdir -p $vtarget
+     # if a Makefile was created by configure, use it, else the top level Makefile
+     [ -f $vtarget/Makefile ] || makefile="-f $srcdir/Makefile"
+-    make -C $vtarget $makefile CFLAGS="$cflags" DESTDIR="$srcdir/debian/$package" PG_CONFIG="$pgc" VPATH="$srcdir" srcdir="$srcdir" USE_PGXS=1
++    make -j$(mjobs) -C $vtarget $makefile CFLAGS="$cflags" DESTDIR="$srcdir/debian/$package" PG_CONFIG="$pgc" VPATH="$srcdir" srcdir="$srcdir" USE_PGXS=1
+ }
+ 
+ install() {
