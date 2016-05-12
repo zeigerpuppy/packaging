@@ -1,9 +1,9 @@
 # vim:set ft=dockerfile:
-FROM %%os%%:%%release%%
+FROM debian:wheezy
 
 # install build tools and PostgreSQL development files
 RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8 \
-    && echo 'deb http://apt.postgresql.org/pub/repos/apt/ %%release%%-pgdg main' > /etc/apt/sources.list.d/pgdg.list \
+    && echo 'deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main' > /etc/apt/sources.list.d/pgdg.list \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
         autotools-dev \
