@@ -17,7 +17,7 @@ function update_rpm_dockerfile {
     pgversion=$3
 
     pgshort=${pgversion//./}
-    target_subdir="${dockerfiles_dir}/${os}-${pgshort}/${release}"
+    target_subdir="${dockerfiles_dir}/${os}-${release}-pg${pgshort}"
 
     dl_prefix="download.postgresql.org/pub/repos/yum/${pgversion}"
     file_pattern="^pgdg-${os}${pgshort}-${pgversion}.*rpm"
@@ -48,7 +48,7 @@ while read -r line; do
 
     if [[ "${os}" = 'debian' ]] || [[ "${os}" = 'ubuntu' ]]; then
         # debian variants have a single Dockerfile
-        target_subdir="${dockerfiles_dir}/${os}/${release}"
+        target_subdir="${dockerfiles_dir}/${os}-${release}-all"
         mkdir -p "${target_subdir}"
 
         template="${templates_dir}"/Dockerfile-deb.tmpl
