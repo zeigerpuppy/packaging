@@ -1,4 +1,10 @@
-.DS_Store
 .git
+build_packages
 dockerfiles
+LICENSE
+os-list.csv
 packages
+README.md
+templates
+update_dockerfiles
+update_images
