@@ -34,6 +34,10 @@ RUN curl -s https://packagecloud.io/install/repositories/citusdata/community/scr
     && apt-get install -y postgresql-9.4-citus postgresql-9.5-citus \
     && rm -rf /var/lib/apt/lists/*
 
+# patch pg_buildext to use multiple processors
+COPY make_pg_buildext_parallel.patch /
+RUN patch `which pg_buildext` < /make_pg_buildext_parallel.patch
+
 # place scripts on path and declare output volume
 ENV PATH /scripts:$PATH
 COPY scripts /scripts
