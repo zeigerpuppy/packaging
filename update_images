@@ -14,15 +14,17 @@ while read -r line; do
     IFS=',' read -r os release <<< "$line"
 
     if [[ "${os}" = 'debian' ]] || [[ "${os}" = 'ubuntu' ]]; then
-        docker build -t "citusdata/buildbox-${os}:${release}" \
-                     -f "${dockerfiles_dir}/${os}-${release}-all/Dockerfile" .
+        tag="${os}-${release}-all"
+        docker build -t "citusdata/packaging:${tag}" \
+                     -f "${dockerfiles_dir}/${tag}/Dockerfile" .
     elif [[ "${os}" = 'centos' ]] || [[ "${os}" = 'fedora' ]] || [[ "${os}" = 'oraclelinux' ]]; then
         # redhat variants need an image for each PostgreSQL version
         IFS=' '
         for pgversion in ${pgversions}; do
             pgshort=${pgversion//./}
-            docker build -t "citusdata/buildbox-${os}-${pgshort}:${release}" \
-                         -f "${dockerfiles_dir}/${os}-${release}-pg${pgshort}/Dockerfile" .
+            tag="${os}-${release}-pg${pgshort}"
+            docker build -t "citusdata/packaging:${tag}" \
+                         -f "${dockerfiles_dir}/${tag}/Dockerfile" .
         done
     else
         echo "$0: unrecognized OS -- ${os}" >&2

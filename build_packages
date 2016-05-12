@@ -33,7 +33,7 @@ while read -r line; do
         docker run --rm -v "${outputdir}:/packages" \
                    -e "GITHUB_TOKEN=${GITHUB_TOKEN}" \
                    -e "DEBFULLNAME=${name}" -e "DEBEMAIL=${email}" \
-                   "citusdata/buildbox-${os}:${release}" "$project" "$buildtype"
+                   "citusdata/packaging:${os}-${release}-all" "$project" "$buildtype"
     elif [[ "${os}" = 'centos' ]] || [[ "${os}" = 'fedora' ]] || [[ "${os}" = 'oraclelinux' ]]; then
         # redhat variants need to build each PostgreSQL version separately
         IFS=' '
@@ -42,7 +42,7 @@ while read -r line; do
             docker run --rm -v "${outputdir}:/packages" \
                    -e "GITHUB_TOKEN=${GITHUB_TOKEN}" \
                    -e "RPM_PACKAGER=${packager}" \
-                   "citusdata/buildbox-${os}-${pgshort}:${release}" "$project" "$buildtype"
+                   "citusdata/packaging:${os}-${release}-pg${pgshort}" "$project" "$buildtype"
         done
     else
         echo "$0: unrecognized OS -- ${os}" >&2
