@@ -1,5 +1,6 @@
 %global pgmajorversion 95
-%global pginstdir /usr/pgsql-9.5
+%global pgpackageversion 9.5
+%global pginstdir /usr/pgsql-%{pgpackageversion}
 %global sname cstore_fdw
 
 Summary:	Columnar store extension for PostgreSQL
