@@ -18,7 +18,7 @@ usage() {
 usage: parse_latest_release project format build_directory
 
     project : 'citus', 'enterprise', or 'rebalancer'
-    format : 'deb' or 'rpm'
+    format : 'deb', 'rpm', or 'pgxn'
 
 parse_latest_release extracts the latest stable release from the build files
 for a specified project and software packaging system.
@@ -80,6 +80,11 @@ case "${2}" in
         set +e
         latest=$(awk '/^%changelog/{m=1;next}m' "${changelog}" | awk '/^*/{print $NF}' | head -n 1)
         set -e
+        ;;
+    pgxn)
+        metadata="${builddir}/META.json"
+        validatefile "${metadata}"
+        latest=$(jq -r '.version // empty' < ${metadata})
         ;;
     *)
         echo "$0: unknown format -- ${2}" >&2

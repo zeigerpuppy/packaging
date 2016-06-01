@@ -18,7 +18,7 @@ usage() {
 usage: parse_repo_path project format build_directory
 
     project : 'citus', 'enterprise', or 'rebalancer'
-    format : 'deb' or 'rpm'
+    format : 'deb', 'rpm', or 'pgxn'
 
 parse_repo_path extracts the GitHub repo path (owner/project) for a specified
 project and software packaging system.
@@ -80,6 +80,11 @@ case "${2}" in
         set +e
         repopath=$(awk '/^Source0:/{print $NF}' "${specfile}" | egrep -o 'citusdata/[^/]+')
         set -e
+        ;;
+    pgxn)
+        metadata="${builddir}/META.json"
+        validatefile "${metadata}"
+        repopath=$(jq -r '.resources.repository.web // empty' < ${metadata} | egrep -o '[^/]+/[^/]+$')
         ;;
     *)
         echo "$0: unknown format -- ${2}" >&2

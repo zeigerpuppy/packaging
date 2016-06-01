@@ -21,7 +21,7 @@ usage() {
 usage: fetch_build_files project format target_directory
 
     project : 'citus', 'enterprise', or 'rebalancer'
-    format : 'deb' or 'rpm'
+    format : 'deb', 'rpm', or 'pgxn'
 
 fetch_build_files fetches files needed to package a specified Citus project for
 a specified software packaging system.
@@ -54,6 +54,9 @@ case "${2}" in
         ;;
     rpm)
         format='redhat'
+        ;;
+    pgxn)
+        format='pgxn'
         ;;
     *)
         echo "$0: unknown format -- ${2}" >&2
