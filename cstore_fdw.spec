@@ -8,7 +8,7 @@ Version:	1.4.1
 Release:	1%{?dist}
 License:	BSD
 Group:		Applications/Databases
-Source0:	https://github.com/citusdata/%{sname}/archive/v%{version}.tar.gz
+Source0:	https://github.com/citusdata/cstore_fdw/archive/v1.4.1.tar.gz
 Patch0:		%{sname}-makefile.patch
 URL:		http://citusdata.github.io/cstore_fdw/
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
