@@ -64,6 +64,16 @@ while read -r line; do
         for pgversion in ${pgversions}; do
             update_rpm_dockerfile "${os}" "${release}" "${pgversion}"
         done
+    elif [[ "${os}" = 'pgxn' ]]; then
+        # pgxn only needs a single build box
+        target_subdir="${dockerfiles_dir}/${os}-all"
+        mkdir -p "${target_subdir}"
+
+        template="${templates_dir}"/Dockerfile-pgxn.tmpl
+        sed 's/%%os%%/'"${os}"'/g; s/%%release%%/'"${release}"'/g' \
+            "${template}" > "${target_subdir}/Dockerfile"
+
+        cp -R make_pg_buildext_parallel.patch scripts "${target_subdir}"
     else
         echo "$0: unrecognized OS -- ${os}" >&2
         exit $badusage

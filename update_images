@@ -26,6 +26,10 @@ while read -r line; do
             docker build -t "citusdata/packaging:${tag}" \
                          -f "${dockerfiles_dir}/${tag}/Dockerfile" .
         done
+    elif [[ "${os}" = 'pgxn' ]]; then
+        tag="${os}-all"
+        docker build -t "citusdata/packaging:${tag}" \
+                     -f "${dockerfiles_dir}/${tag}/Dockerfile" .
     else
         echo "$0: unrecognized OS -- ${os}" >&2
         exit $badusage

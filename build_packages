@@ -26,7 +26,12 @@ mkdir -p "${packagesdir}"
 while read -r line; do
     IFS=',' read -r os release <<< "$line"
 
-    outputdir="${packagesdir}/${os}-${release}"
+    if [ -z "${release}" ]; then
+        outputdir="${packagesdir}/${os}"
+    else
+        outputdir="${packagesdir}/${os}-${release}"
+    fi
+
     mkdir -p "${outputdir}"
 
     if [[ "${os}" = 'debian' ]] || [[ "${os}" = 'ubuntu' ]]; then
@@ -44,6 +49,14 @@ while read -r line; do
                    -e "RPM_PACKAGER=${packager}" \
                    "citusdata/packaging:${os}-${release}-pg${pgshort}" "$project" "$buildtype"
         done
+    elif [[ "${os}" = 'pgxn' ]]; then
+        if [[ "${project}" = 'citus' ]] && [[ "${buildtype}" = 'release' ]]; then
+            docker run --rm -v "${outputdir}:/packages" \
+                       -e "GITHUB_TOKEN=${GITHUB_TOKEN}" \
+                       "citusdata/packaging:${os}-all" "$project" "$buildtype"
+        else
+            echo "skipping PGXN... unsupported for this build" >&2
+        fi
     else
         echo "$0: unrecognized OS -- ${os}" >&2
         exit $badusage
