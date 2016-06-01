@@ -11,6 +11,7 @@ RUN yum -y update \
         libxslt-devel \
         openssl-devel \
         pam-devel \
+        protobuf-c-devel \
         readline-devel \
         rpm-build \
         spectool \
@@ -24,10 +25,10 @@ RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 
          -o /usr/bin/jq \
     && chmod +x /usr/bin/jq
 
-# install latest Citus release to get header files
-RUN curl -s https://packagecloud.io/install/repositories/citusdata/community/script.rpm.sh | bash \
-    && yum install -y citus_94 \
-    && yum clean all
+# # install latest Citus release to get header files
+# RUN curl -s https://packagecloud.io/install/repositories/citusdata/community/script.rpm.sh | bash \
+#     && yum install -y citus_94 \
+#     && yum clean all
 
 # set PostgreSQL version, place scripts on path, and declare output volume
 ENV PGVERSION=9.4 \

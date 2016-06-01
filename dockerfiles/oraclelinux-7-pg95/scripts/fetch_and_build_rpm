@@ -58,6 +58,10 @@ case "${1}" in
         project=${1}
         packagename='citus-rebalancer'
         ;;
+    cstore)
+        project=${1}
+        packagename='cstore_fdw'
+        ;;
     *)
         echo "$0: unknown project -- ${1}" >&2
         usage $stderr $badusage
@@ -176,6 +180,8 @@ case "${2}" in
         sed -i -E 's/0.1.git/0.0.pre/' "${builddir}/${packagename}.spec"
         ;;
 esac
+
+PATH="/usr/pgsql-${PGVERSION}/bin:${PATH}"
 
 rpmbuild --define "_sourcedir ${rpmbuilddir}" \
 --define "_specdir ${rpmbuilddir}" \

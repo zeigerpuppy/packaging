@@ -17,7 +17,7 @@ usage() {
     cat << 'E_O_USAGE' >&"$1"
 usage: parse_repo_path project format build_directory
 
-    project : 'citus', 'enterprise', or 'rebalancer'
+    project : 'citus', 'enterprise', 'rebalancer', or 'cstore'
     format : 'deb', 'rpm', or 'pgxn'
 
 parse_repo_path extracts the GitHub repo path (owner/project) for a specified
@@ -58,6 +58,9 @@ case "${1}" in
         ;;
     rebalancer)
         specfile='citus-rebalancer.spec'
+        ;;
+    cstore)
+        specfile='cstore_fdw.spec'
         ;;
     *)
         echo "$0: unknown project -- ${1}" >&2
