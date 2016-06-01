@@ -84,7 +84,7 @@ case "${2}" in
     pgxn)
         metadata="${builddir}/META.json"
         validatefile "${metadata}"
-        latest=$(jq -r '.version // empty' < ${metadata})
+        latest=$(jq -r '.version // empty' < "${metadata}")
         ;;
     *)
         echo "$0: unknown format -- ${2}" >&2

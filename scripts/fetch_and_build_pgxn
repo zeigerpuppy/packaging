@@ -95,4 +95,4 @@ cp "${builddir}/META.json" "${packagepath}/META.json"
 
 tar czf "${finalpath}" "${packagepath}"
 
-cp ${finalpath} /packages
+cp "${finalpath}" /packages
