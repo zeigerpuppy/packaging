@@ -1,9 +1,12 @@
 # vim:set ft=dockerfile:
 FROM fedora:22
 
+# FIXME: Hack around docker/docker#10180
+RUN ( yum install -y yum-plugin-ovl || yum install -y yum-plugin-ovl ) \
+    && yum clean all
+
 # install build tools and PostgreSQL development files
-RUN yum -y update \
-    && yum groupinstall -y 'Development Tools' \
+RUN yum groupinstall -y 'Development Tools' \
     && yum install -y \
         curl \
         flex \
