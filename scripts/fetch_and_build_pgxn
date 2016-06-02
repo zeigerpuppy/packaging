@@ -83,7 +83,7 @@ esac
 
 tarballpath="${builddir}/${packagename}_${packageversion}.orig.tar.gz"
 packagepath="${builddir}/${packagename}-${packageversion}"
-finalpath="${packagepath}.tar.gz"
+finalpath="${packagepath}.zip"
 
 curl -sL "https://api.github.com/repos/${repopath}/tarball/${gitsha}" \
      -o "${tarballpath}"
@@ -93,6 +93,7 @@ tar xf "${tarballpath}" -C "${packagepath}" --strip-components 1
 
 cp "${builddir}/META.json" "${packagepath}/META.json"
 
-tar czf "${finalpath}" "${packagepath}"
+# remove extraneous slashes: zip doesn't like them
+zip -qr "${finalpath//\/\//\/}" "${packagepath//\/\//\/}"
 
 cp "${finalpath}" /packages

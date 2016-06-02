@@ -3,7 +3,7 @@ FROM alpine:3.3
 
 # install tools needed by packaging scripts
 RUN apk update \
-    && apk add bash curl jq tar \
+    && apk add bash curl jq tar zip \
     && rm -rf /var/cache/apk/*
 
 # place scripts on path and declare output volume
