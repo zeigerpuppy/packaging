@@ -40,7 +40,9 @@ function update_rpm_dockerfile {
     sed "$sed_cmd; s#%%rpm_url%%#${rpm_url}#g; s/%%pgshort%%/${pgshort}/g; s/%%pgversion%%/${pgversion}/g" \
         "${template}" > "${target_subdir}/Dockerfile"
 
-    cp -R make_pg_buildext_parallel.patch scripts "${target_subdir}"
+    cp -R scripts "${target_subdir}"
+    rm "${target_subdir}/scripts/fetch_and_build_deb" \
+       "${target_subdir}/scripts/fetch_and_build_pgxn"
 }
 
 while read -r line; do
@@ -58,12 +60,26 @@ while read -r line; do
             "${template}" > "${target_subdir}/Dockerfile"
 
         cp -R make_pg_buildext_parallel.patch scripts "${target_subdir}"
+        rm "${target_subdir}/scripts/fetch_and_build_rpm" \
+           "${target_subdir}/scripts/fetch_and_build_pgxn"
     elif [[ "${os}" = 'centos' ]] || [[ "${os}" = 'fedora' ]] || [[ "${os}" = 'oraclelinux' ]]; then
         # redhat variants need a Dockerfile for each PostgreSQL version
         IFS=' '
         for pgversion in ${pgversions}; do
             update_rpm_dockerfile "${os}" "${release}" "${pgversion}"
         done
+    elif [[ "${os}" = 'pgxn' ]]; then
+        # pgxn only needs a single build box
+        target_subdir="${dockerfiles_dir}/${os}-all"
+        mkdir -p "${target_subdir}"
+
+        template="${templates_dir}"/Dockerfile-pgxn.tmpl
+        sed 's/%%os%%/'"${os}"'/g; s/%%release%%/'"${release}"'/g' \
+            "${template}" > "${target_subdir}/Dockerfile"
+
+        cp -R scripts "${target_subdir}"
+        rm "${target_subdir}/scripts/fetch_and_build_deb" \
+           "${target_subdir}/scripts/fetch_and_build_rpm"
     else
         echo "$0: unrecognized OS -- ${os}" >&2
         exit $badusage
