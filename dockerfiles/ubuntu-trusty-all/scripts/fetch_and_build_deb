@@ -66,6 +66,9 @@ esac
 
 echo "header=\"Authorization: token ${GITHUB_TOKEN}\"" > ~/.curlrc
 
+export NAME=$(determine_name)
+export EMAIL=$(determine_email)
+
 fetch_build_files "${project}" deb "${builddir}"
 
 latest=$(parse_latest_release "${project}" deb "${builddir}")
@@ -129,6 +132,11 @@ curl -sL "https://api.github.com/repos/${repopath}/tarball/${gitsha}" \
 
 mkdir -p "${packagepath}"
 tar xf "${tarballpath}" -C "${packagepath}" --strip-components 1
+
+# add our email/name to debian control file as uploader if not a release
+if [ "${2}" != 'release' ]; then
+    sed -i -E "/^Uploaders:/s/ .+$/ ${NAME} <${EMAIL}>/" "${builddir}/debian/control.in"
+fi
 
 cp -R "${builddir}/debian" "${packagepath}/debian"
 
