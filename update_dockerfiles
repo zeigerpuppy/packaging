@@ -79,7 +79,10 @@ while read -r line; do
 
         cp -R scripts "${target_subdir}"
         rm "${target_subdir}/scripts/fetch_and_build_deb" \
-           "${target_subdir}/scripts/fetch_and_build_rpm"
+           "${target_subdir}/scripts/fetch_and_build_rpm" \
+           "${target_subdir}/scripts/determine_name" \
+           "${target_subdir}/scripts/determine_email"
+
     else
         echo "$0: unrecognized OS -- ${os}" >&2
         exit $badusage
