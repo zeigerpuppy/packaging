@@ -16,6 +16,7 @@ RUN yum groupinstall -y 'Development Tools' \
         pam-devel \
         readline-devel \
         rpm-build \
+        rpmlint \
         spectool \
         tar \
     && yum install -y https://download.postgresql.org/pub/repos/yum/9.4/redhat/rhel-7-x86_64/pgdg-centos94-9.4-2.noarch.rpm \
@@ -31,6 +32,9 @@ RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 
 RUN curl -s https://packagecloud.io/install/repositories/citusdata/community/script.rpm.sh | bash \
     && yum install -y citus_94 \
     && yum clean all
+
+RUN touch /rpmlintrc \
+    && echo '%_build_pkgcheck %{_bindir}/rpmlint -f /rpmlintrc' >> /etc/rpm/macros
 
 # set PostgreSQL version, place scripts on path, and declare output volume
 ENV PGVERSION=9.4 \
