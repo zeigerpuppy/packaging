@@ -68,6 +68,10 @@ echo "header=\"Authorization: token ${GITHUB_TOKEN}\"" > ~/.curlrc
 
 fetch_build_files "${project}" rpm "${builddir}"
 
+name=$(determine_name)
+email=$(determine_email)
+export RPM_PACKAGER="${name} <${email}>"
+
 latest=$(parse_latest_release "${project}" rpm "${builddir}")
 repopath=$(parse_repo_path "${project}" rpm "${builddir}")
 
@@ -173,7 +177,7 @@ case "${2}" in
         msg="Custom package. Built from ${gitsha:0:7} "
         msg+=$(date +'on %l:%M %p (%Z) on %A, %B %Y' | tr -s ' ')
         LC_ALL=${locale} rpmdev-bumpspec -c "${msg}" "${builddir}/${packagename}.spec"
-        sed -i -E 's/0.1.git/0.0.pre/' "${builddir}/${packagename}.spec"
+        sed -i -E 's/0.1.pre/0.0.pre/' "${builddir}/${packagename}.spec"
         ;;
 esac
 
