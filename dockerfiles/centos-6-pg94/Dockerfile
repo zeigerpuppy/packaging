@@ -10,6 +10,7 @@ RUN yum groupinstall -y 'Development Tools' \
     && yum install -y \
         curl \
         flex \
+        hunspell-en \
         libxml2-devel \
         libxslt-devel \
         openssl-devel \
