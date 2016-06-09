@@ -159,6 +159,8 @@ case "${2}" in
 esac
 
 
-pg_buildext updatecontrol && debuild -uc -us -sa
+pg_buildext updatecontrol
+
+debuild -uc -us -B --lintian-opts --profile debian --allow-root
 
 cp ../*.deb /packages
