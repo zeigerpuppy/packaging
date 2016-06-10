@@ -5,18 +5,17 @@ set -uo pipefail
 IFS=$'\n\t'
 
 # constants
-success=0
-failure=1
+badconfig=78
 
-if [ -z ${PACKAGING_PASSPHRASE+x} ]; then
+if [ -z "${PACKAGING_PASSPHRASE+x}" ]; then
     echo "$0: passphrase not set" >&2
-    exit $failure
-elif [ -z ${PACKAGING_SECRET_KEY+x} ]; then
+    exit $badconfig
+elif [ -z "${PACKAGING_SECRET_KEY+x}" ]; then
     echo "$0: secret key not set" >&2
-    exit $failure
+    exit $badconfig
 fi
 
 gpg2 --batch --no-tty --trust-model always \
-     --import <(echo ${PACKAGING_SECRET_KEY} | base64 -d)
+     --import <(echo "${PACKAGING_SECRET_KEY}" | base64 -d)
 
 sign_rpm "$@"

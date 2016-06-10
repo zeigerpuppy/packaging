@@ -66,8 +66,11 @@ esac
 
 echo "header=\"Authorization: token ${GITHUB_TOKEN}\"" > ~/.curlrc
 
-export NAME=$(determine_name)
-export EMAIL=$(determine_email)
+export NAME
+NAME=$(determine_name)
+
+export EMAIL
+EMAIL=$(determine_email)
 
 fetch_build_files "${project}" deb "${builddir}"
 
