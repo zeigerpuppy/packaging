@@ -18,4 +18,4 @@ fi
 gpg2 --batch --no-tty --trust-model always \
      --import <(echo "${PACKAGING_SECRET_KEY}" | base64 -d)
 
-sign_rpm "$@"
+sign_rpm /packages/*/*.rpm
