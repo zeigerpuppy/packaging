@@ -11,7 +11,7 @@
      # if a Makefile was created by configure, use it, else the top level Makefile
      [ -f $vtarget/Makefile ] || makefile="-f $srcdir/Makefile"
 -    make -C $vtarget $makefile CFLAGS="$cflags" DESTDIR="$srcdir/debian/$package" PG_CONFIG="$pgc" VPATH="$srcdir" srcdir="$srcdir" USE_PGXS=1
-+    make -j$(mjobs) -C $vtarget $makefile CFLAGS="$cflags" DESTDIR="$srcdir/debian/$package" PG_CONFIG="$pgc" VPATH="$srcdir" srcdir="$srcdir" USE_PGXS=1
++    make -j${mjobs} -C $vtarget $makefile CFLAGS="$cflags" DESTDIR="$srcdir/debian/$package" PG_CONFIG="$pgc" VPATH="$srcdir" srcdir="$srcdir" USE_PGXS=1
  }
  
  install() {
