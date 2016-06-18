@@ -6,10 +6,10 @@
 Summary:	PostgreSQL-based distributed RDBMS
 Name:		%{sname}_%{pgmajorversion}
 Version:	5.1.0
-Release:	0.2.rc.2%{dist}
+Release:	1%{dist}
 License:	AGPLv3
 Group:		Applications/Databases
-Source0:	https://github.com/citusdata/citus/archive/v5.1.0-rc.2.tar.gz
+Source0:	https://github.com/citusdata/citus/archive/v5.1.0.tar.gz
 URL:		https://github.com/citusdata/citus
 BuildRequires:	postgresql%{pgmajorversion}-devel libxml2-devel
 BuildRequires:	libxslt-devel openssl-devel pam-devel readline-devel
@@ -80,6 +80,9 @@ fi
 %{pginstdir}/share/extension/%{sname}.control
 
 %changelog
+* Tue May 17 2016 - Jason Petersen <jason@citusdata.com> 5.1.0-1
+- Update to Citus 5.1.0
+
 * Mon May 16 2016 - Jason Petersen <jason@citusdata.com> 5.1.0-0.2.rc.2
 - Fix EXPLAIN output when FORMAT JSON in use
 
