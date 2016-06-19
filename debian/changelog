@@ -1,3 +1,17 @@
+citus (5.1.1-1) unstable; urgency=low
+
+  * Adds complex count distinct expression support in repartitioned subqueries
+
+  * Improves task tracker job cleanup logic, addressing a memory leak
+
+  * Fixes bug that generated incorrect results for LEFT JOIN queries
+
+  * Improves compatibility with Debian's reproducible builds project
+
+  * Fixes build issues on FreeBSD platforms
+
+ -- Jason Petersen <jason@citusdata.com>  Fri, 17 Jun 2016 16:20:15 +0000
+
 citus (5.1.0-1) unstable; urgency=low
 
   * Adds distributed COPY to rapidly populate distributed tables
