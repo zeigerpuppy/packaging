@@ -4,12 +4,7 @@ unknown_os ()
 {
   echo "Unfortunately, your operating system distribution and version are not supported by this script."
   echo
-  echo "You can override the OS detection by setting os= and dist= prior to running this script."
-  echo "You can find a list of supported OSes and distributions on our website: https://packagecloud.io/docs#os_distro_version"
-  echo
-  echo "For example, to force Ubuntu Trusty: os=ubuntu dist=trusty ./script.sh"
-  echo
-  echo "Please email support@packagecloud.io and let us know if you run into any issues."
+  echo "Please email engage@citusdata.com with any issues."
   exit 1
 }
 
