@@ -133,8 +133,8 @@ main ()
   fi
 
   echo "Found unique id: ${unique_id}"
-  gpg_key_install_url="https://<access>:@packagecloud.io/install/repositories/citusdata/enterprise/gpg_key_url.list?os=${os}&dist=${dist}&name=${unique_id}"
-  apt_config_url="https://<access>:@packagecloud.io/install/repositories/citusdata/enterprise/config_file.list?os=${os}&dist=${dist}&name=${unique_id}&source=script"
+  gpg_key_install_url="https://<access>:@repos.citusdata.com/enterprise/gpg_key_url.list?os=${os}&dist=${dist}&name=${unique_id}"
+  apt_config_url="https://<access>:@repos.citusdata.com/enterprise/config_file.list?os=${os}&dist=${dist}&name=${unique_id}&source=script"
 
   gpg_key_url=`curl -L "${gpg_key_install_url}"`
   if [ "${gpg_key_url}" = "" ]; then

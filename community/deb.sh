@@ -99,8 +99,8 @@ main ()
   echo "done."
 
 
-  gpg_key_url="https://packagecloud.io/citusdata/community/gpgkey"
-  apt_config_url="https://packagecloud.io/install/repositories/citusdata/community/config_file.list?os=${os}&dist=${dist}&source=script"
+  gpg_key_url="https://repos.citusdata.com/community/gpgkey"
+  apt_config_url="https://repos.citusdata.com/community/config_file.list?os=${os}&dist=${dist}&source=script"
 
   apt_source_path="/etc/apt/sources.list.d/citusdata_community.list"
 

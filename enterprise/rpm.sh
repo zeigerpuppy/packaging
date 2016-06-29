@@ -117,7 +117,7 @@ main ()
     get_unique_id
   fi
 
-  yum_repo_config_url="https://<access>:@packagecloud.io/install/repositories/citusdata/enterprise/config_file.repo?os=${os}&dist=${dist}&name=${unique_id}&source=script"
+  yum_repo_config_url="https://<access>:@repos.citusdata.com/enterprise/config_file.repo?os=${os}&dist=${dist}&name=${unique_id}&source=script"
   echo "Found unique id: ${unique_id}"
 
   yum_repo_path=/etc/yum.repos.d/citusdata_enterprise.repo

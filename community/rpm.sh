@@ -84,7 +84,7 @@ main ()
   curl_check
 
 
-  yum_repo_config_url="https://packagecloud.io/install/repositories/citusdata/community/config_file.repo?os=${os}&dist=${dist}&source=script"
+  yum_repo_config_url="https://repos.citusdata.com/community/config_file.repo?os=${os}&dist=${dist}&source=script"
 
   yum_repo_path=/etc/yum.repos.d/citusdata_community.repo
 
