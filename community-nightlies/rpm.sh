@@ -100,19 +100,14 @@ main ()
     echo "${yum_repo_config_url}"
     echo
     echo "This usually happens if your operating system is not supported by "
-    echo "packagecloud.io, or this script's OS detection failed."
+    echo "Citus Data, or this script's OS detection failed."
     echo
-    echo "You can override the OS detection by setting os= and dist= prior to running this script."
-    echo "You can find a list of supported OSes and distributions on our website: https://packagecloud.io/docs#os_distro_version"
-    echo
-    echo "For example, to force CentOS 6: os=el dist=6 ./script.sh"
-    echo
-    echo "If you are running a supported OS, please email support@packagecloud.io and report this."
+    echo "If you are running a supported OS, please email engage@citusdata.com and report this."
     [ -e $yum_repo_path ] && rm $yum_repo_path
     exit 1
   elif [ "$curl_exit_code" = "35" ]; then
     echo
-    echo "curl is unable to connect to packagecloud.io over TLS when running: "
+    echo "curl is unable to connect to citusdata.com over TLS when running: "
     echo "    curl ${yum_repo_config_url}"
     echo
     echo "This is usually due to one of two things:"
@@ -120,7 +115,7 @@ main ()
     echo " 1.) Missing CA root certificates (make sure the ca-certificates package is installed)"
     echo " 2.) An old version of libssl. Try upgrading libssl on your system to a more recent version"
     echo
-    echo "Contact support@packagecloud.io with information about your system for help."
+    echo "Contact engage@citusdata.com with information about your system for help."
     [ -e $yum_repo_path ] && rm $yum_repo_path
     exit 1
   elif [ "$curl_exit_code" -gt "0" ]; then
