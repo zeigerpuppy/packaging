@@ -132,9 +132,17 @@ main ()
     get_unique_id
   fi
 
+  if [ -z "${CITUS_REPO_TOKEN}" ]; then
+    echo "Could not determine enterprise repository token."
+    echo "Please set the CITUS_REPO_TOKEN environment variable."
+    echo
+    echo "Contact engage@citusdata.com if you continue to have problems."
+    exit 1
+  fi
+
   echo "Found unique id: ${unique_id}"
-  gpg_key_install_url="https://<access>:@repos.citusdata.com/enterprise-nightlies/gpg_key_url.list?os=${os}&dist=${dist}&name=${unique_id}"
-  apt_config_url="https://<access>:@repos.citusdata.com/enterprise-nightlies/config_file.list?os=${os}&dist=${dist}&name=${unique_id}&source=script"
+  gpg_key_install_url="https://${CITUS_REPO_TOKEN}:@repos.citusdata.com/enterprise-nightlies/gpg_key_url.list?os=${os}&dist=${dist}&name=${unique_id}"
+  apt_config_url="https://${CITUS_REPO_TOKEN}:@repos.citusdata.com/enterprise-nightlies/config_file.list?os=${os}&dist=${dist}&name=${unique_id}&source=script"
 
   gpg_key_url=`curl -L "${gpg_key_install_url}"`
   if [ "${gpg_key_url}" = "" ]; then

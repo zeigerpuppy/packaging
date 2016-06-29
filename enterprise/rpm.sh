@@ -117,7 +117,15 @@ main ()
     get_unique_id
   fi
 
-  yum_repo_config_url="https://<access>:@repos.citusdata.com/enterprise/config_file.repo?os=${os}&dist=${dist}&name=${unique_id}&source=script"
+  if [ -z "${CITUS_REPO_TOKEN}" ]; then
+    echo "Could not determine enterprise repository token."
+    echo "Please set the CITUS_REPO_TOKEN environment variable."
+    echo
+    echo "Contact engage@citusdata.com if you continue to have problems."
+    exit 1
+  fi
+
+  yum_repo_config_url="https://${CITUS_REPO_TOKEN}:@repos.citusdata.com/enterprise/config_file.repo?os=${os}&dist=${dist}&name=${unique_id}&source=script"
   echo "Found unique id: ${unique_id}"
 
   yum_repo_path=/etc/yum.repos.d/citusdata_enterprise.repo
