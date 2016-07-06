@@ -13,12 +13,13 @@ env:
   matrix:
     - TARGET_PLATFORM=el/7
     - TARGET_PLATFORM=el/6
+    - TARGET_PLATFORM=fedora/24
     - TARGET_PLATFORM=fedora/23
     - TARGET_PLATFORM=fedora/22
     - TARGET_PLATFORM=ol/7
     - TARGET_PLATFORM=ol/6
 before_install:
-  - git clone -b v0.3.0 --depth 1 https://github.com/citusdata/tools.git
+  - git clone -b v0.3.1 --depth 1 https://github.com/citusdata/tools.git
   - export PATH="$(pwd)/tools/travis:$PATH"
   - export PATH="$(pwd)/tools/packaging:$PATH"
   - export PACKAGING_SECRET_KEY="$(openssl aes-256-cbc -K $encrypted_a39e3f1ee8ba_key -iv $encrypted_a39e3f1ee8ba_iv -in signing_key.asc.enc -d | base64)"
