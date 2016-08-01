@@ -19,7 +19,7 @@ env:
     - TARGET_PLATFORM=ol/7
     - TARGET_PLATFORM=ol/6
 before_install:
-  - git clone -b v0.3.2 --depth 1 https://github.com/citusdata/tools.git
+  - git clone -b v0.3.3 --depth 1 https://github.com/citusdata/tools.git
   - export PATH="$(pwd)/tools/travis:$PATH"
   - export PATH="$(pwd)/tools/packaging:$PATH"
   - export PACKAGING_SECRET_KEY="$(openssl aes-256-cbc -K $encrypted_a39e3f1ee8ba_key -iv $encrypted_a39e3f1ee8ba_iv -in signing_key.asc.enc -d | base64)"
