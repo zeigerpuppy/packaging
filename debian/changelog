@@ -1,3 +1,9 @@
+citus-enterprise (5.2.0~rc.1-1) testing; urgency=low
+
+  * Release candidate for 5.2.
+
+ -- Jason Petersen <jason@citusdata.com>  Mon, 01 Aug 2016 17:01:05 +0000
+
 citus-enterprise (5.1.1-1) stable; urgency=low
 
   * Adds complex count distinct expression support in repartitioned subqueries
