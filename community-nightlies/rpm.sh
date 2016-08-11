@@ -8,14 +8,38 @@ unknown_os ()
   exit 1
 }
 
+arch_check ()
+{
+  if [ "$(uname -m)" != 'x86_64' ]; then
+    echo "Unfortunately, the Citus repository does not contain packages for non-x86_64 architectures."
+    echo
+    echo "Please email engage@citusdata.com with any issues."
+    exit 1
+  fi
+}
+
 curl_check ()
 {
   echo "Checking for curl..."
   if command -v curl > /dev/null; then
     echo "Detected curl..."
   else
-    echo "Installing curl..."
+    echo -n "Installing curl... "
     yum install -d0 -e0 -y curl
+    echo "done."
+  fi
+}
+
+pgdg_check ()
+{
+  echo "Checking for postgresql95-server..."
+  if yum list -q postgresql95-server &> /dev/null; then
+    echo "Detected postgresql95-server..."
+  else
+    echo -n "Installing pgdg95 repo... "
+
+    yum install -d0 -e0 -y "${repo_url}"
+    echo "done."
   fi
 }
 
@@ -78,17 +102,64 @@ detect_os ()
   echo "Detected operating system as ${os}/${dist}."
 }
 
+detect_repo_url ()
+{
+  # set common defaults used by most flavors
+  family='redhat'
+  family_short='rhel'
+  pkg_dist="${dist}"
+  pkg_os="${os}"
+  pkg_version='2'
+
+  case "${os}" in
+    amzn)
+      # require at least a 2015 image
+      if [ "${dist}" -lt "2015" ]; then
+        unknown_os
+      fi
+
+      # use 2015.03 pgdg repo for all recent Amazon instances
+      pkg_dist=6
+      pkg_os='ami201503-'
+      ;;
+    ol)
+      pkg_os='oraclelinux'
+      ;;
+    fedora)
+      family='fedora'
+      family_short='fedora'
+      pkg_version='3'
+      ;;
+    centos)
+      # defaults are suitable
+      ;;
+    rhel|redhatenterpriseserver)
+      pkg_os='redhat'
+      ;;
+    *)
+      unknown_os
+      ;;
+  esac
+
+  repo_url="https://download.postgresql.org/pub/repos/yum/9.5/${family}"
+  repo_url+="/${family_short}-${pkg_dist}-x86_64"
+  repo_url+="/pgdg-${pkg_os}95-9.5-${pkg_version}.noarch.rpm"
+}
+
 main ()
 {
   detect_os
-  curl_check
+  detect_repo_url
 
+  arch_check
+  curl_check
+  pgdg_check
 
   yum_repo_config_url="https://repos.citusdata.com/community-nightlies/config_file.repo?os=${os}&dist=${dist}&source=script"
 
   yum_repo_path=/etc/yum.repos.d/citusdata_community-nightlies.repo
 
-  echo "Downloading repository file: ${yum_repo_config_url}"
+  echo -n "Downloading repository file: ${yum_repo_config_url}... "
 
   curl -sSf "${yum_repo_config_url}" > $yum_repo_path
   curl_exit_code=$?
@@ -131,8 +202,8 @@ main ()
     echo "done."
   fi
 
-  echo "Installing pygpgme to verify GPG signatures..."
-  yum install -y pygpgme --disablerepo='citusdata_community-nightlies'
+  echo -n "Installing pygpgme to verify GPG signatures... "
+  yum install -d0 -e0 -y pygpgme --disablerepo='citusdata_community-nightlies' &> /dev/null
   pypgpme_check=`rpm -qa | grep -qw pygpgme`
   if [ "$?" != "0" ]; then
     echo
@@ -145,9 +216,10 @@ main ()
     # set the repo_gpgcheck option to 0
     sed -i'' 's/repo_gpgcheck=1/repo_gpgcheck=0/' /etc/yum.repos.d/citusdata_community-nightlies.repo
   fi
+  echo 'done.'
 
-  echo "Installing yum-utils..."
-  yum install -y yum-utils --disablerepo='citusdata_community-nightlies'
+  echo -n "Installing yum-utils... "
+  yum install -d0 -e0 -y yum-utils --disablerepo='citusdata_community-nightlies' &> /dev/null
   yum_utils_check=`rpm -qa | grep -qw yum-utils`
   if [ "$?" != "0" ]; then
     echo
@@ -155,12 +227,14 @@ main ()
     echo "The yum-utils package could not be installed. This means you may not be able to install source RPMs or use other yum features."
     echo
   fi
+  echo 'done.'
 
-  echo "Generating yum cache for citusdata_community-nightlies..."
-  yum -q makecache -y --disablerepo='*' --enablerepo='citusdata_community-nightlies'
+  echo -n "Generating yum cache for citusdata_community-nightlies... "
+  yum -d0 -e0 -q makecache -y --disablerepo='*' --enablerepo='citusdata_community-nightlies' &> /dev/null
+  echo 'done.'
 
   echo
-  echo "The repository is setup! You can now install packages."
+  echo "The repository is set up! You can now install packages."
 }
 
 main

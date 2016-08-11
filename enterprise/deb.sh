@@ -8,14 +8,61 @@ unknown_os ()
   exit 1
 }
 
+arch_check ()
+{
+  if [ "$(uname -m)" != 'x86_64' ]; then
+    echo "Unfortunately, the Citus repository does not contain packages for non-x86_64 architectures."
+    echo
+    echo "Please email engage@citusdata.com with any issues."
+    exit 1
+  fi
+}
+
 curl_check ()
 {
   echo "Checking for curl..."
   if command -v curl > /dev/null; then
     echo "Detected curl..."
   else
-    echo "Installing curl..."
-    apt-get install -q -y curl
+    echo -n "Installing curl... "
+    apt-get install -y --no-install-recommends curl &> /dev/null
+    echo "done."
+  fi
+}
+
+pgdg_check ()
+{
+  echo "Checking for postgresql-9.5..."
+  if apt-cache show postgresql-9.5 &> /dev/null; then
+    echo "Detected postgresql-9.5..."
+  else
+    pgdg_list='/etc/apt/sources.list.d/pgdg.list'
+    pgdg_source_path="deb http://apt.postgresql.org/pub/repos/apt/ ${codename}-pgdg main"
+    pgdg_key_url='https://www.postgresql.org/media/keys/ACCC4CF8.asc'
+
+    if [ -e $pgdg_list ]; then
+      echo "Unable to install PostgreSQL Apt Repository"
+      echo
+      echo "The file ${pgdg_list} already exists."
+      echo
+      echo "Contact engage@citusdata.com with information about your system for help."
+      exit 1
+    fi
+
+    echo -n "Installing ${pgdg_list}... "
+
+    # create an apt config file for the PGDG repository
+    echo "${pgdg_source_path}" > $pgdg_list
+    echo "done."
+
+    echo -n "Installing ca-certificates... "
+    apt-get install -y --no-install-recommends ca-certificates &> /dev/null
+    echo "done."
+
+    echo -n "Importing PostgreSQL gpg key... "
+    # import the gpg key
+    curl -L "${pgdg_key_url}" 2> /dev/null | apt-key add - &>/dev/null
+    echo "done."
   fi
 }
 
@@ -109,16 +156,45 @@ detect_os ()
   echo "Detected operating system as $os/$dist."
 }
 
+detect_codename ()
+{
+  if [ "${os}" = "debian" ]; then
+    case "${dist}" in
+      7)
+        codename='wheezy'
+        ;;
+      8)
+        codename='jessie'
+        ;;
+      wheezy)
+        codename="${dist}"
+        ;;
+      jessie)
+        codename="${dist}"
+        ;;
+      *)
+        unknown_os
+        ;;
+    esac
+  else
+    codename=${dist}
+  fi
+}
+
 main ()
 {
   detect_os
-  curl_check
+  detect_codename
 
   # Need to first run apt-get update so that apt-transport-https can be
   # installed
   echo -n "Running apt-get update... "
   apt-get update &> /dev/null
   echo "done."
+
+  arch_check
+  curl_check
+  pgdg_check
 
   # Install the debian-archive-keyring package on debian systems so that
   # apt-transport-https can be installed next
@@ -154,7 +230,7 @@ main ()
 
   apt_source_path="/etc/apt/sources.list.d/citusdata_enterprise.list"
 
-  echo -n "Installing $apt_source_path..."
+  echo -n "Installing $apt_source_path... "
 
   # create an apt config file for this repository
   curl -sSf "${apt_config_url}" > $apt_source_path
@@ -207,7 +283,7 @@ main ()
   echo "done."
 
   echo
-  echo "The repository is setup! You can now install packages."
+  echo "The repository is set up! You can now install packages."
 }
 
 main
