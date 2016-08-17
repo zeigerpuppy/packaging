@@ -34,6 +34,7 @@ E_O_USAGE
 # sets the next version variable used during non-release builds
 setnextversion() {
     baseversion=$(echo "$1" | tr '~' '-' | cut -d- -f1)
+    baseversion="${baseversion%.citus}"
     nextversion=$(echo "$baseversion" | perl -pe 's/^(\d+\.)(\d+)(\.\d+)$/$1.($2+1).".0"/e')
 }
 
@@ -81,6 +82,7 @@ case "${2}" in
     release)
         packageversion=${latest%-*}
         releasetag="v${packageversion/'~'/-}"
+        releasetag="${releasetag%.citus}"
 
         gitsha=$(curl -s "https://api.github.com/repos/${repopath}/git/refs/tags/${releasetag}" | \
                  jq -r '.object.sha')
@@ -123,7 +125,7 @@ case "${2}" in
 
         timestamp=$(date +'%Y%m%d')
 
-        packageversion="${nextversion}~${infix}.${timestamp}.${gitsha:0:7}"
+        packageversion="${nextversion}.citus~${infix}.${timestamp}.${gitsha:0:7}"
         ;;
 esac
 

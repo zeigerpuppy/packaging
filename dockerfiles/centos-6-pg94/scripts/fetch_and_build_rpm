@@ -34,6 +34,7 @@ E_O_USAGE
 # sets the next version variable used during non-release builds
 setnextversion() {
     baseversion=$(echo "$1" | tr '~' '-' | cut -d- -f1)
+    baseversion="${baseversion%.citus}"
     nextversion=$(echo "$baseversion" | perl -pe 's/^(\d+\.)(\d+)(\.\d+)$/$1.($2+1).".0"/e')
 }
 
@@ -78,11 +79,10 @@ repopath=$(parse_repo_path "${project}" rpm "${builddir}")
 case "${2}" in
     release)
         packageversion=${latest%-*}
-        packagerelease=$(echo "${latest#*-}" | sed -E 's/^[0-9.]+//')
+        releasetag="v${packageversion%.citus}"
 
-        if [ -z "${packagerelease}" ]; then
-            releasetag="v${packageversion}"
-        else
+        packagerelease=$(echo "${latest#*-}" | sed -E 's/^[0-9.]+//')
+        if [ -n "${packagerelease}" ]; then
             releasetag="v${packageversion}-${packagerelease}"
         fi
 
@@ -125,7 +125,7 @@ case "${2}" in
         fi
         set -e
 
-        packageversion="${nextversion}"
+        packageversion="${nextversion}.citus"
         timestamp=$(date +'%Y%m%d')
         packagerelease="0.0.${infix}.${timestamp}.${gitsha:0:7}"
 
