@@ -1,3 +1,11 @@
+citus-enterprise (5.2.1.citus-1) stable; urgency=low
+
+  * Fixes subquery pushdown to properly extract outer join qualifiers
+
+  * Addresses possible memory leak during multi-shard transactions
+
+ -- Jason Petersen <jason@citusdata.com>  Tue, 20 Sep 2016 16:54:03 +0000
+
 citus-enterprise (5.2.0.citus-1) stable; urgency=low
 
   * Drops support for PostgreSQL 9.4; PostgreSQL 9.5 is required
