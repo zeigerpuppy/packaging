@@ -50,10 +50,12 @@ make %{?_smp_mflags}
 %{__rm} -rf %{buildroot}
 
 %post
-%{_sbindir}/update-alternatives --install %{_bindir}/csql \
-    %{sname}-csql %{pginstdir}/bin/csql %{pgmajorversion}0
 %{_sbindir}/update-alternatives --install %{_bindir}/copy_to_distributed_table \
     %{sname}-copy_to_distributed_table %{pginstdir}/bin/copy_to_distributed_table %{pgmajorversion}0
+%if "%{version}" < "5.3.0"
+%{_sbindir}/update-alternatives --install %{_bindir}/csql \
+    %{sname}-csql %{pginstdir}/bin/csql %{pgmajorversion}0
+%endif
 
 %postun
 if [ $1 -eq 0 ] ; then
@@ -82,7 +84,9 @@ fi
 %{pginstdir}/include/server/distributed/*.h
 %{pginstdir}/lib/citus.so
 %{pginstdir}/bin/copy_to_distributed_table
+%if "%{version}" < "5.3.0"
 %{pginstdir}/bin/csql
+%endif
 %{pginstdir}/share/extension/citus-*.sql
 %{pginstdir}/share/extension/citus.control
 
