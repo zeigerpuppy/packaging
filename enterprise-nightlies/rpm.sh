@@ -197,14 +197,17 @@ main ()
     exit 1
   fi
 
-  yum_repo_config_url="https://${CITUS_REPO_TOKEN}:@repos.citusdata.com/enterprise-nightlies/config_file.repo?os=${os}&dist=${dist}&name=${CITUS_REPO_HOST_ID}&source=script"
+  # escape any colons in repo token (they separate it from empty password)
+  CITUS_REPO_TOKEN="${CITUS_REPO_TOKEN//:/%3A}"
+
+  yum_repo_config_url="https://repos.citusdata.com/enterprise-nightlies/config_file.repo?os=${os}&dist=${dist}&name=${CITUS_REPO_HOST_ID}&source=script"
   echo "Found host ID: ${CITUS_REPO_HOST_ID}"
 
   yum_repo_path=/etc/yum.repos.d/citusdata_enterprise-nightlies.repo
 
   echo -n "Downloading repository file: ${yum_repo_config_url}... "
 
-  curl -sSf "${yum_repo_config_url}" > $yum_repo_path
+  curl -sSf -u "${CITUS_REPO_TOKEN}:" "${yum_repo_config_url}" > $yum_repo_path
   curl_exit_code=$?
 
   if [ "$curl_exit_code" = "22" ]; then

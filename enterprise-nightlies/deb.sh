@@ -216,11 +216,14 @@ main ()
     exit 1
   fi
 
-  echo "Found host ID: ${CITUS_REPO_HOST_ID}"
-  gpg_key_install_url="https://${CITUS_REPO_TOKEN}:@repos.citusdata.com/enterprise-nightlies/gpg_key_url.list?os=${os}&dist=${dist}&name=${CITUS_REPO_HOST_ID}"
-  apt_config_url="https://${CITUS_REPO_TOKEN}:@repos.citusdata.com/enterprise-nightlies/config_file.list?os=${os}&dist=${dist}&name=${CITUS_REPO_HOST_ID}&source=script"
+  # escape any colons in repo token (they separate it from empty password)
+  CITUS_REPO_TOKEN="${CITUS_REPO_TOKEN//:/%3A}"
 
-  gpg_key_url=`curl -L "${gpg_key_install_url}"`
+  echo "Found host ID: ${CITUS_REPO_HOST_ID}"
+  gpg_key_install_url="https://repos.citusdata.com/enterprise-nightlies/gpg_key_url.list?os=${os}&dist=${dist}&name=${CITUS_REPO_HOST_ID}"
+  apt_config_url="https://repos.citusdata.com/enterprise-nightlies/config_file.list?os=${os}&dist=${dist}&name=${CITUS_REPO_HOST_ID}&source=script"
+
+  gpg_key_url=`curl -L -u "${CITUS_REPO_TOKEN}:" "${gpg_key_install_url}"`
   if [ "${gpg_key_url}" = "" ]; then
     echo "Unable to retrieve GPG key URL from: ${gpg_key_url}."
     echo "Please contact engage@citusdata.com"
@@ -233,7 +236,7 @@ main ()
   echo -n "Installing $apt_source_path... "
 
   # create an apt config file for this repository
-  curl -sSf "${apt_config_url}" > $apt_source_path
+  curl -sSf -u "${CITUS_REPO_TOKEN}:" "${apt_config_url}" > $apt_source_path
   curl_exit_code=$?
 
   if [ "$curl_exit_code" = "22" ]; then
