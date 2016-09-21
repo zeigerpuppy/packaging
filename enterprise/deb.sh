@@ -77,22 +77,22 @@ install_debian_keyring ()
 
 get_unique_id ()
 {
-  echo "A unique ID was not specified, using the machine's hostname..."
+  echo "A host ID was not specified, using the machine's hostname..."
 
-  unique_id=`hostname -f 2>/dev/null`
-  if [ "$unique_id" = "" ]; then
-    unique_id=`hostname 2>/dev/null`
-    if [ "$unique_id" = "" ]; then
-      unique_id=$HOSTNAME
+  CITUS_REPO_HOST_ID=`hostname -f 2>/dev/null`
+  if [ "$CITUS_REPO_HOST_ID" = "" ]; then
+    CITUS_REPO_HOST_ID=`hostname 2>/dev/null`
+    if [ "$CITUS_REPO_HOST_ID" = "" ]; then
+      CITUS_REPO_HOST_ID=$HOSTNAME
     fi
   fi
 
-  if [ "$unique_id" = "" -o "$unique_id" = "(none)" ]; then
-    echo "This script tries to use your machine's hostname as a unique ID by"
+  if [ "$CITUS_REPO_HOST_ID" = "" -o "$CITUS_REPO_HOST_ID" = "(none)" ]; then
+    echo "This script tries to use your machine's hostname as a host ID by"
     echo "default, however, this script was not able to determine your "
     echo "hostname!"
     echo
-    echo "You can override this by setting 'unique_id' to any unique "
+    echo "You can override this by setting 'CITUS_REPO_HOST_ID' to any unique "
     echo "identifier (hostname, shasum of hostname, "
     echo "etc) prior to running this script."
     echo
@@ -204,7 +204,7 @@ main ()
   apt-get install -y apt-transport-https &> /dev/null
   echo "done."
 
-  if [ -z "$unique_id" ]; then
+  if [ -z "$CITUS_REPO_HOST_ID" ]; then
     get_unique_id
   fi
 
@@ -216,9 +216,9 @@ main ()
     exit 1
   fi
 
-  echo "Found unique id: ${unique_id}"
-  gpg_key_install_url="https://${CITUS_REPO_TOKEN}:@repos.citusdata.com/enterprise/gpg_key_url.list?os=${os}&dist=${dist}&name=${unique_id}"
-  apt_config_url="https://${CITUS_REPO_TOKEN}:@repos.citusdata.com/enterprise/config_file.list?os=${os}&dist=${dist}&name=${unique_id}&source=script"
+  echo "Found host ID: ${CITUS_REPO_HOST_ID}"
+  gpg_key_install_url="https://${CITUS_REPO_TOKEN}:@repos.citusdata.com/enterprise/gpg_key_url.list?os=${os}&dist=${dist}&name=${CITUS_REPO_HOST_ID}"
+  apt_config_url="https://${CITUS_REPO_TOKEN}:@repos.citusdata.com/enterprise/config_file.list?os=${os}&dist=${dist}&name=${CITUS_REPO_HOST_ID}&source=script"
 
   gpg_key_url=`curl -L "${gpg_key_install_url}"`
   if [ "${gpg_key_url}" = "" ]; then
