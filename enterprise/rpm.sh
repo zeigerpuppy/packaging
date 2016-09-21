@@ -200,14 +200,14 @@ main ()
   # escape any colons in repo token (they separate it from empty password)
   CITUS_REPO_TOKEN="${CITUS_REPO_TOKEN//:/%3A}"
 
-  yum_repo_config_url="https://repos.citusdata.com/enterprise/config_file.repo?os=${os}&dist=${dist}&name=${CITUS_REPO_HOST_ID}&source=script"
+  yum_repo_config_url="https://repos.citusdata.com/enterprise/config_file.repo?os=${os}&dist=${dist}&source=script"
   echo "Found host ID: ${CITUS_REPO_HOST_ID}"
 
   yum_repo_path=/etc/yum.repos.d/citusdata_enterprise.repo
 
   echo -n "Downloading repository file: ${yum_repo_config_url}... "
 
-  curl -sSf -u "${CITUS_REPO_TOKEN}:" "${yum_repo_config_url}" > $yum_repo_path
+  curl -GsSf -u "${CITUS_REPO_TOKEN}:" --data-urlencode "name=${CITUS_REPO_HOST_ID}" "${yum_repo_config_url}" > $yum_repo_path
   curl_exit_code=$?
 
   if [ "$curl_exit_code" = "22" ]; then

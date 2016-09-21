@@ -220,10 +220,10 @@ main ()
   CITUS_REPO_TOKEN="${CITUS_REPO_TOKEN//:/%3A}"
 
   echo "Found host ID: ${CITUS_REPO_HOST_ID}"
-  gpg_key_install_url="https://repos.citusdata.com/enterprise/gpg_key_url.list?os=${os}&dist=${dist}&name=${CITUS_REPO_HOST_ID}"
-  apt_config_url="https://repos.citusdata.com/enterprise/config_file.list?os=${os}&dist=${dist}&name=${CITUS_REPO_HOST_ID}&source=script"
+  gpg_key_install_url="https://repos.citusdata.com/enterprise/gpg_key_url.list?os=${os}&dist=${dist}"
+  apt_config_url="https://repos.citusdata.com/enterprise/config_file.list?os=${os}&dist=${dist}&source=script"
 
-  gpg_key_url=`curl -L -u "${CITUS_REPO_TOKEN}:" "${gpg_key_install_url}"`
+  gpg_key_url=`curl -GL -u "${CITUS_REPO_TOKEN}:" --data-urlencode "name=${CITUS_REPO_HOST_ID}" "${gpg_key_install_url}"`
   if [ "${gpg_key_url}" = "" ]; then
     echo "Unable to retrieve GPG key URL from: ${gpg_key_url}."
     echo "Please contact engage@citusdata.com"
@@ -236,7 +236,7 @@ main ()
   echo -n "Installing $apt_source_path... "
 
   # create an apt config file for this repository
-  curl -sSf -u "${CITUS_REPO_TOKEN}:" "${apt_config_url}" > $apt_source_path
+  curl -GsSf -u "${CITUS_REPO_TOKEN}:" --data-urlencode "name=${CITUS_REPO_HOST_ID}" "${apt_config_url}" > $apt_source_path
   curl_exit_code=$?
 
   if [ "$curl_exit_code" = "22" ]; then
