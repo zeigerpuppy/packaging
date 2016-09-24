@@ -1,0 +1,35 @@
+sudo: required
+services: [ docker ]
+language: perl
+perl: "5.18"
+env:
+  global:
+    # packagecloud API token for citus-bot
+    - secure: "mW9G0JbHal27K0x+jledF3qQLwqtKy0cAc5oyEZ09faYorA9V1Hh7u4FDBNgjbuqDOWft1lIU24rSoOCq+F2mHRG+L5nYsBsHHLMDagshNBgVLYM6paRHa03yO6BIOJ7OPsUGpWSTqNG+imrAwFcqUTmTiwEr1A+dgHg4XUX2cJ/OYl7ZjWArZtD0jgjFuOVz9Hsi/EL3AP/xqKSRyARr3RWZqEsQCEVXSLTomosqMJzbVBpwwTdcFRcxX66T5p3soGZaP/zsE1g7VSTMvLv0qveF+ZSnX4eFIS0EJMs2eF2PvdBIqrwS3MYZNaVoWxJwWnO89SnPmzUBn9Jb35tNZ5fh7fQB4ZmT5wDsSTLDVwr2OOho95ByyFq+ZYRC8bkKkL8XYvF8b+pfkjFO05/hlCstK+Fr/JgUlAHlZLZZdVtkwygW9IuDq1nsuXl3F+6SgLRzxm0154epJtdy636a0ExOYvh6QVvVcvMaoHTxY+otCDRAkeopj1DPBKW3EsZHE3+3eZ0oB7NIbwHE3yYkSzXnJmhL+Iw0qleZ4qupAx9LVKFIMdon8pjQVk4rX5gHP9JOciR93mJQchA+Sht8MwWmC1Ayt/jkVmt43eSBjmExX9H4kJIbP9G6edCqaE1CJl1HK365/o2QJFcWXE7+GdEebkeyQqNCakqmqzvE+o="
+    # GitHub API token for citus-bot
+    - secure: "g4i26coVN7fWxEXm/5Y+8FrIsM02ZKk4iZGnZDtrjmbiiiYyZvyJcf8m6897nCI8FoDm6k4ifeozN3YfcktKKo4uJvWY09zf5R7KKIlmiU1bSRhiuGkL9QbnNthuPe1qLnn6QRMpALRM9qNkATHhH3MyGjThf7ZXeGGINbWx15W+RacFGsg83iqrNcSNRECoN/Tm6oQhi6tqC1ZUmOP8U5MlgN93HnU63Z8wN6Be0HGO9/MSpZPH/egMH5NNcxoWFLxRpdtlZWsxRGVHRdnDEFES2uI3nmFsCagJuxNTnQ77P2RVoxLkhIlgBW2KNNtRWes5ecECZY6v3nFDM4dzX9JiB2Jq1mAODVS36iTsRCPe8Gdkpxcb/df5TH+jt9XzIWywm+G+Ljzv52vXK8bq9pe1MA4y3Mt77gT+ml1p2MEpP4gNaVTPmzKa4x+9HcKvuSR/LBa+ExOwb/WveaFs3a11KX8m1BjOc0iZ02hlHcBlCCRvT0bE8WFdk8LvVP3fUkXQJezoPRRj5Bj02HSPFk/Vs7+PWzNE5Ml1e2CU8Qm/ok3Nut+hTTGwFo/sputFrNNHN7vKTlXaIsIbnq20HswRys/xTRuuN4cSR1bkVq1V1iFZ4KnAiKxaFHV62IsQwnoBxLm6pfnIjxzdXm4X2PQMc6fQIf9o9cRrclUY3gI="
+    # passphrase for packaging gpg secret key
+    - secure: "pZmrxStWj0vXaG/YAyJORvxfaKQHvr+O+66yjFF52gQTVd2zNb83Mn4zDLNqMwU3nkXEKYuFbpXKbDSMX9zNbE7W/w1ARSa8MVXnMVM3jbj+OCaBu7fyVrA0tvT3EZkMh943paTRcSyPSzd61P3CNOkcY1RycDHBbJtNrzSdUbdAy6//TWgNxC66dxSeHASRJIIs49caxQssMMSGRgC5aGH4KLU5eSdP3wnWDEHr+aLqaI2DF2W3lNMI0WJwtGN6cLEYzAsA3BkoPoYRFDd4jjTpolVdrFBXRaT1EIg0FXjsvjyFrQfQLBIqvSx42H5w4rCIYoKYYgRgCKDATLK8XxPbFsgPKLVSHFD6t9ebuYacYxS20oMakkqj5e98qMIWe2vkm+V9YNeADIlhYT+NsF9Kug2B6pLK+U+Hhj6TldFpP18snPXttRKzsg9QrGbnBUVq2wv60U7/3pWs+T3tpr9bIFyaUYbRRAwl/hv2hVkFiSdsiLB6tJphbILB7EDKBCu1iK9PC9tlYoGrqptRxj6bmlawOvcnEKRtoPNJ9eyrvHPDd8FmmW6xWbq89zJ97Ztl7VR8CzNePqvG9vwdtJigXovuXfzu4CHX+jOt3jvllB6rMprsK5r++qBzh1SS24sYqo/APtUfoYdkleWhC+tSuhbucZb2yGUCMo/ZhDo="
+  matrix:
+    - TARGET_PLATFORM=debian/jessie
+    - TARGET_PLATFORM=debian/wheezy
+    - TARGET_PLATFORM=ubuntu/xenial
+    - TARGET_PLATFORM=ubuntu/trusty
+    - TARGET_PLATFORM=ubuntu/precise
+before_install:
+  - git clone -b v0.4.2 --depth 1 https://github.com/citusdata/tools.git
+  - sudo make -C tools install
+  - export PACKAGING_SECRET_KEY="$(openssl aes-256-cbc -K $encrypted_a39e3f1ee8ba_key -iv $encrypted_a39e3f1ee8ba_iv -in signing_key.asc.enc -d | base64)"
+install: true
+script: build_new_release
+deploy:
+  - provider: packagecloud
+    username: "citusdata"
+    repository: "community"
+    token: $PACKAGECLOUD_API_TOKEN
+    dist: $TARGET_PLATFORM
+    skip_cleanup: true
+    local-dir: "releases"
+    on:
+      branch: "debian-hll"
+      condition: -d "releases"
