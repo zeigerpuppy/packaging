@@ -19,7 +19,7 @@ usage() {
     cat << 'E_O_USAGE' >&"$1"
 usage: fetch_and_build_deb project build_type build_directory
 
-    project : 'citus', 'enterprise', or 'rebalancer'
+    project : 'citus', 'enterprise', 'hll', or 'rebalancer'
     build_type: 'release', 'nightly', or a valid git reference
 
 fetch_and_build_deb builds Debian packages for a specified project. The build
@@ -54,6 +54,10 @@ case "${1}" in
     enterprise)
         project=${1}
         packagename='citus-enterprise'
+        ;;
+    hll)
+        project=${1}
+        packagename='hll'
         ;;
     rebalancer)
         project=${1}
