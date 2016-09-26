@@ -20,7 +20,7 @@ RUN yum groupinstall -y 'Development Tools' \
         rpmlint \
         spectool \
         tar \
-    && yum install -y https://download.postgresql.org/pub/repos/yum/9.5/fedora/fedora-23-x86_64/pgdg-fedora95-9.5-3.noarch.rpm \
+    && yum install -y https://download.postgresql.org/pub/repos/yum/9.5/fedora/fedora-23-x86_64/pgdg-fedora95-9.5-4.noarch.rpm \
     && yum install -y postgresql95-devel \
     && yum clean all
 

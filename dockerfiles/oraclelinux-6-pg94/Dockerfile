@@ -20,7 +20,7 @@ RUN yum groupinstall -y 'Development Tools' \
         rpmlint \
         spectool \
         tar \
-    && yum install -y https://download.postgresql.org/pub/repos/yum/9.4/redhat/rhel-6-x86_64/pgdg-oraclelinux94-9.4-2.noarch.rpm \
+    && yum install -y https://download.postgresql.org/pub/repos/yum/9.4/redhat/rhel-6-x86_64/pgdg-oraclelinux94-9.4-3.noarch.rpm \
     && yum install -y postgresql94-devel \
     && yum clean all
 
