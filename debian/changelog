@@ -1,3 +1,9 @@
+citus-rebalancer (5.2.0~rc.1-1) testing; urgency=low
+
+  * Release candidate for 5.2.
+
+ -- Jason Petersen <jason@citusdata.com>  Wed, 28 Sep 2016 18:01:14 +0000
+
 citus-rebalancer (5.1.0-1) stable; urgency=low
 
   * Actually bumps extension version to 5.1

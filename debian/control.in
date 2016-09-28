@@ -9,7 +9,7 @@ Homepage: https://github.com/citusdata/shard_rebalancer
 
 Package: postgresql-PGVERSION-citus-rebalancer
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, postgresql-PGVERSION, postgresql-PGVERSION-citus-enterprise
+Depends: ${shlibs:Depends}, ${misc:Depends}, postgresql-PGVERSION, postgresql-PGVERSION-citus-enterprise (>= 5.2.0)
 Description: Dynamic shard balancer for Citus
  This extension implements a set of functions for rebalancing and replicating
  shards in Citus clusters.
