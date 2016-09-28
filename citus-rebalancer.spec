@@ -5,16 +5,16 @@
 
 Summary:	Dynamic shard balancer for Citus
 Name:		%{sname}_%{pgmajorversion}
-Version:	5.1.0
-Release:	1%{dist}
+Version:	5.2.0
+Release:	0.1.rc.1%{dist}
 License:	AGPLv3
 Group:		Applications/Databases
-Source0:	https://github.com/citusdata/shard_rebalancer/archive/v5.1.0.tar.gz
+Source0:	https://github.com/citusdata/shard_rebalancer/archive/v5.2.0-rc.1.tar.gz
 URL:		https://github.com/citusdata/shard_rebalancer
 BuildRequires:	postgresql%{pgmajorversion}-devel libxml2-devel
 BuildRequires:	libxslt-devel openssl-devel pam-devel readline-devel
 BuildRequires:	citus_%{pgmajorversion}
-Requires:	postgresql%{pgmajorversion}-server citus-enterprise_%{pgmajorversion}
+Requires:	postgresql%{pgmajorversion}-server citus-enterprise_%{pgmajorversion} >= 5.2.0
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %description
@@ -47,6 +47,9 @@ PATH=%{pginstdir}/bin:$PATH
 %{pginstdir}/share/extension/shard_rebalancer.control
 
 %changelog
+* Wed Sep 28 2016 - Jason Petersen <jason@citusdata.com> 5.2.0-0.1.rc.1
+- Release candidate for 5.2.
+
 * Thu Jun 30 2016 - Jason Petersen <jason@citusdata.com> 5.1.0-1
 - Official release for 5.1.0
 
