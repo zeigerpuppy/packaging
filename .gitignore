@@ -2,5 +2,8 @@
 # = Project-Specific =
 # ====================
 
+# buildfile staging directory
+/buildfiles
+
 # package output directory
 /packages

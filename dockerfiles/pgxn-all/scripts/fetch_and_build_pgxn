@@ -10,18 +10,18 @@ stderr=2
 success=0
 failure=1
 badusage=64
+noinput=66
 
 builddir=$(pwd)
 
 # outputs usage message on specified device before exiting with provided status
 usage() {
     cat << 'E_O_USAGE' >&"$1"
-usage: fetch_and_build_pgxn project build_type build_directory
+usage: fetch_and_build_pgxn build_type
 
-    project : 'citus'
     build_type: 'release'
 
-fetch_and_build_pgxn builds a PGXN package for a specified project. The build
+fetch_and_build_pgxn builds a PGXN package using local build files. The build
 type 'release' builds the latest release tag. At present, the only supported
 build is a 'release' build of the 'citus' project.
 E_O_USAGE
@@ -29,35 +29,36 @@ E_O_USAGE
     exit "${2}";
 }
 
-if [ "$#" -eq 1 ] && [ "${1}" = '-h' ]; then
-    usage $stdout $success
-fi
-
-if [ "$#" -ne 2 ]; then
+if [ "$#" -ne 1 ]; then
     usage $stderr $badusage
 fi
 
-case "${1}" in
-    citus)
-        project=${1}
-        packagename='citus'
-        ;;
-    *)
-        echo "$0: unknown project -- ${1}" >&2
-        usage $stderr $badusage
-        ;;
-esac
+if [ "${1}" = '-h' ]; then
+    usage $stdout $success
+fi
+
+# populate variables from packaging metadata file
+# shellcheck source=/dev/null
+source /buildfiles/pkgvars
+
+# set default values for certain packaging variables
+declare pkglatest # to make shellcheck happy
+hubproj="${hubproj:-${pkgname}}"
+nightlypg="${nightlypg:-${releasepg}}"
+
+if [ -z "${pkglatest}" ]; then
+    echo "$0: pkgvars file must specify a value for pkglatest" >&2
+    exit $noinput
+fi
 
 echo "header=\"Authorization: token ${GITHUB_TOKEN}\"" > ~/.curlrc
 
-fetch_build_files "${project}" pgxn "${builddir}"
+cp -R /buildfiles/META.json "${builddir}"
+repopath="citusdata/${hubproj}"
 
-latest=$(parse_latest_release "${project}" pgxn "${builddir}")
-repopath=$(parse_repo_path "${project}" pgxn "${builddir}")
-
-case "${2}" in
+case "${1}" in
     release)
-        packageversion=${latest%-*}
+        packageversion=${pkglatest%-*}
         releasetag="v${packageversion/'~'/-}"
 
         gitsha=$(curl -s "https://api.github.com/repos/${repopath}/git/refs/tags/${releasetag}" | \
@@ -76,13 +77,13 @@ case "${2}" in
         fi
         ;;
     *)
-        echo "$0: unknown build_type -- ${2}" >&2
+        echo "$0: unknown build_type -- ${1}" >&2
         usage $stderr $badusage
         ;;
 esac
 
-tarballpath="${builddir}/${packagename}_${packageversion}.orig.tar.gz"
-packagepath="${builddir}/${packagename}-${packageversion}"
+tarballpath="${builddir}/${pkgname}_${packageversion}.orig.tar.gz"
+packagepath="${builddir}/${pkgname}-${packageversion}"
 finalpath="${packagepath}.zip"
 
 curl -sL "https://api.github.com/repos/${repopath}/tarball/${gitsha}" \

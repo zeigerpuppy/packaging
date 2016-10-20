@@ -10,6 +10,7 @@ stderr=2
 success=0
 failure=1
 badusage=64
+noinput=66
 
 nextversion='0.0.0'
 builddir=$(pwd)
@@ -17,12 +18,11 @@ builddir=$(pwd)
 # outputs usage message on specified device before exiting with provided status
 usage() {
     cat << 'E_O_USAGE' >&"$1"
-usage: fetch_and_build_deb project build_type build_directory
+usage: fetch_and_build_deb build_type
 
-    project : 'citus', 'enterprise', 'hll', or 'rebalancer'
     build_type: 'release', 'nightly', or a valid git reference
 
-fetch_and_build_deb builds Debian packages for a specified project. The build
+fetch_and_build_deb builds Debian packages using local build files. The build
 type 'release' builds the latest release tag, 'nightly' builds a nightly from
 the latest 'master' commit, and any other type is interpreted as a git ref to
 facilitate building one-off packages for customers.
@@ -38,36 +38,29 @@ setnextversion() {
     nextversion=$(echo "$baseversion" | perl -pe 's/^(\d+\.)(\d+)(\.\d+)$/$1.($2+1).".0"/e')
 }
 
-if [ "$#" -eq 1 ] && [ "${1}" = '-h' ]; then
-    usage $stdout $success
-fi
-
-if [ "$#" -ne 2 ]; then
+if [ "$#" -ne 1 ]; then
     usage $stderr $badusage
 fi
 
-case "${1}" in
-    citus)
-        project=${1}
-        packagename='citus'
-        ;;
-    enterprise)
-        project=${1}
-        packagename='citus-enterprise'
-        ;;
-    hll)
-        project=${1}
-        packagename='hll'
-        ;;
-    rebalancer)
-        project=${1}
-        packagename='citus-rebalancer'
-        ;;
-    *)
-        echo "$0: unknown project -- ${1}" >&2
-        usage $stderr $badusage
-        ;;
-esac
+if [ "${1}" = '-h' ]; then
+    usage $stdout $success
+fi
+
+# populate variables from packaging metadata file
+# shellcheck source=/dev/null
+source /buildfiles/pkgvars
+
+# set default values for certain packaging variables
+declare pkglatest # to make shellcheck happy
+hubproj="${hubproj:-${pkgname}}"
+nightlyref="${nightlyref:-master}"
+releasepg="${releasepg:-9.5,9.6}"
+nightlypg="${nightlypg:-${releasepg}}"
+
+if [ -z "${pkglatest}" ]; then
+    echo "$0: pkgvars file must specify a value for pkglatest" >&2
+    exit $noinput
+fi
 
 echo "header=\"Authorization: token ${GITHUB_TOKEN}\"" > ~/.curlrc
 
@@ -77,14 +70,12 @@ NAME=$(determine_name)
 export EMAIL
 EMAIL=$(determine_email)
 
-fetch_build_files "${project}" deb "${builddir}"
+cp -R /buildfiles/debian "${builddir}"
+repopath="citusdata/${hubproj}"
 
-latest=$(parse_latest_release "${project}" deb "${builddir}")
-repopath=$(parse_repo_path "${project}" deb "${builddir}")
-
-case "${2}" in
+case "${1}" in
     release)
-        packageversion=${latest%-*}
+        packageversion=${pkglatest%-*}
         releasetag="v${packageversion/'~'/-}"
         releasetag="${releasetag%.citus}"
 
@@ -102,21 +93,19 @@ case "${2}" in
             echo "$0: could not verify signature for git tag ${releasetag}" >&2
             exit $failure
         fi
+
+        echo "${releasepg}" | tr ',' '\n' > "${builddir}/debian/pgversions"
         ;;
     *)
-        if [ "${2}" == 'nightly' ]; then
-            if [ "${project}" == 'enterprise' ]; then
-                ref='enterprise-master'
-            else
-                ref='master'
-            fi
+        if [ "${1}" == 'nightly' ]; then
+            ref=${nightlyref}
             infix='git'
         else
-            ref=${2}
+            ref=${1}
             infix='pre'
         fi
 
-        setnextversion "$latest"
+        setnextversion "${pkglatest}"
 
         set +e
         gitsha=$(curl -sfH 'Accept:application/vnd.github.v3.sha' \
@@ -130,10 +119,12 @@ case "${2}" in
         timestamp=$(date +'%Y%m%d')
 
         packageversion="${nextversion}.citus~${infix}.${timestamp}.${gitsha:0:7}"
+
+        echo "${nightlypg}" | tr ',' '\n' > "${builddir}/debian/pgversions"
         ;;
 esac
 
-tarballpath="${builddir}/${packagename}_${packageversion}.orig.tar.gz"
+tarballpath="${builddir}/${pkgname}_${packageversion}.orig.tar.gz"
 packagepath="${builddir}/${packageversion}"
 
 curl -sL "https://api.github.com/repos/${repopath}/tarball/${gitsha}" \
@@ -143,7 +134,7 @@ mkdir -p "${packagepath}"
 tar xf "${tarballpath}" -C "${packagepath}" --strip-components 1
 
 # add our email/name to debian control file as uploader if not a release
-if [ "${2}" != 'release' ]; then
+if [ "${1}" != 'release' ]; then
     sed -i -E "/^Uploaders:/s/ .+$/ ${NAME} <${EMAIL}>/" "${builddir}/debian/control.in"
 fi
 
@@ -151,12 +142,12 @@ cp -R "${builddir}/debian" "${packagepath}/debian"
 
 cd "${packagepath}"
 
-case "${2}" in
+case "${1}" in
     release)
         # nothing to do
         ;;
     nightly)
-        msg="Nightly package. Built from master "
+        msg="Nightly package. Built from ${nightlyref} "
         msg+=$(date +'on %l:%M %p (%Z) on %A, %B %Y' | tr -s ' ')
         dch -v "${packageversion}-1" -D experimental -u low "${msg}"
         ;;

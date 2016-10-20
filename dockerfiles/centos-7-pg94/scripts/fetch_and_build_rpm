@@ -10,6 +10,7 @@ stderr=2
 success=0
 failure=1
 badusage=64
+noinput=66
 
 nextversion='0.0.0'
 builddir=$(pwd)
@@ -17,12 +18,11 @@ builddir=$(pwd)
 # outputs usage message on specified device before exiting with provided status
 usage() {
     cat << 'E_O_USAGE' >&"$1"
-usage: fetch_and_build_rpm project build_type build_directory
+usage: fetch_and_build_rpm build_type build_directory
 
-    project : 'citus', 'enterprise', 'hll', or 'rebalancer'
     build_type: 'release', 'nightly', or a valid git reference
 
-fetch_and_build_rpm builds Red Hat packages for a specified project. The build
+fetch_and_build_rpm builds Red Hat packages using local build files. The build
 type 'release' builds the latest release tag, 'nightly' builds a nightly from
 the latest 'master' commit, and any other type is interpreted as a git ref to
 facilitate building one-off packages for customers.
@@ -38,54 +38,45 @@ setnextversion() {
     nextversion=$(echo "$baseversion" | perl -pe 's/^(\d+\.)(\d+)(\.\d+)$/$1.($2+1).".0"/e')
 }
 
-if [ "$#" -eq 1 ] && [ "${1}" = '-h' ]; then
-    usage $stdout $success
-fi
-
-if [ "$#" -ne 2 ]; then
+if [ "$#" -ne 1 ]; then
     usage $stderr $badusage
 fi
 
-case "${1}" in
-    citus)
-        project=${1}
-        packagename='citus'
-        ;;
-    enterprise)
-        project=${1}
-        packagename='citus-enterprise'
-        ;;
-    hll)
-        project=${1}
-        packagename='hll'
-        ;;
-    rebalancer)
-        project=${1}
-        packagename='citus-rebalancer'
-        ;;
-    *)
-        echo "$0: unknown project -- ${1}" >&2
-        usage $stderr $badusage
-        ;;
-esac
+if [ "${1}" = '-h' ]; then
+    usage $stdout $success
+fi
+
+# populate variables from packaging metadata file
+# shellcheck source=/dev/null
+source /buildfiles/pkgvars
+
+# set default values for certain packaging variables
+declare pkglatest # to make shellcheck happy
+hubproj="${hubproj:-${pkgname}}"
+nightlyref="${nightlyref:-master}"
+releasepg="${releasepg:-9.5,9.6}"
+nightlypg="${nightlypg:-${releasepg}}"
+
+if [ -z "${pkglatest}" ]; then
+    echo "$0: pkgvars file must specify a value for pkglatest" >&2
+    exit $noinput
+fi
 
 echo "header=\"Authorization: token ${GITHUB_TOKEN}\"" > ~/.curlrc
-
-fetch_build_files "${project}" rpm "${builddir}"
 
 name=$(determine_name)
 email=$(determine_email)
 export RPM_PACKAGER="${name} <${email}>"
 
-latest=$(parse_latest_release "${project}" rpm "${builddir}")
-repopath=$(parse_repo_path "${project}" rpm "${builddir}")
+cp "/buildfiles/${pkgname}.spec" /buildfiles/rpmlintrc "${builddir}"
+repopath="citusdata/${hubproj}"
 
-case "${2}" in
+case "${1}" in
     release)
-        packageversion=${latest%-*}
+        packageversion=${pkglatest%-*}
         releasetag="v${packageversion%.citus}"
 
-        packagerelease=$(echo "${latest#*-}" | sed -E 's/^[0-9.]+//')
+        packagerelease=$(echo "${pkglatest#*-}" | sed -E 's/^[0-9.]+//')
         if [ -n "${packagerelease}" ]; then
             releasetag="v${packageversion}-${packagerelease}"
         fi
@@ -106,19 +97,15 @@ case "${2}" in
         fi
         ;;
     *)
-        if [ "${2}" == 'nightly' ]; then
-            if [ "${project}" == 'enterprise' ]; then
-                ref='enterprise-master'
-            else
-                ref='master'
-            fi
+        if [ "${1}" == 'nightly' ]; then
+            ref=${nightlyref}
             infix='git'
         else
-            ref=${2}
+            ref=${1}
             infix='pre'
         fi
 
-        setnextversion "$latest"
+        setnextversion "${pkglatest}"
 
         set +e
         gitsha=$(curl -sfH 'Accept:application/vnd.github.v3.sha' \
@@ -135,7 +122,7 @@ case "${2}" in
 
         sed -i -E -e "/^Version:/s/[^ \\t]*$/${packageversion}/" \
                   -e "/^Release:/s/[^ \\t]*$/${packagerelease}%{dist}/" \
-            "${builddir}/${packagename}.spec"
+            "${builddir}/${pkgname}.spec"
         ;;
 esac
 
@@ -143,7 +130,7 @@ esac
 rpmbuilddir="${builddir}/citus-rpm-build"
 mkdir -p "${rpmbuilddir}"
 
-pkgsrcdir="${builddir}/${packagename}-${packageversion}"
+pkgsrcdir="${builddir}/${pkgname}-${packageversion}"
 mkdir "${pkgsrcdir}"
 
 download=$(mktemp)
@@ -158,7 +145,7 @@ tar czf "${tarballpath}" "${pkgsrcdir}"
 sed -i -E -e "\\|^Source0:|s|https:.*|${tarballurl}|" \
           -e "/^%global pgmajorversion/s/[0-9]+$/${PGVERSION//'.'/}/" \
           -e "/^%global pgpackageversion/s/[0-9.]+$/${PGVERSION}/" \
-    "${builddir}/${packagename}.spec"
+    "${builddir}/${pkgname}.spec"
 
 osname=$(awk '{print $1}' /etc/system-release)
 if [ "${osname}" == 'Oracle' ]; then
@@ -169,21 +156,21 @@ else
     locale='en_US.utf8'
 fi
 
-case "${2}" in
+case "${1}" in
     release)
         # nothing to do
         ;;
     nightly)
-        msg="Nightly package. Built from master "
+        msg="Nightly package. Built from ${nightlyref} "
         msg+=$(date +'on %l:%M %p (%Z) on %A, %B %Y' | tr -s ' ')
-        LC_ALL=${locale} rpmdev-bumpspec -c "${msg}" "${builddir}/${packagename}.spec"
-        sed -i -E 's/0.1.git/0.0.git/' "${builddir}/${packagename}.spec"
+        LC_ALL=${locale} rpmdev-bumpspec -c "${msg}" "${builddir}/${pkgname}.spec"
+        sed -i -E 's/0.1.git/0.0.git/' "${builddir}/${pkgname}.spec"
         ;;
     *)
         msg="Custom package. Built from ${gitsha:0:7} "
         msg+=$(date +'on %l:%M %p (%Z) on %A, %B %Y' | tr -s ' ')
-        LC_ALL=${locale} rpmdev-bumpspec -c "${msg}" "${builddir}/${packagename}.spec"
-        sed -i -E 's/0.1.pre/0.0.pre/' "${builddir}/${packagename}.spec"
+        LC_ALL=${locale} rpmdev-bumpspec -c "${msg}" "${builddir}/${pkgname}.spec"
+        sed -i -E 's/0.1.pre/0.0.pre/' "${builddir}/${pkgname}.spec"
         ;;
 esac
 
@@ -192,6 +179,6 @@ rpmbuild --define "_sourcedir ${rpmbuilddir}" \
 --define "_builddir ${rpmbuilddir}" \
 --define "_srcrpmdir ${rpmbuilddir}" \
 --define "_rpmdir ${rpmbuilddir}" \
--bb "${builddir}/${packagename}.spec"
+-bb "${builddir}/${pkgname}.spec"
 
 cp /citus-rpm-build/x86_64/*.rpm /packages
