@@ -1,0 +1,5 @@
+pkgname=citus-enterprise
+pkgdesc='Citus Enterprise'
+pkglatest=5.2.1.citus-1
+releasepg=9.5
+nightlyref=enterprise-master
