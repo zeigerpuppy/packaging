@@ -109,7 +109,7 @@ detect_repo_url ()
   family_short='rhel'
   pkg_dist="${dist}"
   pkg_os="${os}"
-  pkg_version='2'
+  pkg_version='3'
 
   case "${os}" in
     amzn)
@@ -128,7 +128,7 @@ detect_repo_url ()
     fedora)
       family='fedora'
       family_short='fedora'
-      pkg_version='3'
+      pkg_version='4'
       ;;
     centos)
       # defaults are suitable
