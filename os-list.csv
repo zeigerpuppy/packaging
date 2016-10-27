@@ -4,7 +4,6 @@ debian,jessie
 debian,wheezy
 fedora,24
 fedora,23
-fedora,22
 oraclelinux,7
 oraclelinux,6
 ubuntu,xenial
