@@ -1,3 +1,9 @@
+citus-rebalancer (5.2.0.citus-1) stable; urgency=low
+
+  * Adds schema (namespace) support
+
+ -- Jason Petersen <jason@citusdata.com>  Thu, 10 Nov 2016 09:33:59 +0000
+
 citus-rebalancer (5.2.0~rc.1-1) testing; urgency=low
 
   * Release candidate for 5.2.
