@@ -1,3 +1,13 @@
+citus-rebalancer (6.0.0.citus-1) stable; urgency=low
+
+  * Adds compatibility with Citus 6.0 and higher
+
+  * Drops compatibility with older versions of Citus
+
+  * Switches to built-in Citus functions for moving shards
+
+ -- Jason Petersen <jason@citusdata.com>  Thu, 10 Nov 2016 18:27:11 +0000
+
 citus-rebalancer (5.2.0.citus-1) stable; urgency=low
 
   * Adds schema (namespace) support
