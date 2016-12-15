@@ -5,5 +5,5 @@ addFilter("W: invalid-url .*404: Not Found");
 addFilter("W: no-soname .*");
 addFilter("W: non-standard-dir-in-usr .*");
 addFilter("W: shared-lib-calls-exit .*");
-addFilter("W: spelling-error .*(itus|datasets|parallelizes|sharding|balanc)");
+addFilter("W: spelling-error .*(cron)");
 addFilter("\w*-debuginfo[^:]*: W: only-non-binary-in-usr-lib");
