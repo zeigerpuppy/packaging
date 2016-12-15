@@ -1,41 +1,5 @@
-citus-rebalancer (6.0.0.citus-1) stable; urgency=low
+pgcron (1.0.0-rc.1) stable; urgency=low
 
-  * Adds compatibility with Citus 6.0 and higher
+  * Initial 1.0 release
 
-  * Drops compatibility with older versions of Citus
-
-  * Switches to built-in Citus functions for moving shards
-
- -- Jason Petersen <jason@citusdata.com>  Thu, 10 Nov 2016 18:27:11 +0000
-
-citus-rebalancer (5.2.0.citus-1) stable; urgency=low
-
-  * Adds schema (namespace) support
-
- -- Jason Petersen <jason@citusdata.com>  Thu, 10 Nov 2016 09:33:59 +0000
-
-citus-rebalancer (5.2.0~rc.1-1) testing; urgency=low
-
-  * Release candidate for 5.2.
-
- -- Jason Petersen <jason@citusdata.com>  Wed, 28 Sep 2016 18:01:14 +0000
-
-citus-rebalancer (5.1.0-1) stable; urgency=low
-
-  * Actually bumps extension version to 5.1
-
-  * Reworks SQL install file generation
-
-  * Adds gitignore
-
-  * Fixes execute bit on Travis scripts
-
-  * Travis now uses Citus package repo (repos.citusdata.com)
-
- -- Jason Petersen <jason@citusdata.com>  Thu, 30 Jun 2016 19:14:40 +0000
-
-citus-rebalancer (5.1.0~rc.1-1) testing; urgency=low
-
-  * Release candidate for 5.1.
-
- -- Jason Petersen <jason@citusdata.com>  Tue, 10 May 2016 19:26:23 +0000
+ -- Marco Slot <marco@citusdata.com>  Thu, 15 Dec 2016 16:27:11 +0000

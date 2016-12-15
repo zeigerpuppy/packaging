@@ -1,0 +1,2 @@
+postgresql-9.6-pgcron binary: new-package-should-close-itp-bug
+postgresql-9.6-pgcron binary: hardening-no-fortify-functions

@@ -1,15 +1,15 @@
-Source: citus-rebalancer
+Source: pgcron
 Section: database
 Priority: optional
 Maintainer: Citus Data <packaging@citusdata.com>
-Uploaders: Jason Petersen <jason@citusdata.com>
+Uploaders: Marco Slot <marco@citusdata.com>
 Build-Depends: debhelper (>= 9), autotools-dev, flex, postgresql-server-dev-all (>= 158~), libedit-dev, libpam0g-dev, libselinux1-dev, libxslt1-dev, postgresql-9.6-citus
 Standards-Version: 3.9.7
-Homepage: https://github.com/citusdata/shard_rebalancer
+Homepage: https://github.com/citusdata/pg_cron
 
-Package: postgresql-PGVERSION-citus-rebalancer
+Package: postgresql-PGVERSION-pgcron
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, postgresql-PGVERSION, postgresql-PGVERSION-citus-enterprise (>= 6.0.0)
-Description: Dynamic shard balancer for Citus
- This extension implements a set of functions for rebalancing and replicating
- shards in Citus clusters.
+Depends: ${shlibs:Depends}, ${misc:Depends}, postgresql-PGVERSION
+Description: Periodic job scheduler for PostgreSQL
+ This extension runs a background worker that can schedule SQL commands
+ to be run periodically.
