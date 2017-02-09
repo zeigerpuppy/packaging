@@ -56,6 +56,7 @@ hubproj="${hubproj:-${pkgname}}"
 nightlyref="${nightlyref:-master}"
 releasepg="${releasepg:-9.5,9.6}"
 nightlypg="${nightlypg:-${releasepg}}"
+versioning="${versioning:-simple}"
 
 if [ -z "${pkglatest}" ]; then
     echo "$0: pkgvars file must specify a value for pkglatest" >&2
@@ -144,7 +145,12 @@ cd "${packagepath}"
 
 case "${1}" in
     release)
-        # nothing to do
+        # add minor/major version to package name if using fancy versioning
+        if [ "${versioning}" == 'fancy' ]; then
+            suffix=$(echo "${packageversion}" | grep -oE '^[0-9]+\.[0-9]+')
+            sed -i "/^Package:/ s/$/-${suffix}/" debian/control.in
+            sed -i "/postgresql-%v-${pkgname}/ s/$/-${suffix}/" debian/rules
+        fi
         ;;
     nightly)
         msg="Nightly package. Built from ${nightlyref} "

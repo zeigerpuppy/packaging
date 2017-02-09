@@ -56,6 +56,7 @@ hubproj="${hubproj:-${pkgname}}"
 nightlyref="${nightlyref:-master}"
 releasepg="${releasepg:-9.5,9.6}"
 nightlypg="${nightlypg:-${releasepg}}"
+versioning="${versioning:-simple}"
 
 if [ -z "${pkglatest}" ]; then
     echo "$0: pkgvars file must specify a value for pkglatest" >&2
@@ -158,7 +159,11 @@ fi
 
 case "${1}" in
     release)
-        # nothing to do
+        # add minor/major version to package name if using fancy versioning
+        if [ "${versioning}" == 'fancy' ]; then
+            infix=$(echo "${packageversion}" | grep -oE '^[0-9]+\.[0-9]+' | tr -d '.')
+            sed -i -E "1i %global pkginfix ${infix}" "${builddir}/${pkgname}.spec"
+        fi
         ;;
     nightly)
         msg="Nightly package. Built from ${nightlyref} "
