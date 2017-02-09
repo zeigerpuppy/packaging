@@ -4,9 +4,12 @@
 %global sname citus
 
 Summary:	PostgreSQL-based distributed RDBMS
-Name:		%{sname}_%{pgmajorversion}
+Name:		%{sname}%{?pkginfix}_%{pgmajorversion}
+Provides:	%{sname}_%{pgmajorversion}
+Conflicts:	%{sname}_%{pgmajorversion}
+Obsoletes:	%{sname}_%{pgmajorversion} <= 6.0.1.citus-1%{dist}
 Version:	6.0.1.citus
-Release:	1%{dist}
+Release:	2%{dist}
 License:	AGPLv3
 Group:		Applications/Databases
 Source0:	https://github.com/citusdata/citus/archive/v6.0.1.tar.gz
@@ -61,6 +64,9 @@ make %{?_smp_mflags}
 %{pginstdir}/share/extension/%{sname}.control
 
 %changelog
+* Wed Feb 8 2017 - Jason Petersen <jason@citusdata.com> 6.0.1.citus-2
+- Transitional package to guide users to new package name
+
 * Wed Nov 30 2016 - Burak Yucesoy <burak@citusdata.com> 6.0.1.citus-1
 - Update to Citus 6.0.1
 
