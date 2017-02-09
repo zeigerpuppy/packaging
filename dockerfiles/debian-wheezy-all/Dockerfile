@@ -17,8 +17,10 @@ RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys B97B0AFCAA1A4
         libdistro-info-perl \
         libedit-dev \
         libfile-fcntllock-perl \
+        libkrb5-dev \
         libpam0g-dev \
         libselinux1-dev \
+        libssl-dev \
         libxslt-dev \
         lintian \
         postgresql-server-dev-all \
