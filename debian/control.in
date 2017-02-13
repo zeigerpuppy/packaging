@@ -11,9 +11,8 @@ XS-Testsuite: autopkgtest
 Package: postgresql-PGVERSION-citus-enterprise
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, postgresql-PGVERSION
-Provides: postgresql-PGVERSION-citus, postgresql-PGVERSION-citus-enterprise
-Conflicts: postgresql-PGVERSION-citus, postgresql-PGVERSION-citus-enterprise
-Replaces: postgresql-PGVERSION-citus-enterprise (<< 6.0.1.citus-2~)
+Provides: postgresql-PGVERSION-citus
+Conflicts: postgresql-PGVERSION-citus
 Description: sharding and distributed joins for PostgreSQL
  Citus is a distributed database implemented as a PostgreSQL extension. It
  provides functions to easily split a PostgreSQL table into shards to be
