@@ -7,17 +7,16 @@ Summary:	Dynamic shard balancer for Citus
 Name:		%{sname}%{?pkginfix}_%{pgmajorversion}
 Provides:	%{sname}_%{pgmajorversion}
 Conflicts:	%{sname}_%{pgmajorversion}
-Obsoletes:	%{sname}_%{pgmajorversion} <= 6.0.0.citus-1%{dist}
-Version:	6.0.0.citus
-Release:	2%{dist}
+Version:	6.1.0.citus
+Release:	1%{dist}
 License:	AGPLv3
 Group:		Applications/Databases
-Source0:	https://github.com/citusdata/shard_rebalancer/archive/v6.0.0.tar.gz
+Source0:	https://github.com/citusdata/shard_rebalancer/archive/v6.1.0.tar.gz
 URL:		https://github.com/citusdata/shard_rebalancer
 BuildRequires:	postgresql%{pgmajorversion}-devel libxml2-devel
 BuildRequires:	libxslt-devel openssl-devel pam-devel readline-devel
 BuildRequires:	citus_%{pgmajorversion} >= 6.0.0
-Requires:	postgresql%{pgmajorversion}-server citus-enterprise%{?pkginfix}_%{pgmajorversion} >= 6.0.0
+Requires:	postgresql%{pgmajorversion}-server citus-enterprise%{?pkginfix}_%{pgmajorversion} >= 6.1.0
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %description
@@ -50,8 +49,11 @@ PATH=%{pginstdir}/bin:$PATH
 %{pginstdir}/share/extension/shard_rebalancer.control
 
 %changelog
-* Thu Nov 10 2016 - Burak <burak@citusdata.com> 6.0.0.citus-2
-- Official release for 6.0.0
+* Wed Feb 15 2017 - Jason Petersen <jason@citusdata.com> 6.1.0.citus-1
+- Official release for 6.1.0
+
+* Wed Feb 15 2017 - Burak <burak@citusdata.com> 6.0.0.citus-2
+- Transitional package to guide users to new package name
 
 * Thu Nov 10 2016 - Jason Petersen <jason@citusdata.com> 6.0.0.citus-1
 - Official release for 6.0.0
