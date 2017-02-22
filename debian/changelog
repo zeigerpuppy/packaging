@@ -1,0 +1,5 @@
+citus-analytics (1.0.0.citus-1) testing; urgency=low
+
+  * Initial release
+
+ -- Jason Petersen <jason@citusdata.com>  Tue, 21 Feb 2017 16:16:47 +0000

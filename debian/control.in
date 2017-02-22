@@ -1,0 +1,14 @@
+Source: citus-analytics
+Section: database
+Priority: optional
+Maintainer: Citus Data <packaging@citusdata.com>
+Uploaders: Jason Petersen <jason@citusdata.com>
+Build-Depends: debhelper (>= 9), autotools-dev, postgresql-server-dev-all (>= 158~), libedit-dev, libpam0g-dev, libselinux1-dev, libxslt1-dev
+Standards-Version: 3.9.7
+Homepage: https://github.com/citusdata/session_analytics
+
+Package: postgresql-PGVERSION-citus-analytics
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, postgresql-PGVERSION, postgresql-contrib-PGVERSION
+Description: Analytics functions for hstore arrays
+ This extension provides some functions for querying hstore arrays.

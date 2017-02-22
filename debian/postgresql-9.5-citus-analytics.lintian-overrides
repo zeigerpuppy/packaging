@@ -1,0 +1,2 @@
+postgresql-9.5-citus-analytics binary: new-package-should-close-itp-bug
+postgresql-9.5-citus-analytics binary: package-has-long-file-name
