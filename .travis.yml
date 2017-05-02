@@ -20,7 +20,7 @@ env:
     - TARGET_PLATFORM=ubuntu/trusty
     - TARGET_PLATFORM=ubuntu/precise
 before_install:
-  - git clone -b v0.5.0 --depth 1 https://github.com/citusdata/tools.git
+  - git clone -b v0.5.2 --depth 1 https://github.com/citusdata/tools.git
   - export PATH="$(pwd)/tools/travis:$PATH"
   - export PATH="$(pwd)/tools/packaging:$PATH"
   - export PACKAGING_SECRET_KEY="$(openssl aes-256-cbc -K $encrypted_a39e3f1ee8ba_key -iv $encrypted_a39e3f1ee8ba_iv -in signing_key.asc.enc -d | base64)"
@@ -33,18 +33,18 @@ deploy:
     token: $PACKAGECLOUD_API_TOKEN
     dist: $TARGET_PLATFORM
     skip_cleanup: true
-    local-dir: "releases"
+    local-dir: "pkgs/releases"
     on:
       branch: "debian-citus"
-      condition: -d "releases"
+      condition: -d "pkgs/releases"
   - provider: packagecloud
     username: "citusdata"
     repository: "$PKG_REPOTYPE-nightlies"
     token: $PACKAGECLOUD_API_TOKEN
     dist: $TARGET_PLATFORM
     skip_cleanup: true
-    local-dir: "nightlies"
+    local-dir: "pkgs/nightlies"
     on:
       branch: "debian-citus"
-      condition: -d "nightlies"
+      condition: -d "pkgs/nightlies"
 after_deploy: trigger_docker_nightly
