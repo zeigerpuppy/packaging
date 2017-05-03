@@ -16,7 +16,6 @@ env:
     - TARGET_PLATFORM=el/6
     - TARGET_PLATFORM=fedora/24
     - TARGET_PLATFORM=fedora/23
-    - TARGET_PLATFORM=fedora/22
     - TARGET_PLATFORM=ol/7
     - TARGET_PLATFORM=ol/6
 before_install:
