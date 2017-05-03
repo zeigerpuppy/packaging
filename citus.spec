@@ -56,7 +56,7 @@ make %{?_smp_mflags}
 %license LICENSE
 %endif
 %doc %{pginstdir}/doc/extension/README-%{sname}.md
-%{pginstdir}/include/server/citus_config.h
+%{pginstdir}/include/server/citus_*.h
 %{pginstdir}/include/server/distributed/*.h
 %{pginstdir}/lib/%{sname}.so
 %{pginstdir}/share/extension/%{sname}-*.sql
