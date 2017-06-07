@@ -1,3 +1,9 @@
+citus-enterprise (6.1.2.citus-1) stable; urgency=low
+
+  * Fixes a common cause of deadlocks when rebalancing tables with foreign keys
+
+ -- Jason Petersen <jason@citusdata.com>  Wed, 31 May 2017 16:14:11 +0000
+
 citus-enterprise (6.2.1.citus-1) stable; urgency=low
 
   * Relaxes version-check logic to avoid breaking non-distributed commands
