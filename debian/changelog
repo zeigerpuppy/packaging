@@ -1,14 +1,14 @@
-citus (6.1.2.citus-1) stable; urgency=low
-
-  * Fixes a common cause of deadlocks when repairing tables with foreign keys
-
- -- Jason Petersen <jason@citusdata.com>  Wed, 31 May 2017 16:14:11 +0000
-
 citus (6.2.2.citus-1) stable; urgency=low
 
   * Fixes a common cause of deadlocks when repairing tables with foreign keys
 
  -- Burak Velioglu <velioglub@citusdata.com>  Wed, 07 Jun 2017 09:42:17 +0000
+
+citus (6.1.2.citus-1) stable; urgency=low
+
+  * Fixes a common cause of deadlocks when repairing tables with foreign keys
+
+ -- Jason Petersen <jason@citusdata.com>  Wed, 31 May 2017 16:14:11 +0000
 
 citus (6.2.1.citus-1) stable; urgency=low
 
