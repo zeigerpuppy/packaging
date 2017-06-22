@@ -1,3 +1,9 @@
+hll (2.10.2.citus-1) stable; urgency=low
+
+  * Support for testing against PostgreSQL 10
+
+ -- Jason Petersen <jason@citusdata.com>  Thu, 22 Jun 2017 12:57:47 +0000
+
 hll (2.10.1.citus-1) stable; urgency=low
 
   * First Citus-packaged release
