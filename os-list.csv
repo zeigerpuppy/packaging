@@ -2,6 +2,7 @@ centos,7
 centos,6
 debian,jessie
 debian,wheezy
+debian,stretch
 fedora,24
 fedora,23
 oraclelinux,7
