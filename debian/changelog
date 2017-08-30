@@ -1,3 +1,15 @@
+citus-rebalancer (7.0.0.citus-1) stable; urgency=low
+
+  * Adds ability to view rebalance plans
+
+  * Adds monitoring of in-progress rebalance operations
+
+  * Adds compatibility with Citus 7.0 and higher
+
+  * Switches to new Citus connection APIs
+
+ -- Jason Petersen <jason@citusdata.com>  Wed, 30 Aug 2017 16:29:42 +0000
+
 citus-rebalancer (6.2.0.citus-1) stable; urgency=low
 
   * Adds compatibility with Citus 6.2 and higher
