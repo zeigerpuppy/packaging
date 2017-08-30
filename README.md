@@ -1,6 +1,6 @@
 # Citus Packaging
 
-A set of scripts that generate a set of Dockerfiles that generate a set of Docker images which generate PostgreSQL 9.4/9.5-compatible builds of Citus projects on many platforms.
+A set of scripts that generate a set of Dockerfiles that generate a set of Docker images which generate PostgreSQL 9.5/9.6-compatible builds of Citus projects on many platforms.
 
 ## Prerequisites
 
@@ -54,7 +54,7 @@ By default, `build_packages` builds on _all_ supported operating systems. Edit `
 
 The following license information (and associated [license](LICENSE) file) apply _only to the files within **this** repository_. Please consult the repositories for the individual projects for information regarding their licensing.
 
-Copyright © 2016 Citus Data, Inc.
+Copyright © 2016–2017 Citus Data, Inc.
 
 Licensed under the Apache License, Version 2.0 (the “License”); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 
