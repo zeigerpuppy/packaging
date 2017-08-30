@@ -3,8 +3,8 @@ centos,6
 debian,jessie
 debian,wheezy
 debian,stretch
-fedora,24
-fedora,23
+fedora,26
+fedora,25
 oraclelinux,7
 oraclelinux,6
 ubuntu,xenial
