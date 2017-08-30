@@ -31,7 +31,7 @@ function update_rpm_dockerfile {
         exit $badusage
     fi
 
-    rpm=$(curl -s -l --ftp-ssl "ftp://${rpms_url}" | egrep "$file_pattern" | sort -t'-' -k4 -nr | head -n1)
+    rpm=$(lftp -e 'cls -1; bye' "https://${rpms_url}" | egrep "$file_pattern" | sort -t'-' -k4 -nr | head -n1)
     rpm_url=${rpms_url}${rpm}
 
     mkdir -p "${target_subdir}"
