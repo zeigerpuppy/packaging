@@ -4,7 +4,7 @@ unknown_os ()
 {
   echo "Unfortunately, your operating system distribution and version are not supported by this script."
   echo
-  echo "Please email engage@citusdata.com with any issues."
+  echo "Please contact us via https://www.citusdata.com/about/contact_us with any issues."
   exit 1
 }
 
@@ -13,7 +13,7 @@ arch_check ()
   if [ "$(uname -m)" != 'x86_64' ]; then
     echo "Unfortunately, the Citus repository does not contain packages for non-x86_64 architectures."
     echo
-    echo "Please email engage@citusdata.com with any issues."
+    echo "Please contact us via https://www.citusdata.com/about/contact_us with any issues."
     exit 1
   fi
 }
@@ -197,7 +197,7 @@ main ()
     echo "Could not determine enterprise repository token."
     echo "Please set the CITUS_REPO_TOKEN environment variable."
     echo
-    echo "Contact engage@citusdata.com if you continue to have problems."
+    echo "Contact us via https://www.citusdata.com/about/contact_us if you continue to have problems."
     exit 1
   fi
 
@@ -223,7 +223,7 @@ main ()
     echo "This usually happens if your operating system is not supported by "
     echo "Citus Data, or this script's OS detection failed."
     echo
-    echo "If you are running a supported OS, please email engage@citusdata.com and report this."
+    echo "If you are running a supported OS, please contact us via https://www.citusdata.com/about/contact_us and report this."
     [ -e $yum_repo_path ] && rm $yum_repo_path
     exit 1
   elif [ "$curl_exit_code" = "35" ]; then
@@ -236,7 +236,7 @@ main ()
     echo " 1.) Missing CA root certificates (make sure the ca-certificates package is installed)"
     echo " 2.) An old version of libssl. Try upgrading libssl on your system to a more recent version"
     echo
-    echo "Contact engage@citusdata.com with information about your system for help."
+    echo "Contact us via https://www.citusdata.com/about/contact_us with information about your system for help."
     [ -e $yum_repo_path ] && rm $yum_repo_path
     exit 1
   elif [ "$curl_exit_code" -gt "0" ]; then
