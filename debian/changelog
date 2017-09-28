@@ -1,3 +1,9 @@
+citus (7.0.2.PGDG-1) unstable; urgency=low
+
+  * Updates task-tracker to limit file access
+
+ -- Burak Yucesoy <burak@citusdata.com>  Thu, 28 Sep 2017 22:29:01 +0000
+
 citus (7.0.1.PGDG-1) unstable; urgency=low
 
   * Fixes a bug that could cause memory leaks in INSERT ... SELECT queries
