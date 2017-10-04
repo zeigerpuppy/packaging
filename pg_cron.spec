@@ -5,11 +5,11 @@
 
 Summary:	Periodic job scheduler for PostgreSQL
 Name:		%{sname}_%{pgmajorversion}
-Version:	1.0.0
+Version:	1.0.1
 Release:	1%{dist}
 License:	PostgreSQL
 Group:		Applications/Databases
-Source0:	https://github.com/citusdata/pg_cron/archive/v1.0.0.tar.gz
+Source0:	https://github.com/citusdata/pg_cron/archive/v1.0.1.tar.gz
 URL:		https://github.com/citusdata/pg_cron
 BuildRequires:	postgresql%{pgmajorversion}-devel libxml2-devel
 BuildRequires:	libxslt-devel openssl-devel pam-devel readline-devel
@@ -46,6 +46,10 @@ PATH=%{pginstdir}/bin:$PATH
 %{pginstdir}/share/extension/pg_cron.control
 
 %changelog
+* Fri Jun 30 2017 - Marco Slot <marco@citusdata.com> 1.0.1-1.citus-1
+- Fixes a memory leak that occurs when a connection fails immediately
+- Fixes a memory leak due to switching memory context when loading metadata
+- Fixes a segmentation fault that can occur when using an error message after PQclear
 * Fri Jan 27 2017 - Marco Slot <marco@citusdata.com> 1.0.0-1.citus-1
 - Use WaitLatch instead of pg_usleep when there are no tasks
 * Thu Dec 15 2016 - Marco Slot <marco@citusdata.com> 1.0.0-rc.1.citus-1
