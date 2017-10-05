@@ -1,3 +1,9 @@
+citus (7.0.2.PGDG-2) unstable; urgency=low
+
+  * Rebuild for PostgreSQL 10 compatibility
+
+ -- Jason Petersen <jason@citusdata.com>  Thu, 5 Oct 2017 17:24:19 +0000
+
 citus (7.0.2.PGDG-1) unstable; urgency=low
 
   * Updates task-tracker to limit file access
