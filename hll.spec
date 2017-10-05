@@ -1,15 +1,15 @@
-%global pgmajorversion 95
-%global pgpackageversion 9.5
+%global pgmajorversion 10
+%global pgpackageversion 10
 %global pginstdir /usr/pgsql-%{pgpackageversion}
 %global sname hll
 
 Summary:	HyperLogLog extension for PostgreSQL
 Name:		%{sname}_%{pgmajorversion}
-Version:	2.10.1.citus
+Version:	2.10.2.citus
 Release:	1%{dist}
 License:	ASL 2.0
 Group:		Applications/Databases
-Source0:	https://github.com/citusdata/postgresql-hll/archive/v2.10.1.tar.gz
+Source0:	https://github.com/citusdata/postgresql-hll/archive/v2.10.2.tar.gz
 URL:		https://github.com/citusdata/postgresql-hll
 BuildRequires:	postgresql%{pgmajorversion}-devel libxml2-devel
 BuildRequires:	libxslt-devel openssl-devel pam-devel readline-devel
@@ -50,6 +50,9 @@ PATH=%{pginstdir}/bin:$PATH
 %{pginstdir}/share/extension/hll.control
 
 %changelog
+* Thu Oct 5 2017 - Jason Petersen <jason@citusdata.com> 2.10.2.citus-1
+- Support for testing PostgreSQL 10
+
 * Thu Sep 22 2016 - Jason Petersen <jason@citusdata.com> 2.10.1.citus-1
 - First Citus-packaged release
 
