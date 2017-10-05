@@ -1,6 +1,6 @@
 # Citus Packaging
 
-A set of scripts that generate a set of Dockerfiles that generate a set of Docker images which generate PostgreSQL 9.5/9.6-compatible builds of Citus projects on many platforms.
+A set of scripts that generate a set of Dockerfiles that generate a set of Docker images which generate PostgreSQL 9.6/10-compatible builds of Citus projects on many platforms.
 
 ## Prerequisites
 

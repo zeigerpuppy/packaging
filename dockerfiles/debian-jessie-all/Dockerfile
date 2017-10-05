@@ -36,6 +36,7 @@ RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys B97B0AFCAA1A4
         libdistro-info-perl \
         libedit-dev \
         libfile-fcntllock-perl \
+        libicu-dev \
         libkrb5-dev \
         libpam0g-dev \
         libselinux1-dev \
@@ -52,6 +53,7 @@ RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 
     && chmod +x /usr/bin/jq
 
 # install latest Citus release to get header files
+# FIXME: add postgresql-10-citus-7.0 once debs are in the repository
 RUN curl -s https://packagecloud.io/install/repositories/citusdata/community/script.deb.sh | bash \
     && apt-get install -y postgresql-9.5-citus-6.2 postgresql-9.6-citus-7.0 \
     && rm -rf /var/lib/apt/lists/*

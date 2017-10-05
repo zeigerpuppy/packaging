@@ -22,8 +22,8 @@ RUN yum groupinstall -y 'Development Tools' \
         rpmlint \
         spectool \
         tar \
-    && yum install -y https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-6-x86_64/pgdg-centos96-9.6-3.noarch.rpm \
-    && yum install -y postgresql96-devel \
+    && yum install -y https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-6-x86_64/pgdg-centos10-10-2.noarch.rpm \
+    && yum install -y postgresql10-devel \
     && yum clean all
 
 # install jq to process JSON API responses
@@ -32,15 +32,16 @@ RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 
     && chmod +x /usr/bin/jq
 
 # install latest Citus release to get header files
-RUN curl -s https://packagecloud.io/install/repositories/citusdata/community/script.rpm.sh | bash \
-    && yum install -y citus70_96 \
-    && yum clean all
+# FIXME: re-enable once PostgreSQL 10 RPMs are in the repository
+# RUN curl -s https://packagecloud.io/install/repositories/citusdata/community/script.rpm.sh | bash \
+#     && yum install -y citus70_10 \
+#     && yum clean all
 
 RUN touch /rpmlintrc \
     && echo '%_build_pkgcheck %{_bindir}/rpmlint -f /rpmlintrc' >> /etc/rpm/macros
 
 # set PostgreSQL version, place scripts on path, and declare output volume
-ENV PGVERSION=9.6 \
+ENV PGVERSION=10 \
     PATH=/scripts:$PATH
 COPY scripts /scripts
 VOLUME /packages
