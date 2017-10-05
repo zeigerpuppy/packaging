@@ -2,5 +2,5 @@ pkgname=citus-analytics
 hubproj=session_analytics
 pkgdesc='Session Analytics'
 pkglatest=1.0.0.citus-1
-releasepg=9.5,9.6
+releasepg=10
 versioning=simple

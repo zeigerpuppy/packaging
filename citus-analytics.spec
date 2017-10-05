@@ -1,5 +1,5 @@
-%global pgmajorversion 95
-%global pgpackageversion 9.5
+%global pgmajorversion 10
+%global pgpackageversion 10
 %global pginstdir /usr/pgsql-%{pgpackageversion}
 %global sname citus-analytics
 
