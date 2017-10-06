@@ -82,6 +82,10 @@ detect_os ()
       os=${ID}
       if [ "${os}" = "poky" ]; then
         dist=`echo ${VERSION_ID}`
+      elif [ "${os}" = "sles" ]; then
+        dist=`echo ${VERSION_ID}`
+      elif [ "${os}" = "opensuse" ]; then
+        dist=`echo ${VERSION_ID}`
       else
         dist=`echo ${VERSION_ID} | awk -F '.' '{ print $1 }'`
       fi
@@ -125,7 +129,7 @@ detect_os ()
     fi
   fi
 
-  if [[ ( -z "${os}" ) || ( -z "${dist}" ) || ( "${os}" = "opensuse" ) ]]; then
+  if [[ ( -z "${os}" ) || ( -z "${dist}" ) ]]; then
     unknown_os
   fi
 
@@ -134,6 +138,45 @@ detect_os ()
   dist="${dist// /}"
 
   echo "Detected operating system as ${os}/${dist}."
+}
+
+finalize_yum_repo ()
+{
+  echo -n "Installing pygpgme to verify GPG signatures... "
+  yum install -d0 -e0 -y pygpgme --disablerepo='citusdata_enterprise-nightlies' &> /dev/null
+  pypgpme_check=`rpm -qa | grep -qw pygpgme`
+  if [ "$?" != "0" ]; then
+    echo
+    echo "WARNING: "
+    echo "The pygpgme package could not be installed. This means GPG verification is not possible for any RPM installed on your system. "
+    echo "To fix this, add a repository with pygpgme. Usualy, the EPEL repository for your system will have this. "
+    echo "More information: https://fedoraproject.org/wiki/EPEL#How_can_I_use_these_extra_packages.3F"
+    echo
+
+    # set the repo_gpgcheck option to 0
+    sed -i'' 's/repo_gpgcheck=1/repo_gpgcheck=0/' /etc/yum.repos.d/citusdata_enterprise-nightlies.repo
+  fi
+  echo 'done.'
+
+  echo -n "Installing yum-utils... "
+  yum install -d0 -e0 -y yum-utils --disablerepo='citusdata_enterprise-nightlies' &> /dev/null
+  yum_utils_check=`rpm -qa | grep -qw yum-utils`
+  if [ "$?" != "0" ]; then
+    echo
+    echo "WARNING: "
+    echo "The yum-utils package could not be installed. This means you may not be able to install source RPMs or use other yum features."
+    echo
+  fi
+  echo 'done.'
+
+  echo -n "Generating yum cache for citusdata_enterprise-nightlies... "
+  yum -d0 -e0 -q makecache -y --disablerepo='*' --enablerepo='citusdata_enterprise-nightlies' &> /dev/null
+  echo 'done.'
+}
+
+finalize_zypper_repo ()
+{
+  zypper --gpg-auto-import-keys refresh citusdata_enterprise-nightlies
 }
 
 detect_repo_url ()
@@ -207,7 +250,11 @@ main ()
   yum_repo_config_url="https://repos.citusdata.com/enterprise-nightlies/config_file.repo?os=${os}&dist=${dist}&source=script"
   echo "Found host ID: ${CITUS_REPO_HOST_ID}"
 
-  yum_repo_path=/etc/yum.repos.d/citusdata_enterprise-nightlies.repo
+  if [ "${os}" = "sles" ] || [ "${os}" = "opensuse" ]; then
+    yum_repo_path=/etc/zypp/repos.d/citusdata_enterprise-nightlies.repo
+  else
+    yum_repo_path=/etc/yum.repos.d/citusdata_enterprise-nightlies.repo
+  fi
 
   echo -n "Downloading repository file: ${yum_repo_config_url}... "
 
@@ -226,7 +273,7 @@ main ()
     echo "If you are running a supported OS, please contact us via https://www.citusdata.com/about/contact_us and report this."
     [ -e $yum_repo_path ] && rm $yum_repo_path
     exit 1
-  elif [ "$curl_exit_code" = "35" ]; then
+  elif [ "$curl_exit_code" = "35" -o "$curl_exit_code" = "60" ]; then
     echo
     echo "curl is unable to connect to citusdata.com over TLS when running: "
     echo "    curl ${yum_repo_config_url}"
@@ -252,36 +299,11 @@ main ()
     echo "done."
   fi
 
-  echo -n "Installing pygpgme to verify GPG signatures... "
-  yum install -d0 -e0 -y pygpgme --disablerepo='citusdata_enterprise-nightlies' &> /dev/null
-  pypgpme_check=`rpm -qa | grep -qw pygpgme`
-  if [ "$?" != "0" ]; then
-    echo
-    echo "WARNING: "
-    echo "The pygpgme package could not be installed. This means GPG verification is not possible for any RPM installed on your system. "
-    echo "To fix this, add a repository with pygpgme. Usualy, the EPEL repository for your system will have this. "
-    echo "More information: https://fedoraproject.org/wiki/EPEL#How_can_I_use_these_extra_packages.3F"
-    echo
-
-    # set the repo_gpgcheck option to 0
-    sed -i'' 's/repo_gpgcheck=1/repo_gpgcheck=0/' /etc/yum.repos.d/citusdata_enterprise-nightlies.repo
+  if [ "${os}" = "sles" ] || [ "${os}" = "opensuse" ]; then
+    finalize_zypper_repo
+  else
+    finalize_yum_repo
   fi
-  echo 'done.'
-
-  echo -n "Installing yum-utils... "
-  yum install -d0 -e0 -y yum-utils --disablerepo='citusdata_enterprise-nightlies' &> /dev/null
-  yum_utils_check=`rpm -qa | grep -qw yum-utils`
-  if [ "$?" != "0" ]; then
-    echo
-    echo "WARNING: "
-    echo "The yum-utils package could not be installed. This means you may not be able to install source RPMs or use other yum features."
-    echo
-  fi
-  echo 'done.'
-
-  echo -n "Generating yum cache for citusdata_enterprise-nightlies... "
-  yum -d0 -e0 -q makecache -y --disablerepo='*' --enablerepo='citusdata_enterprise-nightlies' &> /dev/null
-  echo 'done.'
 
   echo
   echo "The repository is set up! You can now install packages."
