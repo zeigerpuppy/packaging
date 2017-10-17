@@ -12,6 +12,7 @@ RUN yum groupinstall -y 'Development Tools' \
         flex \
         gcc-c++ \
         hunspell-en \
+        libcurl-devel \
         libicu-devel \
         libxml2-devel \
         libxslt-devel \

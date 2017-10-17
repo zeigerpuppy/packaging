@@ -33,6 +33,7 @@ RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys B97B0AFCAA1A4
         devscripts \
         fakeroot \
         flex \
+        libcurl4-openssl-dev \
         libdistro-info-perl \
         libedit-dev \
         libfile-fcntllock-perl \
