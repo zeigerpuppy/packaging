@@ -13,7 +13,7 @@ License:	AGPLv3
 Group:		Applications/Databases
 Source0:	https://github.com/citusdata/citus-enterprise/archive/v7.0.3.tar.gz
 URL:		https://github.com/citusdata/citus-enterprise
-BuildRequires:	postgresql%{pgmajorversion}-devel
+BuildRequires:	postgresql%{pgmajorversion}-devel libcurl-devel
 Requires:	postgresql%{pgmajorversion}-server
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
