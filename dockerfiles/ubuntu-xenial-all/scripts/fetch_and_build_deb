@@ -119,7 +119,9 @@ case "${1}" in
 
         timestamp=$(date +'%Y%m%d')
 
-        packageversion="${nextversion}.citus~${infix}.${timestamp}.${gitsha:0:7}"
+        packagesuffix="${infix}.${timestamp}.${gitsha:0:7}"
+        packageversion="${nextversion}.citus~${packagesuffix}"
+        export CONF_EXTRA_VERSION="+${packagesuffix}"
 
         echo "${nightlypg}" | tr ',' '\n' > "${builddir}/debian/pgversions"
         ;;
@@ -167,6 +169,6 @@ esac
 
 pg_buildext updatecontrol
 
-debuild -uc -us -B --lintian-opts --profile debian --allow-root
+debuild --preserve-envvar CONF_EXTRA_VERSION -uc -us -B --lintian-opts --profile debian --allow-root
 
 cp ../*.deb /packages
