@@ -166,10 +166,16 @@ detect_codename ()
       8)
         codename='jessie'
         ;;
+      9)
+        codename='stretch'
+        ;;
       wheezy)
         codename="${dist}"
         ;;
       jessie)
+        codename="${dist}"
+        ;;
+      stretch)
         codename="${dist}"
         ;;
       *)
@@ -251,7 +257,7 @@ main ()
     echo "If you are running a supported OS, please contact us via https://www.citusdata.com/about/contact_us and report this."
     [ -e $apt_source_path ] && rm $apt_source_path
     exit 1
-  elif [ "$curl_exit_code" = "35" ]; then
+  elif [ "$curl_exit_code" = "35" -o "$curl_exit_code" = "60" ]; then
     echo "curl is unable to connect to citusdata.com over TLS when running: "
     echo "    curl ${apt_config_url}"
     echo "This is usually due to one of two things:"
