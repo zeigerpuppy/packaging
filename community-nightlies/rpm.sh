@@ -156,26 +156,16 @@ detect_repo_url ()
   family_short='rhel'
   pkg_dist="${dist}"
   pkg_os="${os}"
-  pkg_version='3'
+  pkg_version='2'
 
   case "${os}" in
-    amzn)
-      # require at least a 2015 image
-      if [ "${dist}" -lt "2015" ]; then
-        unknown_os
-      fi
-
-      # use 2015.03 pgdg repo for all recent Amazon instances
-      pkg_dist=6
-      pkg_os='ami201503-'
-      pkg_version='2'
-      ;;
     ol)
       pkg_os='oraclelinux'
       ;;
     fedora)
       family='fedora'
       family_short='fedora'
+      pkg_version='3'
       ;;
     centos)
       # defaults are suitable
