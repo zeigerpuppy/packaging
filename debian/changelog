@@ -1,0 +1,5 @@
+topn (2.0.0) stable; urgency=low
+
+  * Initial 2.0 release
+
+ -- Burak Yucesoy <burak@citusdata.com>  Wed, 22 Nov 2017 08:17:22 +0000

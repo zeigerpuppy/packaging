@@ -1,0 +1,16 @@
+Source: topn
+Section: database
+Priority: optional
+Maintainer: Citus Data <packaging@citusdata.com>
+Uploaders: Furkan Sahin <furkan@citusdata.com>
+Build-Depends: debhelper (>= 9), autotools-dev, flex, postgresql-server-dev-all (>= 158~), libedit-dev, libpam0g-dev, libselinux1-dev, libxslt1-dev
+Standards-Version: 3.9.7
+Homepage: https://github.com/citusdata/topn
+
+Package: postgresql-PGVERSION-topn
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, postgresql-PGVERSION
+Description: Counter Based Implementation for top-n Approximation
+ This extension is used to make approximations on top-n. It uses JSONB
+ objects to store and read the data frequency and provides a chance to
+ run real-time top-n queries on aggregated data.
