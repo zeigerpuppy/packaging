@@ -5,11 +5,11 @@
 
 Summary:	Counter Based Implementation for top-n Approximation
 Name:		%{sname}_%{pgmajorversion}
-Version:	2.0.0.citus
+Version:	2.0.1.citus
 Release:	1%{dist}
 License:	Commercial
 Group:		Applications/Databases
-Source0:	https://github.com/citusdata/topn/archive/v2.0.0.tar.gz
+Source0:	https://github.com/citusdata/topn/archive/v2.0.1.tar.gz
 URL:		https://github.com/citusdata/topn
 BuildRequires:	postgresql%{pgmajorversion}-devel libxml2-devel
 BuildRequires:	libxslt-devel openssl-devel pam-devel readline-devel
@@ -47,6 +47,10 @@ PATH=%{pginstdir}/bin:$PATH
 %{pginstdir}/share/extension/topn.control
 
 %changelog
+* Mon Nov 27 2017 - Marco Slot <marco@citusdata.com> 2.0.1.citus-1
+- Ensure the number of elements does not exceed number_of_counters at the end of aggregation
+- Fixes a character escaping issue
+
 * Wed Nov 22 2017 - Burak Yucesoy <burak@citusdata.com> 2.0.0.citus-1
 - Initial release
 
