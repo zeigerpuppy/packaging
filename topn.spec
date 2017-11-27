@@ -7,7 +7,7 @@ Summary:	Counter Based Implementation for top-n Approximation
 Name:		%{sname}_%{pgmajorversion}
 Version:	2.0.0.citus
 Release:	1%{dist}
-License:	PostgreSQL
+License:	Commercial
 Group:		Applications/Databases
 Source0:	https://github.com/citusdata/topn/archive/v2.0.0.tar.gz
 URL:		https://github.com/citusdata/topn
