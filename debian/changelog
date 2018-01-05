@@ -1,3 +1,11 @@
+citus (7.1.2.citus-1) stable; urgency=low
+
+  * Fixes a bug that could cause assigning wrong IDs to transactions
+
+  * Increases COPY throughput
+
+ -- Burak Velioglu <velioglub@citusdata.com>  Fri, 05 Jan 2018 09:00:07 +0000
+
 citus (7.1.1.citus-1) stable; urgency=low
 
   * Fixes a bug that could prevent pushing down subqueries with reference tables
