@@ -1,3 +1,13 @@
+citus (7.2.1.PGDG-1) unstable; urgency=low
+
+  * Fixes count distinct bug on column expressions when used with subqueries
+
+  * Adds support for respecting enable_hashagg in the master plan
+
+  * Fixes a bug canceling backends that are not involved in distributed deadlocks
+
+ -- Burak Velioglu <velioglub@citusdata.com>  Tue, 06 Feb 2018 14:46:07 +0000
+
 citus (7.2.0.PGDG-1) unstable; urgency=low
 
   * Adds support for CTEs
@@ -5,6 +15,8 @@ citus (7.2.0.PGDG-1) unstable; urgency=low
   * Adds support for subqueries that require merge step
 
   * Adds support for set operations (UNION, INTERSECT, ...)
+
+  * Adds support for 2PC auto-recovery
 
   * Adds support for querying local tables in CTEs and subqueries
 
