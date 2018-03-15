@@ -23,7 +23,7 @@ RUN yum groupinstall -y 'Development Tools' \
         rpmlint \
         spectool \
         tar \
-    && yum install -y https://download.postgresql.org/pub/repos/yum/10/fedora/fedora-26-x86_64/pgdg-fedora10-10-3.noarch.rpm \
+    && yum install -y https://download.postgresql.org/pub/repos/yum/10/fedora/fedora-26-x86_64/pgdg-fedora10-10-4.noarch.rpm \
     && yum install -y postgresql10-devel \
     && yum clean all
 
