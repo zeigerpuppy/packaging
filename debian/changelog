@@ -1,3 +1,9 @@
+topn (2.0.2) stable; urgency=low
+
+  * Fixes a bug for using with window functions
+
+ -- Burak Velioglu <velioglub@citusdata.com>  Thu, 29 Mar 2018 09:12:46 +0000
+
 topn (2.0.0) stable; urgency=low
 
   * Initial 2.0 release
