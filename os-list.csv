@@ -3,10 +3,12 @@ centos,6
 debian,jessie
 debian,wheezy
 debian,stretch
+fedora,28
+fedora,27
 fedora,26
-fedora,25
 oraclelinux,7
 oraclelinux,6
+ubuntu,bionic
 ubuntu,xenial
 ubuntu,trusty
 pgxn

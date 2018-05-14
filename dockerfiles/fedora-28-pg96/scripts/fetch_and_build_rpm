@@ -54,7 +54,7 @@ source /buildfiles/pkgvars
 declare pkglatest # to make shellcheck happy
 hubproj="${hubproj:-${pkgname}}"
 nightlyref="${nightlyref:-master}"
-releasepg="${releasepg:-9.5,9.6}"
+releasepg="${releasepg:-9.6,10}"
 nightlypg="${nightlypg:-${releasepg}}"
 versioning="${versioning:-simple}"
 
@@ -81,6 +81,8 @@ case "${1}" in
         if [ -n "${packagerelease}" ]; then
             releasetag="v${packageversion}-${packagerelease}"
         fi
+
+        conf_extra_version="%{nil}"
 
         gitsha=$(curl -s "https://api.github.com/repos/${repopath}/git/refs/tags/${releasetag}" | \
                  jq -r '.object.sha')
@@ -119,7 +121,9 @@ case "${1}" in
 
         packageversion="${nextversion}.citus"
         timestamp=$(date +'%Y%m%d')
-        packagerelease="0.0.${infix}.${timestamp}.${gitsha:0:7}"
+        packagesuffix="${infix}.${timestamp}.${gitsha:0:7}"
+        packagerelease="0.0.${packagesuffix}"
+        conf_extra_version="+${packagesuffix}"
 
         sed -i -E -e "/^Version:/s/[^ \\t]*$/${packageversion}/" \
                   -e "/^Release:/s/[^ \\t]*$/${packagerelease}%{dist}/" \
@@ -184,6 +188,7 @@ rpmbuild --define "_sourcedir ${rpmbuilddir}" \
 --define "_builddir ${rpmbuilddir}" \
 --define "_srcrpmdir ${rpmbuilddir}" \
 --define "_rpmdir ${rpmbuilddir}" \
+--define "conf_extra_version ${conf_extra_version}" \
 -bb "${builddir}/${pkgname}.spec"
 
 cp /citus-rpm-build/x86_64/*.rpm /packages

@@ -82,6 +82,8 @@ case "${1}" in
             releasetag="v${packageversion}-${packagerelease}"
         fi
 
+        conf_extra_version="%{nil}"
+
         gitsha=$(curl -s "https://api.github.com/repos/${repopath}/git/refs/tags/${releasetag}" | \
                  jq -r '.object.sha')
         if [ "${gitsha}" == 'null' ]; then
@@ -186,7 +188,7 @@ rpmbuild --define "_sourcedir ${rpmbuilddir}" \
 --define "_builddir ${rpmbuilddir}" \
 --define "_srcrpmdir ${rpmbuilddir}" \
 --define "_rpmdir ${rpmbuilddir}" \
---define "conf_extra_version ${conf_extra_version:-}" \
+--define "conf_extra_version ${conf_extra_version}" \
 -bb "${builddir}/${pkgname}.spec"
 
 cp /citus-rpm-build/x86_64/*.rpm /packages

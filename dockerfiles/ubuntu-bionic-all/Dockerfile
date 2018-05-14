@@ -1,5 +1,5 @@
 # vim:set ft=dockerfile:
-FROM ubuntu:trusty
+FROM ubuntu:bionic
 ARG DEBIAN_FRONTEND=noninteractive
 
 # See https://github.com/tianon/docker-brew-debian/issues/49 for discussion of the following
@@ -23,7 +23,7 @@ RUN set -x \
 
 # install build tools and PostgreSQL development files
 RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8 \
-    && echo 'deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' > /etc/apt/sources.list.d/pgdg.list \
+    && echo 'deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main' > /etc/apt/sources.list.d/pgdg.list \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
         autotools-dev \

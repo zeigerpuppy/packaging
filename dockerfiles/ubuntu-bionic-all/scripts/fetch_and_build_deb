@@ -18,11 +18,11 @@ builddir=$(pwd)
 # outputs usage message on specified device before exiting with provided status
 usage() {
     cat << 'E_O_USAGE' >&"$1"
-usage: fetch_and_build_rpm build_type build_directory
+usage: fetch_and_build_deb build_type
 
     build_type: 'release', 'nightly', or a valid git reference
 
-fetch_and_build_rpm builds Red Hat packages using local build files. The build
+fetch_and_build_deb builds Debian packages using local build files. The build
 type 'release' builds the latest release tag, 'nightly' builds a nightly from
 the latest 'master' commit, and any other type is interpreted as a git ref to
 facilitate building one-off packages for customers.
@@ -54,7 +54,7 @@ source /buildfiles/pkgvars
 declare pkglatest # to make shellcheck happy
 hubproj="${hubproj:-${pkgname}}"
 nightlyref="${nightlyref:-master}"
-releasepg="${releasepg:-9.5,9.6}"
+releasepg="${releasepg:-9.6,10}"
 nightlypg="${nightlypg:-${releasepg}}"
 versioning="${versioning:-simple}"
 
@@ -65,22 +65,20 @@ fi
 
 echo "header=\"Authorization: token ${GITHUB_TOKEN}\"" > ~/.curlrc
 
-name=$(determine_name)
-email=$(determine_email)
-export RPM_PACKAGER="${name} <${email}>"
+export NAME
+NAME=$(determine_name)
 
-cp "/buildfiles/${pkgname}.spec" /buildfiles/rpmlintrc "${builddir}"
+export EMAIL
+EMAIL=$(determine_email)
+
+cp -R /buildfiles/debian "${builddir}"
 repopath="citusdata/${hubproj}"
 
 case "${1}" in
     release)
         packageversion=${pkglatest%-*}
-        releasetag="v${packageversion%.citus}"
-
-        packagerelease=$(echo "${pkglatest#*-}" | sed -E 's/^[0-9.]+//')
-        if [ -n "${packagerelease}" ]; then
-            releasetag="v${packageversion}-${packagerelease}"
-        fi
+        releasetag="v${packageversion/'~'/-}"
+        releasetag="${releasetag%.citus}"
 
         gitsha=$(curl -s "https://api.github.com/repos/${repopath}/git/refs/tags/${releasetag}" | \
                  jq -r '.object.sha')
@@ -96,6 +94,8 @@ case "${1}" in
             echo "$0: could not verify signature for git tag ${releasetag}" >&2
             exit $failure
         fi
+
+        echo "${releasepg}" | tr ',' '\n' > "${builddir}/debian/pgversions"
         ;;
     *)
         if [ "${1}" == 'nightly' ]; then
@@ -117,73 +117,58 @@ case "${1}" in
         fi
         set -e
 
-        packageversion="${nextversion}.citus"
         timestamp=$(date +'%Y%m%d')
-        packagerelease="0.0.${infix}.${timestamp}.${gitsha:0:7}"
 
-        sed -i -E -e "/^Version:/s/[^ \\t]*$/${packageversion}/" \
-                  -e "/^Release:/s/[^ \\t]*$/${packagerelease}%{dist}/" \
-            "${builddir}/${pkgname}.spec"
+        packagesuffix="${infix}.${timestamp}.${gitsha:0:7}"
+        packageversion="${nextversion}.citus~${packagesuffix}"
+        export CONF_EXTRA_VERSION="+${packagesuffix}"
+
+        echo "${nightlypg}" | tr ',' '\n' > "${builddir}/debian/pgversions"
         ;;
 esac
 
-# this should all take place in a package-build directory
-rpmbuilddir="${builddir}/citus-rpm-build"
-mkdir -p "${rpmbuilddir}"
+tarballpath="${builddir}/${pkgname}_${packageversion}.orig.tar.gz"
+packagepath="${builddir}/${packageversion}"
 
-pkgsrcdir="${builddir}/${pkgname}-${packageversion}"
-mkdir "${pkgsrcdir}"
+curl -sL "https://api.github.com/repos/${repopath}/tarball/${gitsha}" \
+     -o "${tarballpath}"
 
-download=$(mktemp)
-tarballurl="https://api.github.com/repos/${repopath}/tarball/${gitsha}"
-curl -sL "${tarballurl}" -o "${download}"
+mkdir -p "${packagepath}"
+tar xf "${tarballpath}" -C "${packagepath}" --strip-components 1
 
-tarballpath="${rpmbuilddir}/${gitsha}"
-tar xf "${download}" -C "${pkgsrcdir}" --strip-components 1
-tar czf "${tarballpath}" "${pkgsrcdir}"
-
-# force our URL and expanded folder names into spec
-sed -i -E -e "\\|^Source0:|s|https:.*|${tarballurl}|" \
-          -e "/^%global pgmajorversion/s/[0-9]+$/${PGVERSION//'.'/}/" \
-          -e "/^%global pgpackageversion/s/[0-9.]+$/${PGVERSION}/" \
-    "${builddir}/${pkgname}.spec"
-
-osname=$(awk '{print $1}' /etc/system-release)
-if [ "${osname}" == 'Oracle' ]; then
-    locale='C'
-elif [ "${osname}" == 'Fedora' ]; then
-    locale='C.utf8'
-else
-    locale='en_US.utf8'
+# add our email/name to debian control file as uploader if not a release
+if [ "${1}" != 'release' ]; then
+    sed -i -E "/^Uploaders:/s/ .+$/ ${NAME} <${EMAIL}>/" "${builddir}/debian/control.in"
 fi
+
+cp -R "${builddir}/debian" "${packagepath}/debian"
+
+cd "${packagepath}"
 
 case "${1}" in
     release)
         # add minor/major version to package name if using fancy versioning
         if [ "${versioning}" == 'fancy' ]; then
-            infix=$(echo "${packageversion}" | grep -oE '^[0-9]+\.[0-9]+' | tr -d '.')
-            sed -i -E "1i %global pkginfix ${infix}" "${builddir}/${pkgname}.spec"
+            suffix=$(echo "${packageversion}" | grep -oE '^[0-9]+\.[0-9]+')
+            sed -i "/^Package:/ s/$/-${suffix}/" debian/control.in
+            sed -i "/postgresql-%v-${pkgname}/ s/$/-${suffix}/" debian/rules
         fi
         ;;
     nightly)
         msg="Nightly package. Built from ${nightlyref} "
         msg+=$(date +'on %l:%M %p (%Z) on %A, %B %Y' | tr -s ' ')
-        LC_ALL=${locale} rpmdev-bumpspec -c "${msg}" "${builddir}/${pkgname}.spec"
-        sed -i -E 's/0.1.git/0.0.git/' "${builddir}/${pkgname}.spec"
+        dch -v "${packageversion}-1" -D experimental -u low "${msg}"
         ;;
     *)
         msg="Custom package. Built from ${gitsha:0:7} "
         msg+=$(date +'on %l:%M %p (%Z) on %A, %B %Y' | tr -s ' ')
-        LC_ALL=${locale} rpmdev-bumpspec -c "${msg}" "${builddir}/${pkgname}.spec"
-        sed -i -E 's/0.1.pre/0.0.pre/' "${builddir}/${pkgname}.spec"
+        dch -v "${packageversion}-1" -D UNRELEASED -u low "${msg}"
         ;;
 esac
 
-rpmbuild --define "_sourcedir ${rpmbuilddir}" \
---define "_specdir ${rpmbuilddir}" \
---define "_builddir ${rpmbuilddir}" \
---define "_srcrpmdir ${rpmbuilddir}" \
---define "_rpmdir ${rpmbuilddir}" \
--bb "${builddir}/${pkgname}.spec"
 
-cp /citus-rpm-build/x86_64/*.rpm /packages
+pg_buildext updatecontrol
+
+debuild --preserve-envvar CONF_EXTRA_VERSION -uc -us -B --lintian-opts --profile debian --allow-root
+
+cp ../*.deb /packages
