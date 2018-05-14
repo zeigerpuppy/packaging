@@ -176,6 +176,7 @@ detect_repo_url ()
     fedora)
       family='fedora'
       family_short='fedora'
+      pkg_version='4'
       ;;
     centos)
       # defaults are suitable
