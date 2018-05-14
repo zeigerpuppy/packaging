@@ -18,6 +18,24 @@ arch_check ()
   fi
 }
 
+gpg_check ()
+{
+  echo "Checking for gpg..."
+  if command -v gpg > /dev/null; then
+    echo "Detected gpg..."
+  else
+    echo -n "Installing gnupg for GPG verification... "
+    apt-get install -y gnupg &> /dev/null
+    if [ "$?" -ne "0" ]; then
+      echo "Unable to install GPG! Your base system has a problem; please check your default OS's package repositories because GPG should work."
+      echo "Repository installation aborted."
+      exit 1
+    else
+      echo "done."
+    fi
+  fi
+}
+
 curl_check ()
 {
   echo "Checking for curl..."
@@ -26,7 +44,13 @@ curl_check ()
   else
     echo -n "Installing curl... "
     apt-get install -y --no-install-recommends curl &> /dev/null
-    echo "done."
+    if [ "$?" -ne "0" ]; then
+      echo "Unable to install curl! Your base system has a problem; please check your default OS's package repositories because curl should work."
+      echo "Repository installation aborted."
+      exit 1
+    else
+      echo "done."
+    fi
   fi
 }
 
@@ -200,6 +224,7 @@ main ()
 
   arch_check
   curl_check
+  gpg_check
   pgdg_check
 
   # Install the debian-archive-keyring package on debian systems so that
