@@ -1,3 +1,11 @@
+citus (7.4.1.citus-1) stable; urgency=low
+
+  * Fixes a bug that could cause transactions to incorrectly proceed after failure
+
+  * Fixes a bug on INSERT ... SELECT queries in prepared statements
+
+ -- Burak Velioglu <velioglub@citusdata.com>  Wed, 20 Jun 2018 12:25:30 +0000
+
 citus (7.2.2.citus-1) stable; urgency=low
 
   * Fixes a bug that could cause SELECTs to crash during a rebalance
