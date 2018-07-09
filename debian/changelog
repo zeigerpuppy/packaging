@@ -1,3 +1,9 @@
+topn (2.1.0) stable; urgency=low
+
+  * Adds a return type for `topn` function
+
+ -- Furkan Sahin <furkan@citusdata.com>  Mon, 9 Jul 2018 15:41:19 +0000
+
 topn (2.0.2) stable; urgency=low
 
   * Fixes a bug for using with window functions
