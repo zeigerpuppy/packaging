@@ -63,7 +63,7 @@ make %{?_smp_mflags}
 %{pginstdir}/share/extension/%{sname}.control
 
 %changelog
-* Wed Jul 25 2018 - Mehmet Furkan ŞAHİN <furkan@citusdata.com> 7.5.0.citus-1
+* Wed Jul 25 2018 - Mehmet Furkan Sahin <furkan@citusdata.com> 7.5.0.citus-1
 - Update to Citus 7.5.0
 
 * Wed Jun 20 2018 - Burak Velioglu <velioglub@citusdata.com> 7.4.1.citus-1
