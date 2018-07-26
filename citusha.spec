@@ -5,11 +5,11 @@
 
 Summary:	Auto-failover for Postgres
 Name:		%{sname}_%{pgmajorversion}
-Version:	1.0.0.citus
+Version:	1.0.1.citus
 Release:	1%{dist}
 License:	Commercial
 Group:		Applications/Databases
-Source0:	https://github.com/citusdata/citus-ha/archive/v1.0.0.tar.gz
+Source0:	https://github.com/citusdata/citus-ha/archive/v1.0.1.tar.gz
 URL:		https://github.com/citusdata/citus-ha
 BuildRequires:	postgresql%{pgmajorversion}-devel libxml2-devel
 BuildRequires:	libxslt-devel openssl-devel pam-devel readline-devel
@@ -52,6 +52,8 @@ PATH=%{pginstdir}/bin:$PATH
 %{pginstdir}/bin/dnsip
 
 %changelog
+* Thu Jul 26 2018 - Marco Slot <marco@citusdata.com> 1.0.1.citus-1
+- Fix a bug that causes standby to not follow latest timeline after pg_rewind
 * Mon Apr 10 2018 - Marco Slot <marco@citusdata.com> 1.0.0.citus-1
 - Initial release
 

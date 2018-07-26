@@ -1,5 +1,5 @@
 pkgname=citusha
 hubproj=citus-ha
 pkgdesc='Auto-failover solution for Postgres'
-pkglatest=1.0.0.citus-1
+pkglatest=1.0.1.citus-1
 releasepg=10
