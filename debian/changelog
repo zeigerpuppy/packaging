@@ -1,3 +1,105 @@
+citus (7.5.1.PGDG-1) unstable; urgency=low
+
+  * Improves query pushdown planning performance
+
+  * Fixes a bug that could cause modifying CTEs to select wrong execution mode
+
+ -- Burak Velioglu <velioglub@citusdata.com>  Wed, 29 Aug 2018 08:06:42 +0000
+
+citus (7.4.2.PGDG-1) unstable; urgency=low
+
+  * Fixes a segfault in real-time executor during online shard move
+
+ -- Mehmet Furkan Sahin <furkan@citusdata.com>  Fri, 27 Jul 2018 13:42:27 +0000
+
+citus (7.5.0.PGDG-1) unstable; urgency=low
+
+  * Adds foreign key support from hash distributed to reference tables
+
+  * Adds SELECT ... FOR UPDATE support for router plannable queries
+
+  * Adds support for non-partition columns in count distinct
+
+  * Fixes a segfault in real-time executor during online shard move
+
+  * Fixes ALTER TABLE ADD COLUMN constraint check
+
+  * Fixes a bug where INSERT ... SELECT allows one to update distribution column
+
+  * Allows DDL commands to be sequentialized via citus.multi_shard_modify_mode
+
+  * Adds support for topn_union_agg and topn_add_agg across shards
+
+  * Adds support for hll_union_agg and hll_add_agg across shards
+
+  * Fixes a bug that might cause shards to have a wrong owner
+
+  * Adds select_opens_transaction_block GUC
+
+  * Adds utils to implement DDLs for policies in future
+
+  * Makes intermediate results to use separate connections
+
+  * Adds a node_conninfo GUC to set outgoing connection settings
+
+ -- Mehmet Furkan Sahin <furkan@citusdata.com>  Wed, 25 Jul 2018 9:32:24 +0000
+
+citus (6.2.6.PGDG-1) unstable; urgency=low
+
+  * Adds support for respecting enable_hashagg in the master planner
+
+ -- Burak Velioglu <velioglub@citusdata.com>  Fri, 06 Jul 2018 13:30:08 +0000
+
+citus (7.4.1.PGDG-1) unstable; urgency=low
+
+  * Fixes a bug that could cause transactions to incorrectly proceed after failure
+
+  * Fixes a bug on INSERT ... SELECT queries in prepared statements
+
+ -- Burak Velioglu <velioglub@citusdata.com>  Wed, 20 Jun 2018 12:25:30 +0000
+
+citus (7.2.2.PGDG-1) unstable; urgency=low
+
+  * Fixes a bug that could cause SELECTs to crash during a rebalance
+
+ -- Burak Velioglu <velioglub@citusdata.com>  Thu, 17 May 2018 11:51:56 +0000
+
+citus (7.4.0.PGDG-1) unstable; urgency=low
+
+  * Adds support for non-pushdownable subqueries and CTEs in UPDATE/DELETE queries
+
+  * Adds support for pushdownable subqueries and joins in UPDATE/DELETE queries
+
+  * Adds faster shard pruning for subqueries
+
+  * Adds partitioning support to MX table
+
+  * Adds support for (VACUUM | ANALYZE) VERBOSE
+
+  * Adds support for multiple ANDs in HAVING for pushdown planner
+
+  * Adds support for quotation needy schema names
+
+  * Improves operator check time in physical planner for custom data types
+
+  * Removes broadcast join logic
+
+  * Deprecates large_table_shard_count and master_expire_table_cache()  
+
+  * Modifies master_update_node to lock write on shards hosted by node over update
+
+  * DROP TABLE now drops shards as the currrent user instead of the superuser
+
+  * Adds specialised error codes for connection failures
+
+  * Improves error messages on connection failure
+
+  * Fixes issue which prevented multiple citus_table_size calls per query
+
+  * Tests are updated to use create_distributed_table
+
+ -- Burak Velioglu <velioglub@citusdata.com>  Tue, 15 May 2018 13:01:17 +0000
+
 citus (7.3.0.PGDG-1) unstable; urgency=low
 
   * Adds support for non-colocated joins between subqueries
