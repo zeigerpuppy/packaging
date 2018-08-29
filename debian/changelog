@@ -1,3 +1,15 @@
+citus-enterprise (7.5.1.citus-1) stable; urgency=low
+
+  * Improves query pushdown planning performance
+
+  * Adds support to use online rebalancer with MX
+
+  * Adds citus.apply_log_redaction to obfuscate sensitive data in logs
+
+  * Fixes a bug that could cause modifying CTEs to select wrong execution mode
+
+ -- Burak Velioglu <velioglub@citusdata.com>  Wed, 29 Aug 2018 12:50:11 +0000
+
 citus-enterprise (7.4.2.citus-1) stable; urgency=low
 
   * Fixes a segfault in real-time executor during online shard move
