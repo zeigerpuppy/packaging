@@ -24,7 +24,7 @@ citus (7.5.0.PGDG-1) unstable; urgency=low
 
   * Fixes ALTER TABLE ADD COLUMN constraint check
 
-  * Fixes a bug where INSERT ... SELECT allows one to update distribution column
+  * Fixes a bug where INSERT ... SELECT allows one to update dist. column
 
   * Allows DDL commands to be sequentialized via citus.multi_shard_modify_mode
 
@@ -52,7 +52,7 @@ citus (6.2.6.PGDG-1) unstable; urgency=low
 
 citus (7.4.1.PGDG-1) unstable; urgency=low
 
-  * Fixes a bug that could cause transactions to incorrectly proceed after failure
+  * Fixes a bug that could cause txns to incorrectly proceed after failure
 
   * Fixes a bug on INSERT ... SELECT queries in prepared statements
 
@@ -66,9 +66,9 @@ citus (7.2.2.PGDG-1) unstable; urgency=low
 
 citus (7.4.0.PGDG-1) unstable; urgency=low
 
-  * Adds support for non-pushdownable subqueries and CTEs in UPDATE/DELETE queries
+  * Adds support for non-pushdownable subqueries and CTEs in UPDATE/DELETE
 
-  * Adds support for pushdownable subqueries and joins in UPDATE/DELETE queries
+  * Adds support for pushdownable subqueries and joins in UPDATE/DELETE
 
   * Adds faster shard pruning for subqueries
 
@@ -84,9 +84,9 @@ citus (7.4.0.PGDG-1) unstable; urgency=low
 
   * Removes broadcast join logic
 
-  * Deprecates large_table_shard_count and master_expire_table_cache()  
+  * Deprecates large_table_shard_count and master_expire_table_cache()
 
-  * Modifies master_update_node to lock write on shards hosted by node over update
+  * Modifies master_update_node to write-lock shards hosted by node over update
 
   * DROP TABLE now drops shards as the currrent user instead of the superuser
 
@@ -108,7 +108,7 @@ citus (7.3.0.PGDG-1) unstable; urgency=low
 
   * Adds support for modifying CTEs
 
-  * Adds recursive plan for subqueries in WHERE clause with recurring FROM clause
+  * Adds recursive plan for WHERE clause subqueries with recurring FROM clause
 
   * Adds support for bool_ and bit_ aggregates
 
@@ -122,11 +122,11 @@ citus (7.3.0.PGDG-1) unstable; urgency=low
 
   * Fixes a bug on planner when DISTINCT (ON) clause is used with GROUP BY
 
-  * Fixes a bug of creating coordinator planner with distinct and aggregate clause
+  * Fixes a planner bug with distinct and aggregate clauses
 
-  * Fixes a bug that could open a new connection on every table size function call
+  * Fixes a bug that opened new connections on each table size function call
 
-  * Fixes a bug canceling backends that are not involved in distributed deadlocks
+  * Fixes a bug canceling backends not involved in distributed deadlocks
 
   * Fixes count distinct bug on column expressions when used with subqueries
 
@@ -142,7 +142,7 @@ citus (7.2.1.PGDG-1) unstable; urgency=low
 
   * Adds support for respecting enable_hashagg in the master plan
 
-  * Fixes a bug canceling backends that are not involved in distributed deadlocks
+  * Fixes a bug canceling backends not involved in distributed deadlocks
 
  -- Burak Velioglu <velioglub@citusdata.com>  Tue, 06 Feb 2018 14:46:07 +0000
 
@@ -162,9 +162,7 @@ citus (7.2.0.PGDG-1) unstable; urgency=low
 
   * Adds support for count(distinct) in queries with a subquery
 
-  * Adds support for non-equijoins when there is already an equijoin for queries
-
-  * Adds support for non-equijoins when there is already an equijoin for subquery
+  * Adds support for non-equijoins when there is already an equijoin
 
   * Adds support for real-time executor to run in transaction blocks
 
@@ -188,9 +186,9 @@ citus (7.2.0.PGDG-1) unstable; urgency=low
 
   * Improves support for using functions in subqueries
 
-  * Fixes a bug that could cause real-time executor to crash during cancellation
+  * Fixes a bug that causing real-time executor to crash during cancellation
 
-  * Fixes a bug that could cause real-time executor to get stuck on cancellation
+  * Fixes a bug that causing real-time executor to get stuck on cancellation
 
   * Fixes a bug that could block modification queries unnecessarily
 
@@ -198,13 +196,13 @@ citus (7.2.0.PGDG-1) unstable; urgency=low
 
   * Fixes a bug that could cause an assert failure with ANALYZE statements
 
-  * Fixes a bug that could allow pushing down wrong set operations in subqueries
+  * Fixes a bug that would push down wrong set operations in subqueries
 
   * Fixes a bug that could cause a deadlock in create_distributed_table
 
   * Fixes a bug that could confuse user about ANALYZE usage
 
-  * Fixes a bug that could lead to false positive distributed deadlock detections
+  * Fixes a bug causing false positive distributed deadlock detections
 
   * Relaxes the locking for DDL commands on partitioned tables
 
@@ -216,7 +214,7 @@ citus (7.2.0.PGDG-1) unstable; urgency=low
 
 citus (7.1.1.PGDG-1) unstable; urgency=low
 
-  * Fixes a bug that could prevent pushing down subqueries with reference tables
+  * Fixes a bug preventing pushing down subqueries with reference tables
 
   * Fixes a bug that could create false positive distributed deadlocks
 
@@ -250,7 +248,7 @@ citus (7.1.0.PGDG-1) unstable; urgency=low
 
   * Adds support for adding primary key using already defined index
 
-  * Adds parameter to shard copy functions to support distinct replication models
+  * Adds replication parameter to shard copy functions
 
   * Changes shard_name UDF to omit public schema name
 
@@ -262,7 +260,7 @@ citus (7.1.0.PGDG-1) unstable; urgency=low
 
   * Fixes a bug that could prevent attaching partitions to a table in schema
 
-  * Fixes a bug that could prevent adding a node to cluster with reference table
+  * Fixes a bug preventing adding nodes to clusters with reference tables
 
   * Fixes a bug that could cause a crash with INSERT ... SELECT queries
 
@@ -434,7 +432,7 @@ citus (6.2.1.PGDG-1) unstable; urgency=low
 
   * Fixes a bug causing incorrectly reading invalidated cache
 
-  * Fixes a bug related to creation of schemas of in workers with incorrect owner
+  * Fixes a bug related to creation of schemas in workers with incorrect owner
 
   * Fixes a bug related to concurrent run of shard drop functions
 
@@ -506,7 +504,7 @@ citus (6.0.0.PGDG-1) unstable; urgency=low
 
   * Parallelizes the master_modify_multiple_shards UDF
 
-  * Changes distributed table creation to error if the target table is not empty
+  * Changes distributed table creation to error if target table is not empty
 
   * Changes the pg_dist_shard.logicalrelid column from an oid to regclass
 
@@ -560,7 +558,7 @@ citus (5.2.2.PGDG-1) unstable; urgency=low
 
   * Fixes a bug that caused crashes during joins with a WHERE false clause
 
-  * Fixes a bug triggered by unique violation errors raised in long transactions
+  * Fixes a bug triggered by unique violation errors raised in long txns
 
   * Fixes a bug resulting in multiple registration of transaction callbacks
 
