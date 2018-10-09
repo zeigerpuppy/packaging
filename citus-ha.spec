@@ -2,6 +2,7 @@
 %global pgpackageversion 10
 %global pginstdir /usr/pgsql-%{pgpackageversion}
 %global sname citus-ha
+%global extname citusha
 
 Summary:	Auto-HA support for Citus
 Name:		%{sname}%{?pkginfix}_%{pgmajorversion}
@@ -33,20 +34,22 @@ make %{?_smp_mflags}
 %install
 PATH=%{pginstdir}/bin:$PATH
 %make_install
+%{__mkdir} -p %{buildroot}%{pginstdir}/bin
+%{__cp} /usr/pgsql-10/bin/citusha %{buildroot}%{pginstdir}/bin/citusha
 # Install documentation with a better name:
 %{__mkdir} -p %{buildroot}%{pginstdir}/doc/extension
-%{__cp} README.md %{buildroot}%{pginstdir}/doc/extension/README-%{sname}.md
+%{__cp} README.md %{buildroot}%{pginstdir}/doc/extension/README-%{extname}.md
 
 %clean
 %{__rm} -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc CHANGELOG.md
-%doc %{pginstdir}/doc/extension/README-%{sname}.md
-%{pginstdir}/lib/citus-ha.so
-%{pginstdir}/share/extension/citus-ha-*.sql
-%{pginstdir}/share/extension/citus-ha.control
+%doc %{pginstdir}/doc/extension/README-%{extname}.md
+%{pginstdir}/lib/%{extname}.so
+%{pginstdir}/share/extension/%{extname}-*.sql
+%{pginstdir}/share/extension/%{extname}.control
+%{pginstdir}/bin/citusha
 
 %changelog
 * Fri Oct 5 2018 - Burak Velioglu <velioglub@citusdata.com> 1.0.0
