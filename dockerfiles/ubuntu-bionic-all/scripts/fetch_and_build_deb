@@ -54,7 +54,7 @@ source /buildfiles/pkgvars
 declare pkglatest # to make shellcheck happy
 hubproj="${hubproj:-${pkgname}}"
 nightlyref="${nightlyref:-master}"
-releasepg="${releasepg:-9.6,10}"
+releasepg="${releasepg:-9.6,10,11}"
 nightlypg="${nightlypg:-${releasepg}}"
 versioning="${versioning:-simple}"
 
@@ -169,6 +169,9 @@ esac
 
 pg_buildext updatecontrol
 
-debuild --preserve-envvar CONF_EXTRA_VERSION -uc -us -B --lintian-opts --profile debian --allow-root
+procs="$(nproc)"
+mjobs="$(expr $procs + 1)"
+
+DEB_BUILD_OPTIONS="parallel=${mjobs}" debuild --preserve-envvar CONF_EXTRA_VERSION -uc -us -B --lintian-opts --profile debian --allow-root
 
 cp ../*.deb /packages
