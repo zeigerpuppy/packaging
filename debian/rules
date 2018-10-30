@@ -3,8 +3,8 @@
 include /usr/share/postgresql-common/pgxs_debian_control.mk
 
 override_dh_auto_build:
-	make -C src/bin all
-	+cd src/monitor && pg_buildext build build-%v
+	+make -C src/bin all
+	+cp -R debian src/monitor/ && cd src/monitor && pg_buildext build build-%v
 
 override_dh_auto_clean:
 	+make -C src/bin clean
@@ -16,6 +16,7 @@ override_dh_auto_test:
 override_dh_auto_install:
 	+make -C src/bin install
 	+cd src/monitor && pg_buildext install build-%v postgresql-%v-citus-ha
+	+cp -R ./src/monitor/* ./
 
 %:
 	dh $@
