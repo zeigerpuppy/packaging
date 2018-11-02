@@ -1,15 +1,15 @@
-%global pgmajorversion 10
-%global pgpackageversion 10
+%global pgmajorversion 11
+%global pgpackageversion 11
 %global pginstdir /usr/pgsql-%{pgpackageversion}
 %global sname hll
 
 Summary:	HyperLogLog extension for PostgreSQL
 Name:		%{sname}_%{pgmajorversion}
-Version:	2.10.2.citus
+Version:	2.12.citus
 Release:	1%{dist}
 License:	ASL 2.0
 Group:		Applications/Databases
-Source0:	https://github.com/citusdata/postgresql-hll/archive/v2.10.2.tar.gz
+Source0:	https://github.com/citusdata/postgresql-hll/archive/v2.12.tar.gz
 URL:		https://github.com/citusdata/postgresql-hll
 BuildRequires:	postgresql%{pgmajorversion}-devel libxml2-devel
 BuildRequires:	libxslt-devel openssl-devel pam-devel readline-devel
@@ -31,25 +31,38 @@ PATH=%{pginstdir}/bin:$PATH
 %make_install
 # Install documentation with a better name:
 %{__mkdir} -p %{buildroot}%{pginstdir}/doc/extension
-%{__cp} README.markdown %{buildroot}%{pginstdir}/doc/extension/README-%{sname}.md
+%{__cp} README.md %{buildroot}%{pginstdir}/doc/extension/README-%{sname}.md
 
 %clean
 %{__rm} -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc CHANGELOG.markdown
+%doc CHANGELOG.md
 %if 0%{?rhel} && 0%{?rhel} <= 6
 %doc LICENSE
 %else
 %license LICENSE
 %endif
 %doc %{pginstdir}/doc/extension/README-%{sname}.md
-%{pginstdir}/lib/hll.so
-%{pginstdir}/share/extension/hll-*.sql
-%{pginstdir}/share/extension/hll.control
+%{pginstdir}/lib/%{sname}.so
+%{pginstdir}/share/extension/%{sname}-*.sql
+%{pginstdir}/share/extension/%{sname}.control
+%ifarch ppc64 ppc64le
+ %else
+ %if %{pgmajorversion} >= 11 && %{pgmajorversion} < 90
+  %if 0%{?rhel} && 0%{?rhel} <= 6
+  %else
+   %{pginstdir}/lib/bitcode/%{sname}*.bc
+   %{pginstdir}/lib/bitcode/%{sname}/src/*.bc
+  %endif
+ %endif
+%endif
 
 %changelog
+* Sat Nov 3 2018 - Burak Yucesoy <burak@citusdata.com> 2.12.citus-1
+- Support for PostgreSQL 11
+
 * Thu Oct 5 2017 - Jason Petersen <jason@citusdata.com> 2.10.2.citus-1
 - Support for testing PostgreSQL 10
 
