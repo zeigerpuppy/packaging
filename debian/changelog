@@ -1,3 +1,9 @@
+topn (2.2.0) stable; urgency=low
+
+  * Adds PostgreSQL 11 support
+
+ -- Burak Velioglu <velioglub@citusdata.com>  Fri, 2 Nov 2018 11:14:12 +0000
+
 topn (2.1.0) stable; urgency=low
 
   * Adds a return type for `topn` function
