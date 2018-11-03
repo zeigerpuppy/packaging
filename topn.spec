@@ -1,15 +1,15 @@
-%global pgmajorversion 10
-%global pgpackageversion 10
+%global pgmajorversion 11
+%global pgpackageversion 11
 %global pginstdir /usr/pgsql-%{pgpackageversion}
 %global sname topn
 
 Summary:	Counter Based Implementation for top-n Approximation
 Name:		%{sname}_%{pgmajorversion}
-Version:	2.1.0.citus
+Version:	2.2.0.citus
 Release:	1%{dist}
 License:	AGPLv3
 Group:		Applications/Databases
-Source0:	https://github.com/citusdata/postgresql-topn/archive/v2.1.0.tar.gz
+Source0:	https://github.com/citusdata/postgresql-topn/archive/v2.2.0.tar.gz
 URL:		https://github.com/citusdata/posgresql-topn
 BuildRequires:	postgresql%{pgmajorversion}-devel libxml2-devel
 BuildRequires:	libxslt-devel openssl-devel pam-devel readline-devel
@@ -45,8 +45,21 @@ PATH=%{pginstdir}/bin:$PATH
 %{pginstdir}/lib/topn.so
 %{pginstdir}/share/extension/topn-*.sql
 %{pginstdir}/share/extension/topn.control
+%ifarch ppc64 ppc64le
+ %else
+ %if %{pgmajorversion} >= 11 && %{pgmajorversion} < 90
+  %if 0%{?rhel} && 0%{?rhel} <= 6
+  %else
+   %{pginstdir}/lib/bitcode/%{sname}/%{sname}*.bc
+   %{pginstdir}/lib/bitcode/%{sname}*.bc
+  %endif
+ %endif
+%endif
 
 %changelog
+* Fri Nov 02 2018 - Burak Velioglu <velioglub@citusdata.com> 2.2.0.citus-1
+- Upgrade PG to 11
+
 * Mon Jul 09 2018 - Furkan Sahin <furkan@citusdata.com> 2.1.0.citus-1
 - Adds a return type for `topn` function
 
