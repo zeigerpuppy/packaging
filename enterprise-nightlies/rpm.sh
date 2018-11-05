@@ -32,11 +32,11 @@ curl_check ()
 
 pgdg_check ()
 {
-  echo "Checking for postgresql10-server..."
-  if yum list -q postgresql10-server &> /dev/null; then
-    echo "Detected postgresql10-server..."
+  echo "Checking for postgresql11-server..."
+  if yum list -q postgresql11-server &> /dev/null; then
+    echo "Detected postgresql11-server..."
   else
-    echo -n "Installing pgdg10 repo... "
+    echo -n "Installing pgdg11 repo... "
 
     yum install -d0 -e0 -y "${repo_url}"
     echo "done."
@@ -195,7 +195,7 @@ detect_repo_url ()
     fedora)
       family='fedora'
       family_short='fedora'
-      pkg_version='4'
+      pkg_version='2'
       ;;
     centos)
       # defaults are suitable
@@ -208,9 +208,9 @@ detect_repo_url ()
       ;;
   esac
 
-  repo_url="https://download.postgresql.org/pub/repos/yum/10/${family}"
+  repo_url="https://download.postgresql.org/pub/repos/yum/11/${family}"
   repo_url+="/${family_short}-${pkg_dist}-x86_64"
-  repo_url+="/pgdg-${pkg_os}10-10-${pkg_version}.noarch.rpm"
+  repo_url+="/pgdg-${pkg_os}11-11-${pkg_version}.noarch.rpm"
 }
 
 main ()

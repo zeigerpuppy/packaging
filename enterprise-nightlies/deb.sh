@@ -56,9 +56,9 @@ curl_check ()
 
 pgdg_check ()
 {
-  echo "Checking for postgresql-10..."
-  if apt-cache show postgresql-10 &> /dev/null; then
-    echo "Detected postgresql-10..."
+  echo "Checking for postgresql-11..."
+  if apt-cache show postgresql-11 &> /dev/null; then
+    echo "Detected postgresql-11..."
   else
     pgdg_list='/etc/apt/sources.list.d/pgdg.list'
     pgdg_source_path="deb http://apt.postgresql.org/pub/repos/apt/ ${codename}-pgdg main"
