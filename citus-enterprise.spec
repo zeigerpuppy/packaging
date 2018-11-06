@@ -1,17 +1,18 @@
-%global pgmajorversion 10
-%global pgpackageversion 10
+%global pgmajorversion 11
+%global pgpackageversion 11
 %global pginstdir /usr/pgsql-%{pgpackageversion}
 %global sname citus-enterprise
+%global pname citus
 
 Summary:	PostgreSQL-based distributed RDBMS
 Name:		%{sname}%{?pkginfix}_%{pgmajorversion}
 Provides:	citus_%{pgmajorversion}
 Conflicts:	citus_%{pgmajorversion}
-Version:	7.5.1.citus
+Version:	8.0.0.citus
 Release:	1%{dist}
 License:	AGPLv3
 Group:		Applications/Databases
-Source0:       https://github.com/citusdata/citus-enterprise/archive/v7.5.1.tar.gz
+Source0:       https://github.com/citusdata/citus-enterprise/archive/v8.0.0.tar.gz
 URL:		https://github.com/citusdata/citus-enterprise
 BuildRequires:	postgresql%{pgmajorversion}-devel libcurl-devel
 Requires:	postgresql%{pgmajorversion}-server
@@ -61,8 +62,22 @@ make %{?_smp_mflags}
 %{pginstdir}/lib/citus.so
 %{pginstdir}/share/extension/citus-*.sql
 %{pginstdir}/share/extension/citus.control
+%ifarch ppc64 ppc64le
+  %else
+  %if %{pgmajorversion} >= 11 && %{pgmajorversion} < 90
+    %if 0%{?rhel} && 0%{?rhel} <= 6
+    %else
+      %{pginstdir}/lib/bitcode/%{pname}*.bc
+      %{pginstdir}/lib/bitcode/%{pname}/*.bc
+      %{pginstdir}/lib/bitcode/%{pname}/*/*.bc
+    %endif
+  %endif
+%endif
 
 %changelog
+* Tue Nov 6 2018 - Burak Velioglu <velioglub@citusdata.com> 8.0.0.citus-1
+- Update to Citus Enterprise 8.0.0
+
 * Wed Aug 29 2018 - Burak Velioglu <velioglub@citusdata.com> 7.5.1.citus-1
 - Update to Citus Enterprise 7.5.1
 
