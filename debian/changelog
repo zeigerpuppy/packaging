@@ -1,3 +1,9 @@
+citus-rebalancer (8.0.0.citus-1) stable; urgency=low
+
+  * Adds compatibility with Citus 8.0
+
+ -- Burak Velioglu <velioglub@citusdata.com>  Wed, 07 Nov 2018 07:13:28 +0000
+
 citus-rebalancer (7.5.0.citus-1) stable; urgency=low
 
   * Adds compatibility with Citus 7.5
