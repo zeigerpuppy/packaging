@@ -13,6 +13,9 @@ override_dh_auto_clean:
 override_dh_auto_test:
 	# nothing to do here, see debian/tests/* instead
 
+override_dh_install:
+	+dh_install --sourcedir=$(shell pg_config --bindir)
+
 override_dh_auto_install:
 	+make -C src/bin install
 	+cd src/monitor && pg_buildext install build-%v postgresql-%v-citus-ha
