@@ -24,7 +24,7 @@ HyperLogLog extension for PostgreSQL.
 
 %build
 PATH=%{pginstdir}/bin:$PATH
-make %{?_smp_mflags}
+make %{?_smp_mflags} SHLIB_LINK=-lstdc++
 
 %install
 PATH=%{pginstdir}/bin:$PATH
