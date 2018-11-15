@@ -1,3 +1,9 @@
+citus-analytics (1.1.0.citus-1) testing; urgency=low
+
+  * Upgrade PG version
+
+ -- Burak Velioglu <velioglub@citusdata.com>  Thu, 15 Nov 2018 11:22:44 +0000
+
 citus-analytics (1.0.0.citus-1) testing; urgency=low
 
   * Initial release
