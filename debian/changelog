@@ -1,3 +1,17 @@
+citus-enterprise (7.5.2.citus-1) stable; urgency=low
+
+  * Fixes inconsistent metadata error when shard metadata caching get interrupted
+
+  * Fixes a bug that could cause memory leak
+
+  * Fixes a bug that prevents recovering wrong transactions in MX
+
+  * Fixes a bug to prevent wrong memory accesses on Citus MX under very high load
+
+  * Fixes crashes caused by stack size increase under high memory load
+
+ -- Burak Velioglu <velioglub@citusdata.com>  Thu, 15 Nov 2018 11:22:43 +0000
+
 citus-enterprise (8.0.0.citus-1) stable; urgency=low
 
   * Adds support for PostgreSQL 11
