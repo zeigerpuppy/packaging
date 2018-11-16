@@ -3,7 +3,7 @@ Section: database
 Priority: optional
 Maintainer: Citus Data <packaging@citusdata.com>
 Uploaders: Marco Slot <marco@citusdata.com>
-Build-Depends: debhelper (>= 9), autotools-dev, flex, postgresql-server-dev-all (>= 158~), libedit-dev, libpam0g-dev, libselinux1-dev, libxslt1-dev, postgresql-9.6-citus
+Build-Depends: debhelper (>= 9), autotools-dev, flex, postgresql-server-dev-all (>= 158~), libedit-dev, libpam0g-dev, libselinux1-dev, libxslt1-dev, postgresql-9.6-citus, postgresql-10-citus
 Standards-Version: 3.9.7
 Homepage: https://github.com/citusdata/pg_cron
 
