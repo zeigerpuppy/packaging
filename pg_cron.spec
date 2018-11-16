@@ -1,15 +1,15 @@
-%global pgmajorversion 10
-%global pgpackageversion 10
+%global pgmajorversion 11
+%global pgpackageversion 11
 %global pginstdir /usr/pgsql-%{pgpackageversion}
 %global sname pg_cron
 
 Summary:	Periodic job scheduler for PostgreSQL
 Name:		%{sname}_%{pgmajorversion}
-Version:	1.0.2
+Version:	1.1.3
 Release:	1%{dist}
 License:	PostgreSQL
 Group:		Applications/Databases
-Source0:	https://github.com/citusdata/pg_cron/archive/v1.0.2.tar.gz
+Source0:	https://github.com/citusdata/pg_cron/archive/v1.1.3.tar.gz
 URL:		https://github.com/citusdata/pg_cron
 BuildRequires:	postgresql%{pgmajorversion}-devel libxml2-devel
 BuildRequires:	libxslt-devel openssl-devel pam-devel readline-devel
@@ -44,8 +44,20 @@ PATH=%{pginstdir}/bin:$PATH
 %{pginstdir}/lib/pg_cron.so
 %{pginstdir}/share/extension/pg_cron-*.sql
 %{pginstdir}/share/extension/pg_cron.control
+%ifarch ppc64 ppc64le
+  %else
+  %if %{pgmajorversion} >= 11 && %{pgmajorversion} < 90
+    %if 0%{?rhel} && 0%{?rhel} <= 6
+    %else
+      %{pginstdir}/lib/bitcode/%{sname}/src/*.bc
+      %{pginstdir}/lib/bitcode/%{sname}.index.bc
+    %endif
+  %endif
+%endif
 
 %changelog
+* Fri Nov 16 2018 - Burak Velioglu <velioglub@citusdata.com> 1.1.3.citus-1
+- PostgreSQL 11 support
 * Fri Oct 6 2017 - Marco Slot <marco@citusdata.com> 1.0.2-1.citus-1
 - PostgreSQL 10 support
 - Restrict the maximum number of concurrent tasks
