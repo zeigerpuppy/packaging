@@ -1,5 +1,5 @@
-%global pgmajorversion 10
-%global pgpackageversion 10
+%global pgmajorversion 11
+%global pgpackageversion 11
 %global pginstdir /usr/pgsql-%{pgpackageversion}
 %global sname citus-ha
 %global extname citusha
@@ -14,10 +14,9 @@ License:	AGPLv3
 Group:		Applications/Databases
 Source0:	https://github.com/citusdata/citus-ha/archive/v1.0.0.tar.gz
 URL:		https://github.com/citusdata/citus-ha
-BuildRequires:	postgresql%{pgmajorversion}-devel libxml2-devel
+BuildRequires:	postgresql%{pgmajorversion}-devel postgresql%{pgmajorversion}-server libxml2-devel
 BuildRequires:	libxslt-devel openssl-devel pam-devel readline-devel
-BuildRequires:	citus_%{pgmajorversion} >= 7.0.0
-Requires:	postgresql%{pgmajorversion}-server citus-enterprise%{?pkginfix}_%{pgmajorversion} >= 7.0.0
+Requires:	postgresql%{pgmajorversion}-server
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %description
@@ -35,7 +34,7 @@ make %{?_smp_mflags}
 PATH=%{pginstdir}/bin:$PATH
 %make_install
 %{__mkdir} -p %{buildroot}%{pginstdir}/bin
-%{__cp} /usr/pgsql-10/bin/citusha %{buildroot}%{pginstdir}/bin/citusha
+%{__cp} /usr/pgsql-%{pgpackageversion}/bin/citusha %{buildroot}%{pginstdir}/bin/citusha
 # Install documentation with a better name:
 %{__mkdir} -p %{buildroot}%{pginstdir}/doc/extension
 %{__cp} README.md %{buildroot}%{pginstdir}/doc/extension/README-%{extname}.md
@@ -50,6 +49,17 @@ PATH=%{pginstdir}/bin:$PATH
 %{pginstdir}/share/extension/%{extname}-*.sql
 %{pginstdir}/share/extension/%{extname}.control
 %{pginstdir}/bin/citusha
+%ifarch ppc64 ppc64le
+  %else
+  %if %{pgmajorversion} >= 11 && %{pgmajorversion} < 90
+    %if 0%{?rhel} && 0%{?rhel} <= 6
+    %else
+      %{pginstdir}/lib/bitcode/%{extname}*.bc
+      %{pginstdir}/lib/bitcode/%{extname}/*.bc
+    %endif
+  %endif
+%endif
+
 
 %changelog
 * Fri Oct 5 2018 - Burak Velioglu <velioglub@citusdata.com> 1.0.0
