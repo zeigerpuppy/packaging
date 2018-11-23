@@ -3,10 +3,12 @@
 include /usr/share/postgresql-common/pgxs_debian_control.mk
 
 override_dh_auto_build:
-	+make -C src/bin all
-	+cp -R debian src/monitor/ && cd src/monitor && pg_buildext build build-%v
+	+make PG_CONFIG=/usr/lib/postgresql/11/bin/pg_config
+	+make
+	+cd src/monitor && pg_buildext build build-%v
 
 override_dh_auto_clean:
+	+cp -R debian src/monitor/
 	+make -C src/bin clean
 	+cd src/monitor && pg_buildext clean build-%v
 
@@ -18,6 +20,7 @@ override_dh_install:
 
 override_dh_auto_install:
 	+make -C src/bin install
+	+cp ./src/monitor/citusha* ./src/monitor/build-*/
 	+cd src/monitor && pg_buildext install build-%v postgresql-%v-citus-ha
 	+cp -R ./src/monitor/* ./
 
