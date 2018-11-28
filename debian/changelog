@@ -1,14 +1,12 @@
+citus-enterprise (8.0.1.citus-1) stable; urgency=low
+
+  * Task tracker user improvements
+
+ -- Burak Velioglu <velioglub@citusdata.com>  Wed, 28 Nov 2018 20:54:36 +0000
+
 citus-enterprise (7.5.3.citus-1) stable; urgency=low
 
-  * Fixes inconsistent metadata error when shard metadata caching get interrupted
-
-  * Fixes a bug that could cause memory leak
-
-  * Fixes a bug that prevents recovering wrong transactions in MX
-
-  * Fixes a bug to prevent wrong memory accesses on Citus MX under very high load
-
-  * Fixes crashes caused by stack size increase under high memory load
+  * Task tracker user improvements
 
  -- Burak Velioglu <velioglub@citusdata.com>  Tue, 27 Nov 2018 19:54:36 +0000
 
