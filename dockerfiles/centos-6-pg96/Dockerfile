@@ -34,7 +34,7 @@ RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 
 
 # install latest Citus release to get header files
 RUN curl -s https://packagecloud.io/install/repositories/citusdata/community/script.rpm.sh | bash \
-    && yum install -y citus73_96 \
+    && yum install -y citus80_96 \
     && yum clean all
 
 RUN touch /rpmlintrc \

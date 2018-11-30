@@ -38,6 +38,11 @@ RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 
          -o /usr/bin/jq \
     && chmod +x /usr/bin/jq
 
+# install latest Citus release to get header files
+RUN curl -s https://packagecloud.io/install/repositories/citusdata/community/script.rpm.sh | bash \
+    && yum install -y citus80_11 \
+    && yum clean all
+
 RUN touch /rpmlintrc \
     && echo '%_build_pkgcheck %{_bindir}/rpmlint -f /rpmlintrc' >> /etc/rpm/macros
 

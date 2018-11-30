@@ -21,9 +21,20 @@ RUN set -x \
 	; } \
 	&& rm -rf /var/lib/apt/lists/*
 
+RUN set -ex; \
+# pub   4096R/ACCC4CF8 2011-10-13 [expires: 2019-07-02]
+#       Key fingerprint = B97B 0AFC AA1A 47F0 44F2  44A0 7FCC 7D46 ACCC 4CF8
+# uid                  PostgreSQL Debian Repository
+    key='B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8'; \
+    export GNUPGHOME="$(mktemp -d)"; \
+    gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
+    gpg --batch --export "$key" > /etc/apt/trusted.gpg.d/postgres.gpg; \
+    command -v gpgconf > /dev/null && gpgconf --kill all; \
+    rm -rf "$GNUPGHOME"; \
+    apt-key list
+
 # install build tools and PostgreSQL development files
-RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8 \
-    && echo 'deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main' > /etc/apt/sources.list.d/pgdg.list \
+RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main' > /etc/apt/sources.list.d/pgdg.list \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
         autotools-dev \
@@ -56,7 +67,7 @@ RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 
 
 # install latest Citus release to get header files
 RUN curl -s https://packagecloud.io/install/repositories/citusdata/community/script.deb.sh | bash \
-    && apt-get install -y postgresql-9.6-citus-7.3 postgresql-10-citus-7.3 \
+    && apt-get install -y postgresql-9.6-citus-8.0 postgresql-10-citus-8.0 postgresql-11-citus-8.0 \
     && rm -rf /var/lib/apt/lists/*
 
 # patch pg_buildext to use multiple processors
