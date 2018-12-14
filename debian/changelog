@@ -1,3 +1,9 @@
+citus-enterprise (8.0.2.citus-1) stable; urgency=low
+
+  * Execute SQL tasks using worker_execute_sql_task UDF when using task-tracker
+
+ -- Burak Velioglu <velioglub@citusdata.com>  Fri, 14 Dec 2018 12:14:05 +0000
+
 citus-enterprise (7.5.4.citus-1) stable; urgency=low
 
   * Fixes a bug that could cause maintenance daemon panic
