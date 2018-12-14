@@ -1,3 +1,11 @@
+citus (8.0.2.citus-1) stable; urgency=low
+
+  * Fixes a bug that could cause maintenance daemon panic
+
+  * Fixes crashes caused by stack size increase under high memory load
+
+ -- Burak Velioglu <velioglub@citusdata.com>  Thu, 13 Dec 2018 13:56:44 +0000
+
 citus (7.5.4.citus-1) stable; urgency=low
 
   * Fixes a bug that could cause maintenance daemon panic
@@ -297,7 +305,7 @@ citus (6.2.5.citus-1) stable; urgency=low
   * Fixes a bug that could crash the coordinator while reporting a remote error
 
  -- Burak Velioglu <velioglub@citusdata.com>  Thu, 11 Jan 2018 11:40:28 +0000
- 
+
 citus (7.1.2.citus-1) stable; urgency=low
 
   * Fixes a bug that could cause assigning wrong IDs to transactions
