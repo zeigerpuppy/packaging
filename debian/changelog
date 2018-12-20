@@ -1,3 +1,9 @@
+topn (2.2.1) stable; urgency=low
+
+  * Packaging fixes
+
+ -- Hanefi Onaldi <hanefi@citusdata.com>  Thu, 20 Dec 2018 19:15:18 +0000
+
 topn (2.2.0) stable; urgency=low
 
   * Adds PostgreSQL 11 support
