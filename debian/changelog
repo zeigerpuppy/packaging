@@ -1,3 +1,9 @@
+topn (2.2.2) stable; urgency=low
+
+  * PG11 beautified
+
+ -- Furkan Sahin <furkan@citusdata.com>  Fri, 21 Dec 2018 15:40:00 +0000
+
 topn (2.2.1) stable; urgency=low
 
   * Packaging fixes
