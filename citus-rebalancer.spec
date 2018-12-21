@@ -7,11 +7,11 @@ Summary:	Dynamic shard balancer for Citus
 Name:		%{sname}%{?pkginfix}_%{pgmajorversion}
 Provides:	%{sname}_%{pgmajorversion}
 Conflicts:	%{sname}_%{pgmajorversion}
-Version:	8.0.0.citus
+Version:	8.1.0.citus
 Release:	1%{dist}
 License:	AGPLv3
 Group:		Applications/Databases
-Source0:	https://github.com/citusdata/shard_rebalancer/archive/v8.0.0.tar.gz
+Source0:	https://github.com/citusdata/shard_rebalancer/archive/v8.1.0.tar.gz
 URL:		https://github.com/citusdata/shard_rebalancer
 BuildRequires:	postgresql%{pgmajorversion}-devel libxml2-devel
 BuildRequires:	libxslt-devel openssl-devel pam-devel readline-devel
@@ -47,8 +47,21 @@ PATH=%{pginstdir}/bin:$PATH
 %{pginstdir}/lib/shard_rebalancer.so
 %{pginstdir}/share/extension/shard_rebalancer-*.sql
 %{pginstdir}/share/extension/shard_rebalancer.control
+%ifarch ppc64 ppc64le
+ %else
+ %if %{pgmajorversion} >= 11 && %{pgmajorversion} < 90
+   %if 0%{?rhel} && 0%{?rhel} <= 6
+   %else
+     %{pginstdir}/lib/bitcode/shard_rebalancer*.bc
+     %{pginstdir}/lib/bitcode/shard_rebalancer/*.bc
+   %endif
+ %endif
+%endif
 
 %changelog
+* Fri Dec 21 2018 - Hanefi Onaldi <hanefi@citusdata.com> 8.1.0.citus-1
+- Official release for 8.1.0
+
 * Tue Nov 06 2018 - Burak Velioglu <velioglub@citusdata.com> 8.0.0.citus-1
 - Official release for 8.0.0
 
