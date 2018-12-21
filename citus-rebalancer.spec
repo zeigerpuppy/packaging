@@ -52,9 +52,8 @@ PATH=%{pginstdir}/bin:$PATH
  %if %{pgmajorversion} >= 11 && %{pgmajorversion} < 90
    %if 0%{?rhel} && 0%{?rhel} <= 6
    %else
-     %{pginstdir}/lib/bitcode/%{sname}*.bc
-     %{pginstdir}/lib/bitcode/%{sname}/*.bc
-     %{pginstdir}/lib/bitcode/%{sname}/*/*.bc
+     %{pginstdir}/lib/bitcode/shard_rebalancer*.bc
+     %{pginstdir}/lib/bitcode/shard_rebalancer/*.bc
    %endif
  %endif
 %endif
