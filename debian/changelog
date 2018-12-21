@@ -1,3 +1,9 @@
+citus-rebalancer (8.1.0.citus-1) stable; urgency=low
+
+  * Adds compatibility with Citus 8.1
+
+ -- Hanefi Onaldi <hanefi@citusdata.com>  Fri, 21 Dec 2018 11:27:58 +0000
+
 citus-rebalancer (8.0.0.citus-1) stable; urgency=low
 
   * Adds compatibility with Citus 8.0
@@ -23,7 +29,7 @@ citus-rebalancer (7.3.0.citus-1) stable; urgency=low
  -- Burak Velioglu <velioglub@citusdata.com>  Fri, 16 Mar 2018 09:14:42 +0000
 
 citus-rebalancer (7.2.0.citus-1) stable; urgency=low
-  
+
   * Adds compatibility with Citus 7.2
 
  -- Burak Velioglu <velioglub@citusdata.com>  Thu, 18 Jan 2018 13:12:25 +0000
