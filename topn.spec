@@ -5,11 +5,11 @@
 
 Summary:	Counter Based Implementation for top-n Approximation
 Name:		%{sname}_%{pgmajorversion}
-Version:	2.2.1.citus
+Version:	2.2.2.citus
 Release:	1%{dist}
 License:	AGPLv3
 Group:		Applications/Databases
-Source0:	https://github.com/citusdata/postgresql-topn/archive/v2.2.1.tar.gz
+Source0:	https://github.com/citusdata/postgresql-topn/archive/v2.2.2.tar.gz
 URL:		https://github.com/citusdata/posgresql-topn
 BuildRequires:	postgresql%{pgmajorversion}-devel libxml2-devel
 BuildRequires:	libxslt-devel openssl-devel pam-devel readline-devel
@@ -57,6 +57,9 @@ PATH=%{pginstdir}/bin:$PATH
 %endif
 
 %changelog
+* Thu Dec 21 2018 - Furkan Sahin <furkan@citusdata.com> 2.2.2.citus-1
+- PG11 beautified
+
 * Thu Dec 20 2018 - Hanefi Onaldi <hanefi@citusdata.com> 2.2.1.citus-1
 - Packaging fixes
 
