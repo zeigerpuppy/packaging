@@ -1,28 +1,26 @@
 #!/usr/bin/make -f
 
 include /usr/share/postgresql-common/pgxs_debian_control.mk
+clean: debian/control
+
+.PHONY: debian/control
 
 override_dh_auto_build:
-	+make PG_CONFIG=/usr/lib/postgresql/11/bin/pg_config
-	+make
-	+cd src/monitor && pg_buildext build build-%v
+	+make -C $(shell pwd)/src/bin/citusha
+	+pg_buildext build $(shell pwd)/src/monitor build-%v
 
 override_dh_auto_clean:
-	+cp -R debian src/monitor/
-	+make -C src/bin clean
-	+cd src/monitor && pg_buildext clean build-%v
+	+make -C $(shell pwd)/src/bin/citusha clean
+	+pg_buildext clean $(shell pwd)/src/monitor build-%v
 
 override_dh_auto_test:
 	# nothing to do here, see debian/tests/* instead
 
-override_dh_install:
-	+dh_install --sourcedir=$(shell pg_config --bindir)
-
 override_dh_auto_install:
-	+make -C src/bin install
-	+cp ./src/monitor/citusha* ./src/monitor/build-*/
-	+cd src/monitor && pg_buildext install build-%v postgresql-%v-citus-ha
-	+cp -R ./src/monitor/* ./
+	+make -C $(shell pwd)/src/bin/citusha install \
+		DESTDIR=$(CURDIR)/debian/citus-ha \
+		BINDIR=/usr/bin
+	+pg_buildext install $(shell pwd)/src/monitor build-%v postgresql-%v-citus-ha
 
 %:
 	dh $@
