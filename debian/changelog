@@ -1,3 +1,10 @@
+pgcron (1.1.3.citus-1) stable; urgency=low
+
+  * PostgreSQL 11 support
+  * Bug fixes and improvements
+
+ -- Burak Yucesoy <burak@citusdata.com>  Fri, 08 Mar 2019 10:32:45 +0000
+
 pgcron (1.0.0-rc.1) stable; urgency=low
 
   * Initial 1.0 release
