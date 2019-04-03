@@ -1,3 +1,9 @@
+citus (8.2.1.citus-1) stable; urgency=low
+
+  * Fixes a bug that prevents stack size to be adjusted
+
+ -- Burak Velioglu <velioglub@citusdata.com>  Wed, 3 Apr 2019 20:56:47 +0000
+
 citus (8.1.2.citus-1) stable; urgency=low
 
   * Don't do redundant ALTER TABLE consistency checks at coordinator
