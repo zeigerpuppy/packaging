@@ -1,3 +1,13 @@
+citus (8.1.2.citus-1) stable; urgency=low
+
+  * Don't do redundant ALTER TABLE consistency checks at coordinator
+
+  * Fixes a bug that prevents stack size to be adjusted
+
+  * Fix an issue with some DECLARE .. CURSOR WITH HOLD commands
+
+ -- Burak Velioglu <velioglub@citusdata.com>  Wed, 3 Apr 2019 20:34:46 +0000
+
 citus (8.2.0.citus-1) stable; urgency=low
 
   * Removes support and code for PostgreSQL 9.6
