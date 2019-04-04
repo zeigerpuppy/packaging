@@ -1,3 +1,9 @@
+citus-enterprise (8.2.1.citus-1) stable; urgency=low
+
+  * Fixes a bug that prevents stack size to be adjusted
+
+ -- Burak Velioglu <velioglub@citusdata.com>  Thu, 4 Apr 2019 12:48:01 +0000
+
 citus-enterprise (8.2.0.citus-1) stable; urgency=low
 
   * Removes support and code for PostgreSQL 9.6
