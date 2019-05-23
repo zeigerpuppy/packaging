@@ -31,5 +31,5 @@ deploy:
     skip_cleanup: true
     local-dir: "pkgs/releases"
     on:
-      branch: "redhat-ha"
+      branch: "redhat-pgautofailover-enterprise"
       condition: -d "pkgs/releases"
