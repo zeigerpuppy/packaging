@@ -58,6 +58,7 @@ RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main' > /etc
         lintian \
         postgresql-server-dev-all \
         wget \
+        zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # install jq to process JSON API responses
