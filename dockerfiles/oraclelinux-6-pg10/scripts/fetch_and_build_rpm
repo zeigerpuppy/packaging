@@ -69,7 +69,15 @@ name=$(determine_name)
 email=$(determine_email)
 export RPM_PACKAGER="${name} <${email}>"
 
-cp "/buildfiles/${pkgname}.spec" /buildfiles/rpmlintrc "${builddir}"
+export pkg_spec_name="${pkgname}"
+
+if [ -f /buildfiles/${pkgname}-6.spec ];then
+    export pkg_spec_name="${pkgname}-6"
+fi
+
+cp "/buildfiles/${pkg_spec_name}.spec" /buildfiles/rpmlintrc "${builddir}"
+
+
 repopath="citusdata/${hubproj}"
 
 case "${1}" in
@@ -127,7 +135,7 @@ case "${1}" in
 
         sed -i -E -e "/^Version:/s/[^ \\t]*$/${packageversion}/" \
                   -e "/^Release:/s/[^ \\t]*$/${packagerelease}%{dist}/" \
-            "${builddir}/${pkgname}.spec"
+            "${builddir}/${pkg_spec_name}.spec"
         ;;
 esac
 
@@ -150,7 +158,7 @@ tar czf "${tarballpath}" "${pkgsrcdir}"
 sed -i -E -e "\\|^Source0:|s|https:.*|${tarballurl}|" \
           -e "/^%global pgmajorversion/s/[0-9]+$/${PGVERSION//'.'/}/" \
           -e "/^%global pgpackageversion/s/[0-9.]+$/${PGVERSION}/" \
-    "${builddir}/${pkgname}.spec"
+    "${builddir}/${pkg_spec_name}.spec"
 
 osname=$(awk '{print $1}' /etc/system-release)
 if [ "${osname}" == 'Oracle' ]; then
@@ -166,20 +174,20 @@ case "${1}" in
         # add minor/major version to package name if using fancy versioning
         if [ "${versioning}" == 'fancy' ]; then
             infix=$(echo "${packageversion}" | grep -oE '^[0-9]+\.[0-9]+' | tr -d '.')
-            sed -i -E "1i %global pkginfix ${infix}" "${builddir}/${pkgname}.spec"
+            sed -i -E "1i %global pkginfix ${infix}" "${builddir}/${pkg_spec_name}.spec"
         fi
         ;;
     nightly)
         msg="Nightly package. Built from ${nightlyref} "
         msg+=$(date +'on %l:%M %p (%Z) on %A, %B %Y' | tr -s ' ')
-        LC_ALL=${locale} rpmdev-bumpspec -c "${msg}" "${builddir}/${pkgname}.spec"
-        sed -i -E 's/0.1.git/0.0.git/' "${builddir}/${pkgname}.spec"
+        LC_ALL=${locale} rpmdev-bumpspec -c "${msg}" "${builddir}/${pkg_spec_name}.spec"
+        sed -i -E 's/0.1.git/0.0.git/' "${builddir}/${pkg_spec_name}.spec"
         ;;
     *)
         msg="Custom package. Built from ${gitsha:0:7} "
         msg+=$(date +'on %l:%M %p (%Z) on %A, %B %Y' | tr -s ' ')
-        LC_ALL=${locale} rpmdev-bumpspec -c "${msg}" "${builddir}/${pkgname}.spec"
-        sed -i -E 's/0.1.pre/0.0.pre/' "${builddir}/${pkgname}.spec"
+        LC_ALL=${locale} rpmdev-bumpspec -c "${msg}" "${builddir}/${pkg_spec_name}.spec"
+        sed -i -E 's/0.1.pre/0.0.pre/' "${builddir}/${pkg_spec_name}.spec"
         ;;
 esac
 
@@ -189,6 +197,6 @@ rpmbuild --define "_sourcedir ${rpmbuilddir}" \
 --define "_srcrpmdir ${rpmbuilddir}" \
 --define "_rpmdir ${rpmbuilddir}" \
 --define "conf_extra_version ${conf_extra_version}" \
--bb "${builddir}/${pkgname}.spec"
+-bb "${builddir}/${pkg_spec_name}.spec"
 
 cp /citus-rpm-build/x86_64/*.rpm /packages

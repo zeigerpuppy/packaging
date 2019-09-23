@@ -23,7 +23,7 @@ RUN yum groupinstall -y 'Development Tools' \
         rpmlint \
         spectool \
         tar \
-    && yum install -y https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-6-x86_64/pgdg-oraclelinux10-10-2.noarch.rpm \
+    && yum install -y https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-6-x86_64/pgdg-redhat10-10-2.noarch.rpm \
     && yum install -y postgresql10-devel \
     && yum clean all
 
