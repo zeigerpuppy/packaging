@@ -27,6 +27,11 @@ RUN yum groupinstall -y 'Development Tools' \
     && yum install -y postgresql10-devel \
     && yum clean all
 
+# install documentation generation libraries
+RUN yum install -y python-pip python-sphinx \
+    && pip install --upgrade pip \
+    && pip install -U Sphinx
+
 # install jq to process JSON API responses
 RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 \
          -o /usr/bin/jq \

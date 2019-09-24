@@ -11,6 +11,8 @@ RUN yum-config-manager --enable \
         ol7_developer \
         ol7_developer_EPEL \
     && yum groupinstall -y 'Development Tools' \
+    && yum install -y oracle-softwarecollection-release-el7 \
+    && yum install -y oraclelinux-developer-release-el7 \
     && yum install -y \
         curl \
         flex \
@@ -32,6 +34,11 @@ RUN yum-config-manager --enable \
     && yum install -y https://download.postgresql.org/pub/repos/yum/11/redhat/rhel-7-x86_64/pgdg-oraclelinux11-11-2.noarch.rpm \
     && yum install -y postgresql11-devel \
     && yum clean all
+
+# install documentation generation libraries
+RUN yum install -y python-pip python-sphinx \
+    && pip install --upgrade pip \
+    && pip install -U Sphinx
 
 # install jq to process JSON API responses
 RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 \
