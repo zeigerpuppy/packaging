@@ -59,7 +59,11 @@ RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main' > /etc
         postgresql-server-dev-all \
         wget \
         zlib1g-dev \
+        python-pip \
+        python-sphinx \
     && rm -rf /var/lib/apt/lists/*
+
+RUN pip install -U Sphinx
 
 # install jq to process JSON API responses
 RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 \
@@ -72,8 +76,8 @@ RUN curl -s https://packagecloud.io/install/repositories/citusdata/community/scr
     && rm -rf /var/lib/apt/lists/*
 
 # patch pg_buildext to use multiple processors
-COPY make_pg_buildext_parallel.patch /
-RUN patch `which pg_buildext` < /make_pg_buildext_parallel.patch
+# COPY make_pg_buildext_parallel.patch /
+# RUN patch `which pg_buildext` < /make_pg_buildext_parallel.patch
 
 # place scripts on path and declare output volume
 ENV PATH /scripts:$PATH
