@@ -57,8 +57,13 @@ RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main' > /etc/
         libxslt-dev \
         lintian \
         postgresql-server-dev-all \
-        wget \
-    && rm -rf /var/lib/apt/lists/*
+        wget
+
+RUN apt-get -y --no-install-recommends install python-pip
+RUN pip install -U setuptools
+RUN pip install -U Sphinx
+
+RUN rm -rf /var/lib/apt/lists/*
 
 # install jq to process JSON API responses
 RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 \
