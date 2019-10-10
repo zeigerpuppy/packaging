@@ -19,7 +19,7 @@ while read -r line; do
 
     if [[ "${os}" = 'debian' ]] || [[ "${os}" = 'ubuntu' ]]; then
         tag="${os}-${release}-all"
-        args+="build -t citus/packaging:${tag} -f ${dockerfiles_dir}/${tag}/Dockerfile .\n"
+        args+="build --rm=false -t citus/packaging:${tag} -f ${dockerfiles_dir}/${tag}/Dockerfile .\n"
     elif [[ "${os}" = 'centos' ]] || [[ "${os}" = 'fedora' ]] || [[ "${os}" = 'oraclelinux' ]]; then
         # redhat variants need an image for each PostgreSQL version
         IFS=' '

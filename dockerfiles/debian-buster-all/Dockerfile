@@ -34,7 +34,7 @@ RUN set -ex; \
     apt-key list
 
 # install build tools and PostgreSQL development files
-RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main' > /etc/apt/sources.list.d/pgdg.list \
+RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main' > /etc/apt/sources.list.d/pgdg.list \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
         autotools-dev \
@@ -65,9 +65,9 @@ RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 
          -o /usr/bin/jq \
     && chmod +x /usr/bin/jq
 
-# DO NOT install latest Citus release to get header files
+# install latest Citus release to get header files
 RUN curl -s https://packagecloud.io/install/repositories/citusdata/community/script.deb.sh | bash \
-    # && apt-get install -y postgresql-9.6-citus-8.0 postgresql-10-citus-8.0 postgresql-11-citus-8.0 \
+    && apt-get install -y postgresql-9.6-citus-8.0 postgresql-10-citus-8.0 postgresql-11-citus-8.0 \
     && rm -rf /var/lib/apt/lists/*
 
 # patch pg_buildext to use multiple processors
