@@ -70,9 +70,10 @@ RUN curl -s https://packagecloud.io/install/repositories/citusdata/community/scr
 #    && apt-get install -y postgresql-9.6-citus-8.0 postgresql-10-citus-8.0 postgresql-11-citus-8.0 \
     && rm -rf /var/lib/apt/lists/*
 
+# FIXME: get the patches working again
 # patch pg_buildext to use multiple processors
-COPY make_pg_buildext_parallel.patch /
-RUN patch `which pg_buildext` < /make_pg_buildext_parallel.patch
+# COPY make_pg_buildext_parallel.patch /
+# RUN patch `which pg_buildext` < /make_pg_buildext_parallel.patch
 
 # place scripts on path and declare output volume
 ENV PATH /scripts:$PATH
