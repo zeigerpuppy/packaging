@@ -1,5 +1,7 @@
+centos,8
 centos,7
 centos,6
+debian,buster
 debian,jessie
 debian,stretch
 fedora,28
