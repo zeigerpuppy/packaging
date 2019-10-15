@@ -65,9 +65,9 @@ RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 
          -o /usr/bin/jq \
     && chmod +x /usr/bin/jq
 
-# install latest Citus release to get header files
+# DO NOT install latest Citus release to get header files
 RUN curl -s https://packagecloud.io/install/repositories/citusdata/community/script.deb.sh | bash \
-    && apt-get install -y postgresql-9.6-citus-8.0 postgresql-10-citus-8.0 postgresql-11-citus-8.0 \
+#    && apt-get install -y postgresql-9.6-citus-8.0 postgresql-10-citus-8.0 postgresql-11-citus-8.0 \
     && rm -rf /var/lib/apt/lists/*
 
 # patch pg_buildext to use multiple processors

@@ -54,7 +54,7 @@ source /buildfiles/pkgvars
 declare pkglatest # to make shellcheck happy
 hubproj="${hubproj:-${pkgname}}"
 nightlyref="${nightlyref:-master}"
-releasepg="${releasepg:-9.6,10,11}"
+releasepg="${releasepg:-11,12}"
 nightlypg="${nightlypg:-${releasepg}}"
 versioning="${versioning:-simple}"
 
