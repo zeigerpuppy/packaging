@@ -56,9 +56,9 @@ curl_check ()
 
 pgdg_check ()
 {
-  echo "Checking for postgresql-11..."
-  if apt-cache show postgresql-11 &> /dev/null; then
-    echo "Detected postgresql-11..."
+  echo "Checking for postgresql-12..."
+  if apt-cache show postgresql-12 &> /dev/null; then
+    echo "Detected postgresql-12..."
   else
     pgdg_list='/etc/apt/sources.list.d/pgdg.list'
     pgdg_source_path="deb http://apt.postgresql.org/pub/repos/apt/ ${codename}-pgdg main"
@@ -193,6 +193,9 @@ detect_codename ()
       9)
         codename='stretch'
         ;;
+      10)
+        codename='buster'
+        ;;
       wheezy)
         codename="${dist}"
         ;;
@@ -200,6 +203,9 @@ detect_codename ()
         codename="${dist}"
         ;;
       stretch)
+        codename="${dist}"
+        ;;
+      buster)
         codename="${dist}"
         ;;
       *)
