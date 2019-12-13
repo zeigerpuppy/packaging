@@ -20,7 +20,7 @@ function update_rpm_dockerfile {
     target_subdir="${dockerfiles_dir}/${os}-${release}-pg${pgshort}"
 
     dl_prefix="download.postgresql.org/pub/repos/yum/${pgversion}"
-    file_pattern="^pgdg-${os}${pgshort}-${pgversion}.*rpm"
+    file_pattern="^pgdg-redhat.*-latest.*rpm"
 
     if [[ "${os}" = 'centos' ]] || [[ "${os}" = 'oraclelinux' ]]; then
         rpms_url="${dl_prefix}/redhat/rhel-${release}-x86_64/"

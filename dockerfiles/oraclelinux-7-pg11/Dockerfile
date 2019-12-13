@@ -5,18 +5,8 @@ FROM oraclelinux:7
 RUN ( yum install -y yum-plugin-ovl || yum install -y yum-plugin-ovl ) \
     && yum clean all
 
-# FIXME: make sure ol7_developer repo is available
-# see https://oracle-base.com/articles/linux/download-the-latest-oracle-linux-repo-file#oracle-linux-7-updated
-RUN pushd /etc/yum.repos.d/ \
-    && rm -f * \
-    && curl -O http://yum.oracle.com/public-yum-ol7.repo \
-    && popd
-
 # install build tools and PostgreSQL development files
-RUN yum-config-manager --enable \
-        ol7_software_collections \
-        ol7_developer \
-        ol7_developer_EPEL \
+RUN yum install -y centos-release-scl-rh epel-release \
     && yum groupinstall -y 'Development Tools' \
     && yum install -y \
         curl \
@@ -36,7 +26,7 @@ RUN yum-config-manager --enable \
         rpmlint \
         spectool \
         tar \
-    && yum install -y https://download.postgresql.org/pub/repos/yum/11/redhat/rhel-7-x86_64/pgdg-oraclelinux11-11-2.noarch.rpm \
+    && yum install -y https://download.postgresql.org/pub/repos/yum/11/redhat/rhel-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm \
     && yum install -y postgresql11-devel \
     && yum clean all
 
@@ -47,7 +37,6 @@ RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 
 
 # install latest Citus release to get header files
 RUN curl -s https://packagecloud.io/install/repositories/citusdata/community/script.rpm.sh | bash \
-    && yum install -y citus80_11 \
     && yum clean all
 
 RUN touch /rpmlintrc \

@@ -6,7 +6,8 @@ RUN ( yum install -y yum-plugin-ovl || yum install -y yum-plugin-ovl ) \
     && yum clean all
 
 # install build tools and PostgreSQL development files
-RUN yum groupinstall -y 'Development Tools' \
+RUN yum install -y centos-release-scl-rh epel-release \
+    && yum groupinstall -y 'Development Tools' \
     && yum install -y \
         curl \
         flex \
@@ -16,6 +17,8 @@ RUN yum groupinstall -y 'Development Tools' \
         libicu-devel \
         libxml2-devel \
         libxslt-devel \
+        llvm-toolset-7-clang \
+        llvm5.0 \
         openssl-devel \
         pam-devel \
         readline-devel \
@@ -23,7 +26,7 @@ RUN yum groupinstall -y 'Development Tools' \
         rpmlint \
         spectool \
         tar \
-    && yum install -y https://download.postgresql.org/pub/repos/yum/11/redhat/rhel-6-x86_64/pgdg-centos11-11-2.noarch.rpm \
+    && yum install -y https://download.postgresql.org/pub/repos/yum/11/redhat/rhel-6-x86_64/pgdg-redhat-repo-latest.noarch.rpm \
     && yum install -y postgresql11-devel \
     && yum clean all
 
@@ -34,7 +37,6 @@ RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 
 
 # install latest Citus release to get header files
 RUN curl -s https://packagecloud.io/install/repositories/citusdata/community/script.rpm.sh | bash \
-    && yum install -y citus80_11 \
     && yum clean all
 
 RUN touch /rpmlintrc \

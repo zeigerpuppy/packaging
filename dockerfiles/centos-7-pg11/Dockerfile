@@ -26,7 +26,7 @@ RUN yum install -y centos-release-scl-rh epel-release \
         rpmlint \
         spectool \
         tar \
-    && yum install -y https://download.postgresql.org/pub/repos/yum/11/redhat/rhel-7-x86_64/pgdg-centos11-11-2.noarch.rpm \
+    && yum install -y https://download.postgresql.org/pub/repos/yum/11/redhat/rhel-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm \
     && yum install -y postgresql11-devel \
     && yum clean all
 
@@ -37,7 +37,6 @@ RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 
 
 # install latest Citus release to get header files
 RUN curl -s https://packagecloud.io/install/repositories/citusdata/community/script.rpm.sh | bash \
-    && yum install -y citus80_11 \
     && yum clean all
 
 RUN touch /rpmlintrc \
