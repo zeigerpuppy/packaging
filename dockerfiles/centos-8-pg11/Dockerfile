@@ -1,14 +1,13 @@
 # vim:set ft=dockerfile:
 FROM centos:8
 
-# FIXME: Hack around docker/docker#10180
-RUN ( yum install -y yum-plugin-ovl || yum install -y yum-plugin-ovl ) \
-    && yum clean all
-
 # install build tools and PostgreSQL development files
-RUN yum install -y centos-release-scl-rh epel-release \
+RUN yum install -y epel-release \
     && yum groupinstall -y 'Development Tools' \
     && yum install -y \
+        # ccache is needed only for CentOS 8
+        # Makefile.global has a hardcoded ccache reference in the PGDG PG package
+        ccache \
         curl \
         flex \
         gcc-c++ \
@@ -17,8 +16,7 @@ RUN yum install -y centos-release-scl-rh epel-release \
         libicu-devel \
         libxml2-devel \
         libxslt-devel \
-        llvm-toolset-7-clang \
-        llvm5.0 \
+        llvm-toolset \
         openssl-devel \
         pam-devel \
         readline-devel \
@@ -27,6 +25,7 @@ RUN yum install -y centos-release-scl-rh epel-release \
         spectool \
         tar \
     && yum install -y https://download.postgresql.org/pub/repos/yum/11/redhat/rhel-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm \
+    && dnf -qy module disable postgresql \
     && yum install -y postgresql11-devel \
     && yum clean all
 
