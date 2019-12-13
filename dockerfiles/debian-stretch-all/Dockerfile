@@ -66,6 +66,10 @@ RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 
          -o /usr/bin/jq \
     && chmod +x /usr/bin/jq
 
+# install packagecloud repos for pg_auto_failover
+RUN curl -s https://packagecloud.io/install/repositories/citusdata/community/script.deb.sh | bash \
+    && rm -rf /var/lib/apt/lists/*
+
 # patch pg_buildext to use multiple processors
 COPY make_pg_buildext_parallel.patch /
 RUN patch `which pg_buildext` < /make_pg_buildext_parallel.patch
