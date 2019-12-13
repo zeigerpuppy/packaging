@@ -66,10 +66,9 @@ RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 
          -o /usr/bin/jq \
     && chmod +x /usr/bin/jq
 
-# FIXME: get the patches working again
 # patch pg_buildext to use multiple processors
-# COPY make_pg_buildext_parallel.patch /
-# RUN patch `which pg_buildext` < /make_pg_buildext_parallel.patch
+COPY make_pg_buildext_parallel.patch /
+RUN patch `which pg_buildext` < /make_pg_buildext_parallel.patch
 
 # place scripts on path and declare output volume
 ENV PATH /scripts:$PATH
