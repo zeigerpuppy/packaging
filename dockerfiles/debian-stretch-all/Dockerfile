@@ -60,7 +60,7 @@ RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main' > /etc
         zlib1g-dev \
         # Add 12 package explicitly as *-all does not yet depend on 12 yet
         postgresql-server-dev-12 \
-                wget \
+        wget \
     && rm -rf /var/lib/apt/lists/*
 
 # install jq to process JSON API responses
