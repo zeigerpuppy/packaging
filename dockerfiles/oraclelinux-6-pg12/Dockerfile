@@ -6,8 +6,7 @@ RUN ( yum install -y yum-plugin-ovl || yum install -y yum-plugin-ovl ) \
     && yum clean all
 
 # install build tools and PostgreSQL development files
-RUN yum install -y centos-release-scl-rh epel-release \
-    && yum groupinstall -y 'Development Tools' \
+RUN yum groupinstall -y 'Development Tools' \
     && yum install -y \
         curl \
         flex \
@@ -17,8 +16,6 @@ RUN yum install -y centos-release-scl-rh epel-release \
         libicu-devel \
         libxml2-devel \
         libxslt-devel \
-        llvm-toolset-7-clang \
-        llvm5.0 \
         openssl-devel \
         pam-devel \
         readline-devel \
@@ -26,7 +23,7 @@ RUN yum install -y centos-release-scl-rh epel-release \
         rpmlint \
         spectool \
         tar \
-    && yum install -y https://download.postgresql.org/pub/repos/yum/12/redhat/rhel-6-x86_64/pgdg-redhat-repo-latest.noarch.rpm \
+    && yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-6-x86_64/pgdg-redhat-repo-latest.noarch.rpm \
     && yum install -y postgresql12-devel \
     && yum clean all
 

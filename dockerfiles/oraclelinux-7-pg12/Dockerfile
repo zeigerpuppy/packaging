@@ -5,8 +5,18 @@ FROM oraclelinux:7
 RUN ( yum install -y yum-plugin-ovl || yum install -y yum-plugin-ovl ) \
     && yum clean all
 
+# FIXME: make sure ol7_developer repo is available
+# see https://oracle-base.com/articles/linux/download-the-latest-oracle-linux-repo-file#oracle-linux-7-updated
+RUN pushd /etc/yum.repos.d/ \
+    && rm -f * \
+    && curl -O http://yum.oracle.com/public-yum-ol7.repo \
+    && popd
+
 # install build tools and PostgreSQL development files
-RUN yum install -y centos-release-scl-rh epel-release \
+RUN yum-config-manager --enable \
+        ol7_software_collections \
+        ol7_developer \
+        ol7_developer_EPEL \
     && yum groupinstall -y 'Development Tools' \
     && yum install -y \
         curl \
@@ -26,7 +36,7 @@ RUN yum install -y centos-release-scl-rh epel-release \
         rpmlint \
         spectool \
         tar \
-    && yum install -y https://download.postgresql.org/pub/repos/yum/12/redhat/rhel-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm \
+    && yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm \
     && yum install -y postgresql12-devel \
     && yum clean all
 
