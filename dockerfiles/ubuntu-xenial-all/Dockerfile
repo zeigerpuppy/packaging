@@ -57,9 +57,8 @@ RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main' > /etc/
         libxslt-dev \
         lintian \
         postgresql-server-dev-all \
-        # Add 12 package explicitly as *-all does not yet depend on 12 yet
-        postgresql-server-dev-12 \
         wget \
+        zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # install jq to process JSON API responses
