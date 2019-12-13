@@ -6,8 +6,7 @@ RUN ( yum install -y yum-plugin-ovl || yum install -y yum-plugin-ovl ) \
     && yum clean all
 
 # install build tools and PostgreSQL development files
-RUN yum install -y centos-release-scl-rh epel-release \
-    && yum groupinstall -y 'Development Tools' \
+RUN yum groupinstall -y 'Development Tools' \
     && yum install -y \
         curl \
         flex \
