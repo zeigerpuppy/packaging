@@ -1,3 +1,9 @@
+citus-enterprise (9.1.2.citus-1) stable; urgency=low
+
+  * Fixes a bug that prevents installation from source
+
+ -- Burak Velioglu <velioglub@citusdata.com>  Fri, 7 Feb 2020 13:50:55 +0000
+
 citus-enterprise (9.0.1.citus-1) stable; urgency=low
 
   * Fixes a memory leak in the executor
