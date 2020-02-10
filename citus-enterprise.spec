@@ -38,6 +38,8 @@ commands.
 %build
 %configure PG_CONFIG=%{pginstdir}/bin/pg_config --with-extra-version="%{?conf_extra_version}"
 make %{?_smp_mflags}
+gpg --symmetric --batch --no-tty --yes --passphrase abc citus.so
+rm citus.so
 
 %install
 %make_install
