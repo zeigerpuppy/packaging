@@ -59,7 +59,11 @@ RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main' > /etc/
         postgresql-server-dev-all \
         wget \
         zlib1g-dev \
+        python-pip \
+        python-sphinx \
     && rm -rf /var/lib/apt/lists/*
+
+RUN pip install -U Sphinx
 
 # install jq to process JSON API responses
 RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 \
