@@ -16,7 +16,6 @@ override_dh_auto_configure:
 
 override_dh_auto_install:
 	+pg_buildext install build-%v postgresql-%v-citus-enterprise
-	dh_installdeb
 	debian/encrypt_files.sh
 
 %:

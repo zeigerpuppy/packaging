@@ -4,6 +4,7 @@ set -euo pipefail
 PACKAGE_ENCRYPTION_KEY="${PACKAGE_ENCRYPTION_KEY:-}"
 if [ -z "$PACKAGE_ENCRYPTION_KEY" ]; then
     echo "ERROR: The PACKAGE_ENCRYPTION_KEY environment variable needs to be set"
+    echo "HINT: If trying to build packages locally, just set it to 'abc' or something"
     exit 1
 fi
 
@@ -22,10 +23,11 @@ for dir in debian/postgresql-*; do
     # e.g. "pg_version=12"
     pg_version_regex="s/^pg_version=\$/pg_version=$pg_version/g"
 
+    # Install postinst and prerm files
     debdir="$dir/DEBIAN"
+    mkdir -p "$debdir"
     for script in prerm postinst; do
         sed "$pg_version_regex" "debian/$script" > "$debdir/$script";
-        cat "$debdir/$script"
         chmod +x "$debdir/$script"
     done
 
@@ -34,7 +36,6 @@ for dir in debian/postgresql-*; do
     mkdir -p "$bindir"
     setup="$bindir/citus-enterprise-pg-$pg_version-setup"
     sed "$pg_version_regex" "debian/citus-setup" > "$setup";
-    cat "$setup"
     chmod +x "$setup"
 
 
@@ -42,18 +43,9 @@ for dir in debian/postgresql-*; do
     libdir="$dir/usr/lib/postgresql/$pg_version/lib"
     mkdir -p "$libdir"
 
-    # create files REMOVE IN FINAL VERSION
-    mkdir -p "$libdir/bitcode"
-    echo "hello1" > "$libdir/citus1.txt";
-    echo "hello2" > "$libdir/citus2.txt";
-    echo "hello3" > "$libdir/bitcode/citus3.txt";
-    echo "hello4" > "$libdir/citus4.txtt";
-
-    # REMOVE .txt from final version
     # List all files to be encrypted and store it in the libdir as secret_files_list
     secret_files_list="$libdir/citus_secret_files.metadata"
-    find "$dir" -iname "*.so" -o -iname "*.bc" -o -iname "*.control" -o -iname "*.txt" | sed -e "s@^$dir@@g" > "$secret_files_list"
-    cat "$secret_files_list"
+    find "$dir" -iname "*.so" -o -iname "*.bc" -o -iname "*.control" | sed -e "s@^$dir@@g" > "$secret_files_list"
 
     while read -r unencrypted_file; do
         path_unencrypted="$dir$unencrypted_file"
