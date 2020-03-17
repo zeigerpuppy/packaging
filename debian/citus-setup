@@ -93,7 +93,6 @@ done
 if ! gpg --output "/dev/null" \
         --batch --no-tty --yes --quiet \
         --passphrase "$CITUS_LICENSE_KEY" \
-        --pinentry loopback \
         --homedir "$temp_gnupghome" \
         --decrypt "$(head -n 1 "$secret_files_list").gpg" 2> /dev/null; then
     echo "ERROR: Invalid license key supplied"
@@ -110,7 +109,6 @@ while read -r path_unencrypted; do
     gpg --output "$path_unencrypted" \
         --batch --no-tty --yes --quiet \
         --passphrase "$CITUS_LICENSE_KEY" \
-        --pinentry loopback \
         --homedir "$temp_gnupghome" \
         --decrypt "$path_encrypted"
 
