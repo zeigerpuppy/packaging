@@ -52,10 +52,15 @@ for dir in debian/postgresql-*; do
         path_encrypted="$path_unencrypted.gpg"
 
         # encrypt the files using password
+        # --s2k-* options are there to make sure decrypting/encrypting doesn't
+        # take minutes
         gpg --symmetric \
             --batch \
             --no-tty \
             --yes \
+            --s2k-mode 3 \
+            --s2k-count 1000000 \
+            --s2k-digest-algo SHA512 \
             --passphrase-fd 0 \
             --output "$path_encrypted" \
             "$path_unencrypted" \
