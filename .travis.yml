@@ -17,6 +17,11 @@ env:
     - TARGET_PLATFORM=el/7
     - TARGET_PLATFORM=ol/7
     - TARGET_PLATFORM=el/8
+    - TARGET_PLATFORM=debian/buster
+    - TARGET_PLATFORM=debian/stretch
+    - TARGET_PLATFORM=debian/jessie
+    - TARGET_PLATFORM=ubuntu/bionic
+    - TARGET_PLATFORM=ubuntu/xenial
 before_install:
   - git clone -b v0.7.13 --depth 1 https://github.com/citusdata/tools.git
   - sudo make -C tools install
