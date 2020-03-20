@@ -5,6 +5,7 @@ perl: "5.18"
 env:
   global:
     - PKG_REPOTYPE=enterprise
+    - PACKAGE_ENCRYPTION_KEY=verysecret
     # packagecloud API token for citus-bot
     - secure: "DrgnMSsX/XvMZltIvnE9VTGFRVDWfLafTdJwjd//vgLZ8PDNJ/UHm7Vr7dBoNIR0LytMnBgGWRfz6oi5HNgNLc2GnTfv4muyjK8i2OTmvs4ALKBoxiI888+nhh6jhf9WYvCKGNolTspxP3dgVB9B2NiGCyKBN2hCzts59fqtGED+kSE0Bda/pBnDHml7IMMHwdXB3V9KNOdD42TE8Bf7B/XpI69JZfaYrBqGYidVaInqaVEFjNOmkndLEXl5cf82YCWAYCJ/VlKgcg5Zi38kpiYn7ZjQ6QuVibbxOWG5hSQym6UYy/5HieEajo6aaamaun5ATcUMfRNtrQBGiwAkI0lPjrx8TPE00EfFJ6lryUa3eABs9dntI3veZPQdh3w8AHEbUiRb0VVJ934STlKllRskpMmE1MT7VqRnYHAsVPrY0J2sXnmAGPHf1B1LgJE3mljIVJVsTHJc/GaRmXQuUxyrU32BkN1Ie92gZjaDeVddFiQh0KND0HMtF0CmbPy5t8tRQnMVVcIKLQUfMF8ELGnqw+v5rxBho8w+mZ4Jg6MR1Z0wIs63+4/yHLmD4l/09AA6kLZVEuJYqwV71nEL5QI561S2lDTOh8c0toe/GMkmdO+9aQ1aASjixkuWnDj8Ok22fWFkOojt861FXGOszyT2DbSJweFrKPs7Cv8XV2M="
     # GitHub ("Packaging") API token for citus-bot
