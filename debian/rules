@@ -12,10 +12,11 @@ override_dh_auto_test:
 	# nothing to do here, see debian/tests/* instead
 
 override_dh_auto_configure:
-	+pg_buildext configure build-%v --with-extra-version="$${CONF_EXTRA_VERSION:-}"
+	+pg_buildext configure build-%v --with-extra-version="$${CONF_EXTRA_VERSION:-}" --without-libcurl
 
 override_dh_auto_install:
 	+pg_buildext install build-%v postgresql-%v-citus-enterprise
+	debian/encrypt_files.sh
 
 %:
 	dh $@
