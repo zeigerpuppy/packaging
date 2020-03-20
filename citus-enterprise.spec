@@ -112,7 +112,7 @@ customer, use of this software is subject to your volume license agreement.
 You may not use this software if you have not validly acquired a license for
 the software from Microsoft or its licensed distributors.
 
-Do you accept these terms? y/N"
+Do you accept these terms? YES/NO"
 
 CITUS_ACCEPT_LICENSE="\${CITUS_ACCEPT_LICENSE:-}"
 while [ -z "\$CITUS_ACCEPT_LICENSE" ]; do
@@ -121,7 +121,11 @@ while [ -z "\$CITUS_ACCEPT_LICENSE" ]; do
 done
 
 case "\$CITUS_ACCEPT_LICENSE" in
-    y|Y|Yes|YES|yes );;
+    YES );;
+    y|Y|Yes|yes )
+        echo "ERROR: Only YES is accepted (all capital letters)"
+        exit 1;
+        ;;
     * )
         echo "ERROR: Terms of the software must be accepted"
         exit 1
@@ -156,7 +160,7 @@ https://docs.citusdata.com/en/latest/
 
 Please confirm that you have read this and understand that you should set up
 TLS yourself to send traffic between nodes securely:
-y/N?"
+YES/NO?"
 
 CITUS_ACCEPT_ENCRYPTION_WARNING="\${CITUS_ACCEPT_ENCRYPTION_WARNING:-}"
 while [ -z "\$CITUS_ACCEPT_ENCRYPTION_WARNING" ]; do
@@ -165,7 +169,11 @@ while [ -z "\$CITUS_ACCEPT_ENCRYPTION_WARNING" ]; do
 done
 
 case "\$CITUS_ACCEPT_ENCRYPTION_WARNING" in
-    y|Y|Yes|YES|yes );;
+    YES );;
+    y|Y|Yes|yes )
+        echo "ERROR: Only YES is accepted (all capital letters)"
+        exit 1;
+        ;;
     * )
         echo "ERROR: Warning about encrypted traffic must be accepted before installing"
         exit 1
