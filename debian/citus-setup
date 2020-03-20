@@ -61,7 +61,7 @@ themselves.
 So, with the default settings Citus clusters are not safe from
 Man-In-The-Middle attacks. To secure the traffic completely you need to follow
 the practices outlined here:
-https://citus.com/some-page-on-secure-setup
+https://docs.citusdata.com/en/latest/
 
 Please confirm that you have read this and understand that you should set up
 TLS yourself to send traffic between nodes securely:
