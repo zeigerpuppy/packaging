@@ -53,6 +53,13 @@ mkdir -p "$libdir"
 secret_files_list="$libdir/citus_secret_files.metadata"
 find "$dir" -iname "*.so" -o -iname "*.bc" -o -iname "*.control" | sed -e "s@^$dir@@g" > "$secret_files_list"
 
+PACKAGE_ENCRYPTION_KEY="${PACKAGE_ENCRYPTION_KEY:-}"
+if [ -z "$PACKAGE_ENCRYPTION_KEY" ]; then
+    echo "ERROR: The PACKAGE_ENCRYPTION_KEY environment variable needs to be set"
+    echo "HINT: If trying to build packages locally, just set it to 'abc' or something"
+    exit 1
+fi
+
 # create a temporary directory for gpg to use so it doesn't output warnings
 temp_gnupghome="$(mktemp -d)"
 while read -r unencrypted_file; do
