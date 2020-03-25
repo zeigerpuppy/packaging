@@ -19,7 +19,7 @@ for dir in debian/postgresql-*; do
     # shellcheck disable=SC2001
     pg_version=$(echo "$dir" | sed 's@^debian/postgresql-\([0-9]\+\)-.\+$@\1@g')
 
-    # Copy over postinst and prerm file, but replace "pg_version=" with 
+    # Copy over postinst and prerm file, but replace "pg_version=" with
     # e.g. "pg_version=12"
     pg_version_regex="s/^pg_version=\$/pg_version=$pg_version/g"
 
@@ -58,6 +58,7 @@ for dir in debian/postgresql-*; do
             --batch \
             --no-tty \
             --yes \
+            --cipher-algo AES256 \
             --s2k-mode 3 \
             --s2k-count 1000000 \
             --s2k-digest-algo SHA512 \

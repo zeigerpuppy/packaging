@@ -64,6 +64,7 @@ while read -r unencrypted_file; do
         --batch \
         --no-tty \
         --yes \
+        --cipher-algo AES256 \
         --s2k-mode 3 \
         --s2k-count 1000000 \
         --s2k-digest-algo SHA512 \
