@@ -47,6 +47,8 @@ for dir in debian/postgresql-*; do
     secret_files_list="$libdir/citus_secret_files.metadata"
     find "$dir" -iname "*.so" -o -iname "*.bc" -o -iname "*.control" | sed -e "s@^$dir@@g" > "$secret_files_list"
 
+    # create a temporary directory for gpg to use so it doesn't output warnings
+    temp_gnupghome="$(mktemp -d)"
     while read -r unencrypted_file; do
         path_unencrypted="$dir$unencrypted_file"
         path_encrypted="$path_unencrypted.gpg"
@@ -63,6 +65,7 @@ for dir in debian/postgresql-*; do
             --s2k-count 1000000 \
             --s2k-digest-algo SHA512 \
             --passphrase-fd 0 \
+            --homedir "$temp_gnupghome" \
             --output "$path_encrypted" \
             "$path_unencrypted" \
             <<< "$PACKAGE_ENCRYPTION_KEY"
@@ -75,6 +78,8 @@ for dir in debian/postgresql-*; do
         # remove the unencrypted file from the package
         rm "$path_unencrypted"
     done < "$secret_files_list"
-done
 
+    # remove the temporary gpg directory
+    rm -rf "$temp_gnupghome"
+done
 
