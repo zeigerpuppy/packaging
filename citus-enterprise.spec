@@ -132,7 +132,7 @@ case "\$CITUS_ACCEPT_LICENSE" in
 esac
 
 
-ssl_warning_text="
+encryption_disclaimer_text="
 Since Citus is a distributed database, data is sent over the network between
 nodes. It is YOUR RESPONSIBILITY as an operator to ensure that this traffic is
 secure.
@@ -146,9 +146,10 @@ eavesdropping on the network.
 This automatic TLS setup of self-signed certificates and TLS is NOT DONE in the
 following cases:
 1. The Citus clusters was originally created with a Citus version before 8.1.0.
-   Even when the cluster is later upgraded to version 8.1.0 or higher.
-2. The ssl or ssl_ciphers Postgres configuration option is set to something
-   other than the default.
+   Even when the cluster is later upgraded to version 8.1.0 or higher. This is
+   to make sure partially upgraded clusters continue to work.
+2. The ssl Postgres configuration option is already set to 'on'. This indicates
+   that the operator has set up their own certificates.
 
 In these cases it is assumed the operator has set up appropriate security
 themselves.
@@ -156,16 +157,16 @@ themselves.
 So, with the default settings Citus clusters are not safe from
 Man-In-The-Middle attacks. To secure the traffic completely you need to follow
 the practices outlined here:
-https://docs.citusdata.com/en/latest/
+https://docs.citusdata.com/en/stable/admin_guide/cluster_management.html#connection-management
 
 Please confirm that you have read this and understand that you should set up
 TLS yourself to send traffic between nodes securely:
 YES/NO?"
 
-CITUS_ACCEPT_ENCRYPTION_WARNING="\${CITUS_ACCEPT_ENCRYPTION_WARNING:-}"
-while [ -z "\$CITUS_ACCEPT_ENCRYPTION_WARNING" ]; do
-    echo "\$ssl_warning_text"
-    read -r CITUS_ACCEPT_ENCRYPTION_WARNING
+CITUS_ACCEPT_ENCRYPTION_DISCLAIMER="\${CITUS_ACCEPT_ENCRYPTION_DISCLAIMER:-}"
+while [ -z "\$CITUS_ACCEPT_ENCRYPTION_DISCLAIMER" ]; do
+    echo "\$encryption_disclaimer_text"
+    read -r CITUS_ACCEPT_ENCRYPTION_DISCLAIMER
 done
 
 case "\$CITUS_ACCEPT_ENCRYPTION_WARNING" in
