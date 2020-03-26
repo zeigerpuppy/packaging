@@ -45,6 +45,13 @@ RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 
 RUN curl -s https://packagecloud.io/install/repositories/citusdata/community/script.rpm.sh | bash \
     && yum clean all
 
+# install devtoolset-8-gcc on distros where it is available
+RUN { \
+        { yum search devtoolset-8-gcc 2>&1 | grep 'No matches found' ; } \
+        || yum install -y devtoolset-8-gcc ; \
+    } \
+    && yum clean all
+
 RUN touch /rpmlintrc \
     && echo '%_build_pkgcheck %{_bindir}/rpmlint -f /rpmlintrc' >> /etc/rpm/macros
 

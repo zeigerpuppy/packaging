@@ -183,6 +183,14 @@ case "${1}" in
         ;;
 esac
 
+# Enable gcc8 on distros that have it
+if [ -f /opt/rh/devtoolset-8/enable ]; then
+    set +u
+    # shellcheck source=/dev/null
+    source /opt/rh/devtoolset-8/enable
+    set -u
+fi
+
 rpmbuild --define "_sourcedir ${rpmbuilddir}" \
 --define "_specdir ${rpmbuilddir}" \
 --define "_builddir ${rpmbuilddir}" \
