@@ -10,7 +10,7 @@ citus-enterprise (9.2.3.citus-1) stable; urgency=low
 
   * Fixes possibility for segmentation fault in internal aggregate functions
 
-  * Fixes possible segfault when non pushdownable aggregates are used in `HAVING`
+  * Fixes possible segfault when non pushdownable aggregates are used in HAVING
 
   * Improves correctness of planning subqueries in `HAVING`
 

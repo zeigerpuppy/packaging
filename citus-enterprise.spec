@@ -45,6 +45,8 @@ make %{?_smp_mflags}
 # Install documentation with a better name:
 %{__mkdir} -p %{buildroot}%{pginstdir}/doc/extension
 %{__cp} README.md %{buildroot}%{pginstdir}/doc/extension/README-%{sname}.md
+
+set -eu
 dir="%{buildroot}"
 libdir="$dir/%{pginstdir}/lib"
 mkdir -p "$libdir"
