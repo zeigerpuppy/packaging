@@ -37,7 +37,15 @@ commands.
 %setup -q -n %{sname}-%{version}
 
 %build
-%configure PG_CONFIG=%{pginstdir}/bin/pg_config --with-extra-version="%{?conf_extra_version}"
+
+currentgccver="$(gcc -dumpversion)"
+requiredgccver="4.8.0"
+if [ "$(printf '%s\n' "$requiredgccver" "$currentgccver" | sort -V | tail -n1)" = "$requiredgccver" ]; then
+    echo ERROR: At least GCC version "$requiredgccver" is needed
+    exit 1
+fi
+
+%configure PG_CONFIG=%{pginstdir}/bin/pg_config --with-extra-version="%{?conf_extra_version}" CC=$(command -v gcc)
 make %{?_smp_mflags}
 
 %install
