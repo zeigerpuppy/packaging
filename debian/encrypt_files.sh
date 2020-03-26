@@ -27,7 +27,8 @@ for dir in debian/postgresql-*; do
     debdir="$dir/DEBIAN"
     mkdir -p "$debdir"
     for script in prerm postinst; do
-        sed "$pg_version_regex" "debian/$script" > "$debdir/$script";
+        sed "$pg_version_regex" "debian/package-$script"
+        sed "$pg_version_regex" "debian/package-$script" > "$debdir/$script";
         chmod +x "$debdir/$script"
     done
 
