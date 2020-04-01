@@ -334,7 +334,7 @@ done < "$secret_files_list"
 %endif
 
 %changelog
-* Tue Mar 31 2020 -  <Jelte.Fennema@microsoft.com> 9.2.4.citus-1
+* Tue Mar 31 2020 - Jelte Fennema <Jelte.Fennema@microsoft.com> 9.2.4.citus-1
 - Update to Citus Enterprise 9.2.4
 
 * Wed Mar 25 2020 - Jelte Fennema <Jelte.Fennema@microsoft.com> 9.2.3.citus-1
