@@ -1,10 +1,15 @@
 #!/bin/bash
 set -euo pipefail
 
+if [ -n "${UNENCRYPTED_PACKAGE:-}" ]; then
+    exit 0
+fi
+
 PACKAGE_ENCRYPTION_KEY="${PACKAGE_ENCRYPTION_KEY:-}"
 if [ -z "$PACKAGE_ENCRYPTION_KEY" ]; then
     echo "ERROR: The PACKAGE_ENCRYPTION_KEY environment variable needs to be set"
     echo "HINT: If trying to build packages locally, just set it to 'abc' or something"
+    echo "HINT: If you're trying to build unencrypted packages you should set the UNENCRYPTED_PACKAGE environment variable"
     exit 1
 fi
 
