@@ -185,27 +185,14 @@ finalize_zypper_repo ()
 
 detect_repo_url ()
 {
-  # set common defaults used by most flavors
+  # set common defaults used by all flavors
+  # Various repositories of different flavors are stored in EL (e.g. Centos and OL)
   family='redhat'
   family_short='EL'
   pkg_dist="${dist}"
-  pkg_os="${os}"
-  pkg_version='2'
 
   case "${os}" in
-    ol)
-      pkg_os='oraclelinux'
-      ;;
-    fedora)
-      family='fedora'
-      family_short='fedora'
-      pkg_version='2'
-      ;;
-    centos)
-      # defaults are suitable
-      ;;
-    rhel|redhatenterpriseserver)
-      pkg_os='redhat'
+    ol|centos|rhel|redhatenterpriseserver)
       ;;
     *)
       unknown_os
@@ -213,8 +200,8 @@ detect_repo_url ()
   esac
 
   repo_url="https://download.postgresql.org/pub/repos/yum/reporpms"
-  repo_url+="/${family}-${pkg_dist}-x86_64"
-  repo_url+="/pgdg-${family}-redhat-repo-latest.noarch.rpm"
+  repo_url+="/${family_short}-${pkg_dist}-x86_64"
+  repo_url+="/pgdg-${family}-repo-latest.noarch.rpm"
 }
 
 main ()
