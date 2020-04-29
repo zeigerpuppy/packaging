@@ -4,6 +4,7 @@
 %global sname citus-enterprise
 %global pname citus
 %global debug_package %{nil}
+%global unencrypted_package "%{getenv:UNENCRYPTED_PACKAGE}"
 
 Summary:	PostgreSQL-based distributed RDBMS
 Name:		%{sname}%{?pkginfix}_%{pgmajorversion}
@@ -38,15 +39,21 @@ commands.
 
 %build
 
+# Flags taken from: https://liquid.microsoft.com/Web/Object/Read/ms.security/Requirements/Microsoft.Security.SystemsADM.10203#guide
+SECURITY_CFLAGS="-fstack-protector-strong -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -fpic -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security"
+
 currentgccver="$(gcc -dumpversion)"
 requiredgccver="4.8.0"
 if [ "$(printf '%s\n' "$requiredgccver" "$currentgccver" | sort -V | tail -n1)" = "$requiredgccver" ]; then
-    echo ERROR: At least GCC version "$requiredgccver" is needed
-    exit 1
+    if [ -z "${UNENCRYPTED_PACKAGE:-}" ]; then
+        echo ERROR: At least GCC version "$requiredgccver" is needed to build Microsoft packages
+        exit 1
+    else
+        echo WARNING: Using slower security flags because of outdated compiler
+        SECURITY_CFLAGS="-fstack-protector-all -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -fpic -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security"
+    fi
 fi
 
-# Flags taken from: https://liquid.microsoft.com/Web/Object/Read/ms.security/Requirements/Microsoft.Security.SystemsADM.10203#guide
-SECURITY_CFLAGS="-fstack-protector-strong -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -fpic -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security"
 %configure PG_CONFIG=%{pginstdir}/bin/pg_config --with-extra-version="%{?conf_extra_version}" CC=$(command -v gcc) CFLAGS="$SECURITY_CFLAGS"
 make %{?_smp_mflags}
 
@@ -57,6 +64,12 @@ make %{?_smp_mflags}
 %{__cp} README.md %{buildroot}%{pginstdir}/doc/extension/README-%{sname}.md
 
 set -eu
+set +x
+
+if [ -n "${UNENCRYPTED_PACKAGE:-}" ]; then
+    exit 0
+fi
+
 dir="%{buildroot}"
 libdir="$dir/%{pginstdir}/lib"
 mkdir -p "$libdir"
@@ -69,6 +82,7 @@ PACKAGE_ENCRYPTION_KEY="${PACKAGE_ENCRYPTION_KEY:-}"
 if [ -z "$PACKAGE_ENCRYPTION_KEY" ]; then
     echo "ERROR: The PACKAGE_ENCRYPTION_KEY environment variable needs to be set"
     echo "HINT: If trying to build packages locally, just set it to 'abc' or something"
+    echo "HINT: If you're trying to build unencrypted packages you should set the UNENCRYPTED_PACKAGE environment variable"
     exit 1
 fi
 
@@ -288,25 +302,40 @@ done < "$secret_files_list"
 %license LICENSE
 %endif
 %doc %{pginstdir}/doc/extension/README-%{sname}.md
-/usr/bin/citus-enterprise-pg-%{pgmajorversion}-setup
 %{pginstdir}/include/server/citus_*.h
 %{pginstdir}/include/server/distributed/*.h
-%{pginstdir}/lib/citus_secret_files.metadata
-%{pginstdir}/lib/citus.so.gpg
 %{pginstdir}/share/extension/citus-*.sql
-%{pginstdir}/share/extension/citus.control.gpg
-%ifarch ppc64 ppc64le
-  %else
-  %if 0%{?rhel} && 0%{?rhel} <= 6
-  %else
-    %{pginstdir}/lib/bitcode/%{pname}*.bc.gpg
-    %{pginstdir}/lib/bitcode/%{pname}/*.bc.gpg
-    %{pginstdir}/lib/bitcode/%{pname}/*/*.bc.gpg
+
+%if %{unencrypted_package} != ""
+  %{pginstdir}/lib/citus.so
+  %{pginstdir}/share/extension/citus.control
+  %ifarch ppc64 ppc64le
+    %else
+    %if 0%{?rhel} && 0%{?rhel} <= 6
+    %else
+      %{pginstdir}/lib/bitcode/%{pname}*.bc
+      %{pginstdir}/lib/bitcode/%{pname}/*.bc
+      %{pginstdir}/lib/bitcode/%{pname}/*/*.bc
+    %endif
+  %endif
+%else
+  /usr/bin/citus-enterprise-pg-%{pgmajorversion}-setup
+  %{pginstdir}/lib/citus_secret_files.metadata
+  %{pginstdir}/lib/citus.so.gpg
+  %{pginstdir}/share/extension/citus.control.gpg
+  %ifarch ppc64 ppc64le
+    %else
+    %if 0%{?rhel} && 0%{?rhel} <= 6
+    %else
+      %{pginstdir}/lib/bitcode/%{pname}*.bc.gpg
+      %{pginstdir}/lib/bitcode/%{pname}/*.bc.gpg
+      %{pginstdir}/lib/bitcode/%{pname}/*/*.bc.gpg
+    %endif
   %endif
 %endif
 
 %changelog
-* Tue Mar 31 2020 -  <Jelte.Fennema@microsoft.com> 9.2.4.citus-1
+* Tue Mar 31 2020 - Jelte Fennema <Jelte.Fennema@microsoft.com> 9.2.4.citus-1
 - Update to Citus Enterprise 9.2.4
 
 * Wed Mar 25 2020 - Jelte Fennema <Jelte.Fennema@microsoft.com> 9.2.3.citus-1
