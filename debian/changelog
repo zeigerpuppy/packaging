@@ -1,0 +1,47 @@
+pg-auto-failover (1.2) testing; urgency=low
+
+  * Official release of 1.2
+
+ -- Murat Tuncer <murat.tuncer@microsoft.com>  Mon, 16 Mar 2020 20:00:00 +0200
+
+pg-auto-failover (1.0.6) testing; urgency=low
+
+  * Official release of 1.0.6
+
+ -- Murat Tuncer <murat.tuncer@microsoft.com>  Thu, 13 Feb 2020 14:00:00 +0200
+
+pg-auto-failover (1.0.5) testing; urgency=low
+ 
+  * Official release of 1.0.5
+
+ -- Murat Tuncer <murat.tuncer@microsoft.com>  Fri, 20 Sep 2019 14:00:00 +0200
+
+pg-auto-failover (1.0.4) testing; urgency=low
+
+  * Official release of 1.0.4
+
+ -- Murat Tuncer <murat.tuncer@microsoft.com>  Thu, 5 Sep 2019 14:00:00 +0200
+
+pg-auto-failover (1.0.3) testing; urgency=low
+
+  * Official release of 1.0.3
+
+ -- Murat Tuncer <murat.tuncer@microsoft.com>  Tue, 30 Jul 2019 14:00:00 +0200
+
+pg-auto-failover (1.0.2) testing; urgency=low
+
+  * Official release of 1.0.2
+
+ -- Nils Dijk <nils@citusdata.com>  Thu, 23 May 2019 18:00:00 +0200
+
+pg-auto-failover (1.0.1) testing; urgency=low
+
+  * Official release of 1.0.1
+
+ -- Nils Dijk <nils@citusdata.com>  Mon, 6 May 2019 16:00:00 +0200
+
+pg-auto-failover (1.0.0) testing; urgency=low
+
+  * First release of pg_auto_failover
+
+ -- Nils Dijk <nils@citusdata.com>  Fri, 3 May 2019 16:00:00 +0200
