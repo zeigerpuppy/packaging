@@ -1,0 +1,25 @@
+#!/bin/sh
+
+set -e
+
+for v in $(pg_buildext supported-versions); do
+	pg_virtualenv -o 'shared_preload_libraries=citus' -v $v bash -e <<"EOF"
+
+set -euo pipefail
+IFS=$'\n\t'
+
+# ensure extension installs correctly
+output=`psql -Atc 'CREATE EXTENSION citus'`
+if [ "${output}" != "CREATE EXTENSION" ]; then
+    echo "$0: expected 'CREATE EXTENSION', got '${output}'" >&2
+    exit 1
+fi
+
+# ensure worker node count correctly returns zero
+output=`psql -Atc 'SELECT COUNT(*) FROM master_get_active_worker_nodes()'`
+if [ "${output}" != "0" ]; then
+    echo "$0: expected zero worker nodes, got ${output}" >&2
+    exit 1
+fi
+EOF
+done
