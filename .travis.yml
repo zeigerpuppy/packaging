@@ -39,7 +39,7 @@ deploy:
     skip_cleanup: true
     local-dir: "pkgs/releases"
     on:
-      branch: "redhat-citus"
+      branch: "all-citus"
       condition: -d "pkgs/releases"
   - provider: packagecloud
     username: "citusdata"
@@ -49,6 +49,6 @@ deploy:
     skip_cleanup: true
     local-dir: "pkgs/nightlies"
     on:
-      branch: "redhat-citus"
+      branch: "all-citus"
       condition: -d "pkgs/nightlies"
 after_deploy: trigger_docker_nightly
