@@ -64,6 +64,7 @@ make %{?_smp_mflags}
 %{__cp} README.md %{buildroot}%{pginstdir}/doc/extension/README-%{sname}.md
 
 set -eu
+set +x
 
 if [ -n "${UNENCRYPTED_PACKAGE:-}" ]; then
     exit 0
