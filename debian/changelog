@@ -1,0 +1,77 @@
+pg-auto-failover-enterprise (1.0.6) testing; urgency=low
+
+  * Official release of pg-auto-failover-enterprise  v1.0.6
+
+ -- Murat Tuncer <murat.tuncer@microsoft.com>  Thu, 13 Feb 2020 16:00:00 +0200
+
+pg-auto-failover-enterprise (1.0.5) testing; urgency=low
+  
+  * Official release of pg-auto-failover-enterprise  v1.0.5
+
+ -- Murat Tuncer <murat.tuncer@microsoft.com>  Thu, 26 Sep 2019 16:00:00 +0200
+
+pg-auto-failover-enterprise (1.0.3) testing; urgency=low
+
+  * Official release of pg-auto-failover-enterprise  v1.0.3
+
+ -- Murat Tuncer <murat.tuncer@microsoft.com>  Wed, 31 Jul 2019 16:00:00 +0200
+
+
+pg-auto-failover-enterprise (1.0.2) testing; urgency=low
+
+  * First release of pg-auto-failover-enterprise
+
+ -- Nils Dijk <nils@citusdata.com>  Mon, 6 May 2019 16:00:00 +0200
+
+
+citus-ha (2.1.0) testing; urgency=low
+ 
+  * Fix: wait until postgres is ready after pg_ctl start before connecting
+ 
+  * Fix default HBA connection privileges from coordinator to worker nodes
+ 
+  * Feature: allow formations to run without secondaries
+ 
+  * Added nodename and nodeport to the output of `citusha show state`
+ 
+  * Use absolute pgdata path for monitor config and keeper config
+ 
+  * Deduplicate pg_ctl if the same is on the path twice
+
+ -- Nils Dijk <nils@citusdata.com>  Thu, 18 Apr 2019 17:43:00 +0100
+
+citus-ha (2.0.1) testing; urgency=low
+
+  * Build system improvements
+
+  * Implement support for VPATH builds, BINDIR, and DESTDIR
+
+ -- Nils Dijk <nils@citusdata.com>  Fri, 1 Mar 2019 14:53:00 +0100
+
+
+citus-ha (2.0.0) testing; urgency=low
+
+  * Rework of the CLI to `citusha <verb> <object>`
+
+  * CLI can be used to find the uri of the monitor and the formations
+
+  * Added support for a proxy port (eg. the pgbouncer port fronting the database)
+
+  * Added support for a custom listen address that postgres will listen on
+
+  * Keeps the secondary running in read only mode during failover
+
+  * Added a maintenance state to temporarily take a standby out of service without interrupting writes
+
+  * Automatically add worker nodes on the coordinator
+
+  * Worker failover with automatic metadata updates
+
+ -- Nils Dijk <nils@citusdata.com>  Fri, 22 Feb 2019 17:15:00 +0100
+
+
+citus-ha (1.0.0) testing; urgency=low
+
+  * First release of HA
+
+ -- Burak Velioglu <velioglub@citusdata.com>  Sun, 21 Oct 2018 10:21:18 +0000
