@@ -4,7 +4,7 @@ set -eu
 
 pg_version=
 libdir="/usr/lib/postgresql/$pg_version/lib"
-secret_files_list="$libdir/citus_secret_files.metadata"
+secret_files_list="$libdir/pgautofailover_secret_files.metadata"
 
 # Make sure the script is being run as root
 if [ "$(id -u)" -ne "0" ]; then
@@ -118,8 +118,8 @@ fi
 echo "License key is valid"
 echo "Installing..."
 
-# Decrypt all the encrypted files
-while read -r path_unencrypted; do
+decrypt() {
+    path_unencrypted="$1"
     path_encrypted="$path_unencrypted.gpg"
     # decrypt the encrypted file
     gpg --output "$path_unencrypted" \
@@ -131,7 +131,17 @@ while read -r path_unencrypted; do
     # restore permissions and ownership
     chmod --reference "$path_encrypted" "$path_unencrypted"
     chown --reference "$path_encrypted" "$path_unencrypted"
+}
+
+# Decrypt all the encrypted files
+while read -r path_unencrypted; do
+    decrypt "$path_unencrypted"
 done < "$secret_files_list"
+
+decrypt /opt/pg_autoctl
+mv /opt/pg_autoctl /usr/bin/pg_autoctl
+chmod +x /usr/bin/pg_autoctl
+
 
 # remove the temporary gpg directory
 rm -rf "$temp_gnupghome"
