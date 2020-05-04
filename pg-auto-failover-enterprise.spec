@@ -52,6 +52,7 @@ make -C src/bin/pg_autoctl %{?_smp_mflags} CFLAGS="$EXECUTABLE_SECURITY_CFLAGS"
 make -C src/monitor %{?_smp_mflags} CFLAGS="$SHARED_LIB_SECURITY_CFLAGS"
 %if 0%{?rhel} && 0%{?rhel} <= 6
 %else
+  export PYTHONPATH=$(echo /usr/local/lib64/python3.*/site-packages):$(echo /usr/local/lib/python3.*/site-packages)
   make man
 %endif
 
