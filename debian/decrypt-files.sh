@@ -8,8 +8,8 @@ secret_files_list="$libdir/pgautofailover_secret_files.metadata"
 
 # Make sure the script is being run as root
 if [ "$(id -u)" -ne "0" ]; then
-    echo "ERROR: citus-enterprise-pg-$pg_version-setup needs to be run as root"
-    echo "HINT: try running \"sudo citus-enterprise-pg-$pg_version-setup\" instead"
+    echo "ERROR: pg-auto-failover-enterprise-pg-$pg_version-setup needs to be run as root"
+    echo "HINT: try running \"sudo pg-auto-failover-enterprise-pg-$pg_version-setup\" instead"
     exit 1
 fi
 

@@ -6,7 +6,7 @@ pg_version=
 installation_message="
 +--------------------------------------------------------------+
 Please run 'sudo pg-auto-failover-enterprise-pg-$pg_version-setup'
-to complete the setup of Citus Enterprise
+to complete the setup of pg_auto_failover enterprise
 +--------------------------------------------------------------+
 "
 echo "$installation_message"
