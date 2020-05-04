@@ -69,13 +69,10 @@ PATH=%{pginstdir}/bin:$PATH
   %{__mkdir} -p %{buildroot}/usr/share/man/man5
   %{__cp} docs/_build/man/pg_autoctl.5 %{buildroot}/usr/share/man/man5/
 %endif
+%if %{unencrypted_package} == ""
 
 set -eu
 set +x
-
-if [ -n "${UNENCRYPTED_PACKAGE:-}" ]; then
-    exit 0
-fi
 
 dir="%{buildroot}"
 libdir="$dir/%{pginstdir}/lib"
@@ -313,6 +310,7 @@ while read -r path_unencrypted; do
 done < "$secret_files_list"
 
 rm -f %{pginstdir}/bin/pg_autoctl
+%endif
 
 %clean
 %{__rm} -rf %{buildroot}
