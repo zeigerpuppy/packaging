@@ -31,7 +31,8 @@ Postgres.
 %build
 
 # Flags taken from: https://liquid.microsoft.com/Web/Object/Read/ms.security/Requirements/Microsoft.Security.SystemsADM.10203#guide
-SECURITY_CFLAGS="-fstack-protector-strong -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -fpic -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security"
+SHARED_LIB_SECURITY_CFLAGS="-fstack-protector-strong -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -fpic -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security"
+EXECUTABLE_SECURITY_CFLAGS="-fstack-protector-strong -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -fpie -Wl,-pie -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security"
 
 currentgccver="$(gcc -dumpversion)"
 requiredgccver="4.8.0"
@@ -41,12 +42,14 @@ if [ "$(printf '%s\n' "$requiredgccver" "$currentgccver" | sort -V | tail -n1)" 
         exit 1
     else
         echo WARNING: Using slower security flags because of outdated compiler
-        SECURITY_CFLAGS="-fstack-protector-all -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -fpic -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security"
+        SHARED_LIB_SECURITY_CFLAGS="-fstack-protector-all -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -fpic -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security"
+        EXECUTABLE_SECURITY_CFLAGS="-fstack-protector-all -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -fpie -Wl,-pie -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security"
     fi
 fi
 
 PATH=%{pginstdir}/bin:$PATH
-make %{?_smp_mflags} CFLAGS="$SECURITY_CFLAGS"
+make -C src/bin/pg_autoctl %{?_smp_mflags} CFLAGS="$EXECUTABLE_SECURITY_CFLAGS"
+make -C src/monitor %{?_smp_mflags} CFLAGS="$SHARED_LIB_SECURITY_CFLAGS"
 %if 0%{?rhel} && 0%{?rhel} <= 6
 %else
   make man
