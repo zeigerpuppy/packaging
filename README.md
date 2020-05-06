@@ -48,7 +48,15 @@ By default, `build_packages` builds on _all_ supported operating systems. Edit `
 
 ### Updating Docker Images
 
+Before building the packages yourself you should run `./pull_images`, so that you
+get the current upstream layers. This can save some time when building the
+packages.
 `update_images` will build Docker images for all operating systems specified in `os-list.csv` using the files in the `dockerfiles` directory. This is handy for testing changes to our Docker images.
+
+### Pushing images
+
+Do not push docker images yourself. This should be done by merging your PR into
+the `develop` branch instead.
 
 ## License
 
