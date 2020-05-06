@@ -7,6 +7,8 @@ ARG DEBIAN_FRONTEND=noninteractive
 # https://bugs.debian.org/830696 (apt uses gpgv by default in newer releases, rather than gpg)
 RUN set -x \
 	&& apt-get update \
+# Fix ipv6 issue on travis: https://github.com/f-secure-foundry/usbarmory-debian-base_image/issues/9#issuecomment-466594168
+	&& mkdir ~/.gnupg && echo "disable-ipv6" >> ~/.gnupg/dirmngr.conf \
 	&& { \
 		which gpg \
 # prefer gnupg2, to match APT's Recommends
@@ -27,6 +29,8 @@ RUN set -ex; \
 # uid                  PostgreSQL Debian Repository
     key='B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8'; \
     export GNUPGHOME="$(mktemp -d)"; \
+# Fix ipv6 issue on travis: https://github.com/f-secure-foundry/usbarmory-debian-base_image/issues/9#issuecomment-466594168
+    echo "disable-ipv6" >> $GNUPGHOME/dirmngr.conf; \
     gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
     gpg --batch --export "$key" > /etc/apt/trusted.gpg.d/postgres.gpg; \
     command -v gpgconf > /dev/null && gpgconf --kill all; \
@@ -59,16 +63,19 @@ RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main' > /etc
         postgresql-server-dev-all \
         wget \
         zlib1g-dev \
+        python3-pip \
+        python3-setuptools \
     && rm -rf /var/lib/apt/lists/*
+
+RUN pip3 install sphinx==1.8
 
 # install jq to process JSON API responses
 RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 \
          -o /usr/bin/jq \
     && chmod +x /usr/bin/jq
 
-# install latest Citus release to get header files
+# install packagecloud repos for pg_auto_failover
 RUN curl -s https://packagecloud.io/install/repositories/citusdata/community/script.deb.sh | bash \
-    && apt-get install -y postgresql-9.6-citus-8.0 postgresql-10-citus-8.0 postgresql-11-citus-8.0 \
     && rm -rf /var/lib/apt/lists/*
 
 # patch pg_buildext to use multiple processors

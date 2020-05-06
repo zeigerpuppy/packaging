@@ -1,5 +1,5 @@
 # vim:set ft=dockerfile:
-FROM %%os%%:%%release%%
+FROM ubuntu:focal
 ARG DEBIAN_FRONTEND=noninteractive
 
 # See https://github.com/tianon/docker-brew-debian/issues/49 for discussion of the following
@@ -38,7 +38,7 @@ RUN set -ex; \
     apt-key list
 
 # install build tools and PostgreSQL development files
-RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ %%release%%-pgdg main' > /etc/apt/sources.list.d/pgdg.list \
+RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ focal-pgdg main' > /etc/apt/sources.list.d/pgdg.list \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
         autotools-dev \
