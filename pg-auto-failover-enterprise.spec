@@ -364,7 +364,7 @@ rm -f %{pginstdir}/bin/pg_autoctl
 
 
 %changelog
-* Wed May 6 2020 - Jelte Fennema <Jelte.Fennema@microsoft.com> 1.3
+* Wed May 6 2020 - Jelte Fennema <Jelte.Fennema@microsoft.com> 1.3.citus-1
 - Update to pg_auto_failover enterprise 1.3
 
 * Wed Feb 12 2020 - Murat Tuncer <murat.tuncer@microsoft.com> 1.0.6
