@@ -31,8 +31,9 @@ Postgres.
 %build
 
 # Flags taken from: https://liquid.microsoft.com/Web/Object/Read/ms.security/Requirements/Microsoft.Security.SystemsADM.10203#guide
-SHARED_LIB_SECURITY_CFLAGS="-fstack-protector-strong -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -fpic -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security"
-EXECUTABLE_SECURITY_CFLAGS="-fstack-protector-strong -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -fpie -Wl,-pie -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security"
+SECURITY_FLAGS="-fstack-protector-strong -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security"
+SHARED_LIB_SECURITY_CFLAGS="-fpic"
+EXECUTABLE_SECURITY_CFLAGS="-fpie -Wl,-pie -Wl,-z,defs"
 
 currentgccver="$(gcc -dumpversion)"
 requiredgccver="4.8.0"
@@ -42,14 +43,21 @@ if [ "$(printf '%s\n' "$requiredgccver" "$currentgccver" | sort -V | tail -n1)" 
         exit 1
     else
         echo WARNING: Using slower security flags because of outdated compiler
-        SHARED_LIB_SECURITY_CFLAGS="-fstack-protector-all -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -fpic -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security"
-        EXECUTABLE_SECURITY_CFLAGS="-fstack-protector-all -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -fpie -Wl,-pie -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security"
+        SECURITY_FLAGS="-fstack-protector-all -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security"
     fi
 fi
 
+# Check if -Wl,-pie support exists in libpgport.a and remove the flag if it
+# does not
+# Source: https://stackoverflow.com/a/1351771/2570866
+if ! readelf --relocs %{pginstdir}/lib/libpgport.a | grep -E '(GOT|PLT|JU?MP_SLOT)' > /dev/null; then
+    echo WARNING: Not compiling with -Wl,pie flag, this is less secure
+    EXECUTABLE_SECURITY_CFLAGS="-fpie -Wl,-z,defs"
+fi
+
 PATH=%{pginstdir}/bin:$PATH
-make -C src/bin/pg_autoctl %{?_smp_mflags} CFLAGS="$EXECUTABLE_SECURITY_CFLAGS"
-make -C src/monitor %{?_smp_mflags} CFLAGS="$SHARED_LIB_SECURITY_CFLAGS"
+make -C src/bin/pg_autoctl %{?_smp_mflags} CFLAGS="$SECURITY_FLAGS $EXECUTABLE_SECURITY_CFLAGS"
+make -C src/monitor %{?_smp_mflags} CFLAGS="$SECURITY_FLAGS $SHARED_LIB_SECURITY_CFLAGS"
 %if 0%{?rhel} && 0%{?rhel} <= 6
 %else
   export PYTHONPATH=$(echo /usr/local/lib64/python3.*/site-packages):$(echo /usr/local/lib/python3.*/site-packages)
