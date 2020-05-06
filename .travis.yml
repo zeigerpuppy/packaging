@@ -23,8 +23,4 @@ install: true
 script:
   - ./update_dockerfiles && git diff --exit-code dockerfiles
   - git checkout -- dockerfiles && ./update_images
-deploy:
-  provider: script
-  script: bash ci/push_images
-  on:
-    branch: develop
+  - [[ `git rev-parse --abbrev-ref HEAD` == develop ]] && bash ci/push_images
