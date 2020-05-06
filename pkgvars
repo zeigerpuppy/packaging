@@ -1,4 +1,5 @@
-pkgname=pg-auto-failover
+rpm_pkgname=pg-auto-failover
+deb_pkgname=auto-failover
 hubproj=pg_auto_failover
 pkgdesc='Postgres extension for automated failover and high-availability'
 pkglatest=1.2
