@@ -1,3 +1,9 @@
+pg-auto-failover-enterprise (1.3.citus-1) stable; urgency=low
+
+  * Apply changes from community version
+
+ -- Jelte Fennema <Jelte.Fennema@microsoft.com>  Wed, 6 May 2020 10:46:23 +0000
+
 pg-auto-failover (1.3.citus-1) stable; urgency=low
 
   * Fix systemd integration [#212]
