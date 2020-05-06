@@ -23,3 +23,4 @@ install: true
 script:
   - ./update_dockerfiles && git add --intent-to-add dockerfiles && git diff --exit-code dockerfiles
   - git checkout -- dockerfiles && ./update_images
+  - ./ci/push_images
