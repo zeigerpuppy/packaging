@@ -12,6 +12,11 @@ badusage=64
 
 nprocs="${1:-1}"
 
+if [[ $(git rev-parse --abbrev-ref HEAD) != develop ]]; then
+    echo "PR is not merged to develop, not pushing to DockerHub"
+    exit 0;
+fi
+
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 declare args
