@@ -12,10 +12,10 @@ badusage=64
 
 nprocs="${1:-1}"
 
-if [[ $(git rev-parse --abbrev-ref HEAD) != test-dh-deploy ]]; then
-    echo "PR is not merged to develop, not pushing to DockerHub"
-    exit 0;
-fi
+# if [[ $TRAVIS_PULL_REQUEST != "false" ]] || [[ $TRAVIS_BRANCH != "test-dh-develop" ]] ; then
+#     echo "PR is not merged to develop, not pushing to DockerHub"
+#     exit 0;
+# fi
 
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
