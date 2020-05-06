@@ -12,6 +12,8 @@ badusage=64
 
 nprocs="${1:-1}"
 
+echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
 declare args
 
 while read -r line; do
