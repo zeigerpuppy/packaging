@@ -10,7 +10,7 @@ Homepage: https://github.com/citusdata/citus-ha
 Package: pg-auto-failover-cli-enterprise
 Architecture: any
 Depends: ${shlibs:Depends},${misc:Depends}
-Provides: pg-auto-failover-cli-enterprise
+Provides: pg-auto-failover-cli-enterprise (= ${binary:Version})
 Conflicts: pg-auto-failover-cli
 Recommends: postgresql-12-auto-failover-enterprise | postgresql-11-auto-failover-enterprise
 Suggests: postgresql-12-citus-9.2 | postgresql-11-citus-9.2 | postgresql-12-citus-enterprise-9.2 | postgresql-11-citus-enterprise-9.2
@@ -20,7 +20,7 @@ Description: Command line interface and service to manage pg auto failover Clust
 
 Package: postgresql-PGVERSION-auto-failover-enterprise
 Architecture: any
-Depends: ${shlibs:Depends},${misc:Depends}, postgresql-PGVERSION, pg-auto-failover-cli-enterprise
+Depends: ${shlibs:Depends},${misc:Depends}, postgresql-PGVERSION, pg-auto-failover-cli-enterprise (= ${binary:Version})
 Provides: postgresql-PGVERSION-auto-failover
 Conflicts: postgresql-PGVERSION-auto-failover
 Description: Postgres high availability support
