@@ -1,0 +1,5 @@
+#!/bin/sh
+
+set -eu
+
+rm -f /usr/bin/pg_autoctl
