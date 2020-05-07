@@ -18,7 +18,7 @@ Source0:	https://github.com/citusdata/pg-auto-failover-enterprise/archive/v1.3.1
 URL:		https://github.com/citusdata/citus-ha
 BuildRequires:	postgresql%{pgmajorversion}-devel postgresql%{pgmajorversion}-server libxml2-devel
 BuildRequires:	libxslt-devel openssl-devel pam-devel readline-devel
-Requires:	postgresql%{pgmajorversion}-server
+Requires:	postgresql%{pgmajorversion}-server openssl
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %description

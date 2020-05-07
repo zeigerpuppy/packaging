@@ -9,7 +9,7 @@ Homepage: https://github.com/citusdata/citus-ha
 
 Package: pg-auto-failover-cli-enterprise
 Architecture: any
-Depends: ${shlibs:Depends},${misc:Depends}
+Depends: ${shlibs:Depends},${misc:Depends}, openssl
 Provides: pg-auto-failover-cli-enterprise (= ${binary:Version})
 Conflicts: pg-auto-failover-cli
 Recommends: postgresql-12-auto-failover-enterprise | postgresql-11-auto-failover-enterprise
