@@ -1,5 +1,6 @@
-pg-auto-failover (1.3.0.citus-1) stable; urgency=low
+pg-auto-failover (1.3.1.citus-1) stable; urgency=low
 
+  * Fix build system for packaging extension files [#258]
   * Fix systemd integration [#212]
   * Change default TLS cipher list [#214]
   * SSL certificates management fixes [#228]
@@ -9,7 +10,7 @@ pg-auto-failover (1.3.0.citus-1) stable; urgency=low
   * Implement pg_autoctl stop|reload for the monitor [#241]
   * Don't create pgautofailover_monitor user anymore [#247]
 
- -- Jelte Fennema <Jelte.Fennema@microsoft.com>  Wed, 6 May 2020 12:25:22 +0000
+ -- Jelte Fennema <Jelte.Fennema@microsoft.com>  Thu, 7 May 2020 8:4:14 +0000
 
 pg-auto-failover (1.2) testing; urgency=low
 
@@ -24,7 +25,7 @@ pg-auto-failover (1.0.6) testing; urgency=low
  -- Murat Tuncer <murat.tuncer@microsoft.com>  Thu, 13 Feb 2020 14:00:00 +0200
 
 pg-auto-failover (1.0.5) testing; urgency=low
- 
+
   * Official release of 1.0.5
 
  -- Murat Tuncer <murat.tuncer@microsoft.com>  Fri, 20 Sep 2019 14:00:00 +0200
