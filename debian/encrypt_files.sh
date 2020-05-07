@@ -90,7 +90,7 @@ for dir in debian/postgresql-*; do
 
 done
 
-cli_dir=debian/pg-auto-failover-cli-enterprise
+cli_dir=debian/$CLINAME
 autoctl_bin="$cli_dir/usr/bin/pg_autoctl"
 cli_opt="$cli_dir/opt"
 mkdir -p "$cli_opt"
