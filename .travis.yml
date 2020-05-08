@@ -19,6 +19,8 @@ env:
     - TARGET_PLATFORM=el/7
     - TARGET_PLATFORM=ol/7
     - TARGET_PLATFORM=el/8
+    #  Below commented out, because packagecloud does not support ol/8 packages yet.
+    #- TARGET_PLATFORM=ol/8
     - TARGET_PLATFORM=debian/buster
     - TARGET_PLATFORM=debian/stretch
     - TARGET_PLATFORM=debian/jessie
