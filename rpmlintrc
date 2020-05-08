@@ -5,5 +5,13 @@ addFilter("W: invalid-url .*404: Not Found");
 addFilter("W: no-soname .*");
 addFilter("W: non-standard-dir-in-usr .*");
 addFilter("W: shared-lib-calls-exit .*");
-addFilter("W: spelling-error .*(citus-ha)");
+addFilter("W: spelling-error .*(itus|Postgres)");
 addFilter("\w*-debuginfo[^:]*: W: only-non-binary-in-usr-lib");
+addFilter("W: unstripped-binary-or-object");
+
+# We know what we're doing
+addFilter(r'W: dangerous-command-in-%preun rm')
+
+# rpmlint doesn't detect our encrypted .so files as binaries. So it thinks we
+# don't need a specific architecture, which we do. So ignore this error.
+addFilter("E: no-binary");
