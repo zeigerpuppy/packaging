@@ -1,0 +1,15 @@
+#!/bin/sh
+
+set -eu
+
+pg_version=
+
+libdir="/usr/lib/postgresql/$pg_version/lib"
+
+secret_files_list="$libdir/pgautofailover_secret_files.metadata"
+
+# Cleanup all de decrypted files since these are not managed by the package
+# manager and would be left around otherwise
+while read -r path_unencrypted; do
+    rm -f "$path_unencrypted"
+done < "$secret_files_list"
