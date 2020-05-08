@@ -30,8 +30,11 @@ Postgres.
 
 %build
 
+# TODO: Fix this in pg_auto_failover
+PG_CONFIG_CFLAGS="$(%{pginstdir}/bin/pg_config --cflags)"
+
 # Flags taken from: https://liquid.microsoft.com/Web/Object/Read/ms.security/Requirements/Microsoft.Security.SystemsADM.10203#guide
-SECURITY_FLAGS="-fstack-protector-strong -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security"
+SECURITY_CFLAGS="-fstack-protector-strong -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security"
 SHARED_LIB_SECURITY_CFLAGS="-fpic"
 EXECUTABLE_SECURITY_CFLAGS="-fpie -Wl,-pie -Wl,-z,defs"
 
@@ -43,7 +46,7 @@ if [ "$(printf '%s\n' "$requiredgccver" "$currentgccver" | sort -V | tail -n1)" 
         exit 1
     else
         echo WARNING: Using slower security flags because of outdated compiler
-        SECURITY_FLAGS="-fstack-protector-all -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security"
+        SECURITY_CFLAGS="-fstack-protector-all -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security"
     fi
 fi
 
@@ -56,8 +59,8 @@ if ! readelf --relocs %{pginstdir}/lib/libpgport.a | grep -E '(GOT|PLT|JU?MP_SLO
 fi
 
 PATH=%{pginstdir}/bin:$PATH
-make -C src/bin/pg_autoctl %{?_smp_mflags} CFLAGS="$SECURITY_FLAGS $EXECUTABLE_SECURITY_CFLAGS"
-make -C src/monitor %{?_smp_mflags} CFLAGS="$SECURITY_FLAGS $SHARED_LIB_SECURITY_CFLAGS"
+make -C src/bin/pg_autoctl %{?_smp_mflags} CFLAGS="$SECURITY_CFLAGS $EXECUTABLE_SECURITY_CFLAGS"
+make -C src/monitor %{?_smp_mflags} CFLAGS="$PG_CONFIG_CFLAGS $SECURITY_CFLAGS $SHARED_LIB_SECURITY_CFLAGS"
 %if 0%{?rhel} && 0%{?rhel} <= 6
 %else
   export PYTHONPATH=$(echo /usr/local/lib64/python3.*/site-packages):$(echo /usr/local/lib/python3.*/site-packages)

@@ -8,8 +8,8 @@ clean: debian/control
 .PHONY: debian/control
 
 override_dh_auto_build:
-	+make -C $(shell pwd)/src/bin/pg_autoctl CFLAGS='-fstack-protector-strong -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -fpie -Wl,-pie -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security'
-	+pg_buildext build $(shell pwd)/src/monitor build-%v '-fstack-protector-strong -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -fpic -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security'
+	+make -C $(shell pwd)/src/bin/pg_autoctl CFLAGS='$(CFLAGS) -fstack-protector-strong -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -fpie -Wl,-pie -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security'
+	+pg_buildext build $(shell pwd)/src/monitor build-%v '$(CFLAGS) -fstack-protector-strong -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -fpic -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security'
 	+make man
 
 override_dh_auto_clean:
