@@ -2,7 +2,7 @@ citus (9.3.3.citus-1) stable; urgency=low
 
   * Fixes a memory leak in subtransaction memory handling
 
- -- Onur Tirtir <Onur.Tirtir@microsoft.com>  Mon, 13 Jul 2020 8:47:4 +0000
+ -- Onur Tirtir <Onur.Tirtir@microsoft.com>  Mon, 13 Jul 2020 8:47:40 +0000
 
 citus (9.3.0.citus-1) stable; urgency=low
 
