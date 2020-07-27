@@ -57,6 +57,13 @@ fi
 # also copy & rename safestringlib license file to prevent naming collisions
 cp vendor/safestringlib/LICENSE LICENSE-safestringlib
 
+# add hint for LICENSE-safestringlib in LICENSE file
+cat >> "LICENSE" << EOF
+
+
+See also the license for safestringlib at LICENSE-safestringlib.
+EOF
+
 %configure PG_CONFIG=%{pginstdir}/bin/pg_config --with-extra-version="%{?conf_extra_version}" CC=$(command -v gcc) CFLAGS="$SECURITY_CFLAGS"
 make %{?_smp_mflags}
 
