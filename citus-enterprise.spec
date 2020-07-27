@@ -54,6 +54,9 @@ if [ "$(printf '%s\n' "$requiredgccver" "$currentgccver" | sort -V | tail -n1)" 
     fi
 fi
 
+# also copy & rename safestringlib license file to prevent naming collisions
+cp vendor/safestringlib/LICENSE LICENSE-safestringlib
+
 %configure PG_CONFIG=%{pginstdir}/bin/pg_config --with-extra-version="%{?conf_extra_version}" CC=$(command -v gcc) CFLAGS="$SECURITY_CFLAGS"
 make %{?_smp_mflags}
 
@@ -302,6 +305,7 @@ done < "$secret_files_list"
 %files
 %defattr(-,root,root,-)
 %doc CHANGELOG.md
+%doc LICENSE-safestringlib
 %if 0%{?rhel} && 0%{?rhel} <= 6
 %doc LICENSE
 %else
