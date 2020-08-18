@@ -27,8 +27,12 @@ function update_extra_repositories_and_packages {
             extra_repositories='epel-release'
             extra_packages='llvm-toolset ccache'
             ;;
-        oraclelinux+6|oraclelinux+7)
+        oraclelinux+6)
             extra_repositories=''
+            extra_packages='llvm-toolset-7-clang llvm5.0'
+            ;;
+        oraclelinux+7)
+            extra_repositories='ol7_optional_archive'
             extra_packages='llvm-toolset-7-clang llvm5.0'
             ;;
         oraclelinux+8)
