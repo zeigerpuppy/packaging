@@ -43,7 +43,7 @@ commands.
 SECURITY_CFLAGS="-fstack-protector-strong -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -fpic -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security"
 
 currentgccver="$(gcc -dumpversion)"
-requiredgccver="4.8.0"
+requiredgccver="4.8.2"
 if [ "$(printf '%s\n' "$requiredgccver" "$currentgccver" | sort -V | tail -n1)" = "$requiredgccver" ]; then
     if [ -z "${UNENCRYPTED_PACKAGE:-}" ]; then
         echo ERROR: At least GCC version "$requiredgccver" is needed to build Microsoft packages
