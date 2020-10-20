@@ -39,7 +39,7 @@ SHARED_LIB_SECURITY_CFLAGS="-fpic"
 EXECUTABLE_SECURITY_CFLAGS="-fpie -Wl,-pie -Wl,-z,defs"
 
 currentgccver="$(gcc -dumpversion)"
-requiredgccver="4.8.0"
+requiredgccver="4.8.2"
 if [ "$(printf '%s\n' "$requiredgccver" "$currentgccver" | sort -V | tail -n1)" = "$requiredgccver" ]; then
     if [ -z "${UNENCRYPTED_PACKAGE:-}" ]; then
         echo ERROR: At least GCC version "$requiredgccver" is needed to build Microsoft packages
