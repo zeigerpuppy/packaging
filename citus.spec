@@ -45,6 +45,11 @@ if [ "$(printf '%s\n' "$requiredgccver" "$currentgccver" | sort -V | tail -n1)" 
     fi
 fi
 
+gccgte8=$(expr `gcc -dumpversion | cut -f1 -d.` \>= 8)
+ifeq "$(gccgte8)" "1"
+    SECURITY_CFLAGS += -fstack-clash-protection
+endif
+
 %build
 %configure PG_CONFIG=%{pginstdir}/bin/pg_config --with-extra-version="%{?conf_extra_version}" CC=$(command -v gcc) CFLAGS="$SECURITY_CFLAGS"
 make %{?_smp_mflags}
