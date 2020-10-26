@@ -5,11 +5,11 @@
 
 Summary:	Periodic job scheduler for PostgreSQL
 Name:		%{sname}_%{pgmajorversion}
-Version:	1.1.4
+Version:	1.3.0
 Release:	1%{dist}
 License:	PostgreSQL
 Group:		Applications/Databases
-Source0:	https://github.com/citusdata/pg_cron/archive/v1.1.4.tar.gz
+Source0:	https://github.com/citusdata/pg_cron/archive/v1.3.0.tar.gz
 URL:		https://github.com/citusdata/pg_cron
 BuildRequires:	postgresql%{pgmajorversion}-devel libxml2-devel
 BuildRequires:	libxslt-devel openssl-devel pam-devel readline-devel
@@ -56,6 +56,16 @@ PATH=%{pginstdir}/bin:$PATH
 %endif
 
 %changelog
+* Mon Oct 26 2020 - Marco Slot <marco@citusdata.com> 1.3.0.citus-1
+- Background worker support
+- Audit table support
+- PostgreSQL 13 support
+- PostgreSQL 12 support
+- Schedule jobs by name
+- Fixes a bug that could cause cron.schedule to crash with long schedules
+- Fixes a bug that could cause cron.schedule to get into an infinite loop
+- Fixes a bug that caused overlapping runs not to start
+- Fixes a bug that caused the cron.job table to not appear in pg_dump
 * Thu Apr 4 2019 - Marco Slot <marco@citusdata.com> 1.1.4.citus-1
 - Adds a cron.host setting to make the postgres host configurable
 - Fixes a bug that could cause a segmentation fault after cron.unschedule
