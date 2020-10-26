@@ -1,3 +1,17 @@
+pgcron (1.3.0.citus-1) stable; urgency=low
+
+  * Background worker support
+  * Audit table support
+  * PostgreSQL 13 support
+  * PostgreSQL 12 support
+  * Schedule jobs by name
+  * Fixes a bug that could cause cron.schedule to crash with long schedules
+  * Fixes a bug that could cause cron.schedule to get into an infinite loop
+  * Fixes a bug that caused overlapping runs not to start
+  * Fixes a bug that caused the cron.job table to not appear in pg_dump
+
+ -- Marco Slot <marco@citusdata.com>  Mon, 26 Oct 20209 14:00:45 +0000
+
 pgcron (1.1.4.citus-1) stable; urgency=low
 
   * Adds a cron.host setting to make the postgres host configurable
