@@ -51,7 +51,7 @@ while read -r line; do
     elif [[ "${os}" = 'centos' ]] || [[ "${os}" = 'fedora' ]] || [[ "${os}" = 'oraclelinux' ]]; then
         # shellcheck source=/dev/null
         source "${buildfilesdir}/rpm/pkgvars"
-        releasepg="${releasepg:-11,12}"
+        releasepg="${releasepg:-11,12,13}"
         nightlypg="${nightlypg:-${releasepg}}"
 
         if [ "${buildtype}" == 'release' ]; then
