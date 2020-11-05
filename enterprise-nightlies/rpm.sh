@@ -32,11 +32,11 @@ curl_check ()
 
 pgdg_check ()
 {
-  echo "Checking for postgresql12-server..."
-  if yum list -q postgresql12-server &> /dev/null; then
-    echo "Detected postgresql12-server..."
+  echo "Checking for postgresql13-server..."
+  if yum list -q postgresql13-server &> /dev/null; then
+    echo "Detected postgresql13-server..."
   else
-    echo -n "Installing pgdg12 repo... "
+    echo -n "Installing pgdg13 repo... "
 
     if [ "${dist}" = "8" ]; then
       dnf -qy module disable postgresql
