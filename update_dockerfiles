@@ -90,6 +90,12 @@ while read -r line; do
         # redhat variants need a Dockerfile for each PostgreSQL version
         IFS=' '
         for pgversion in ${pgversions}; do
+            if { [[ "${os}" = 'centos' ]] || [[ "${os}" = 'oraclelinux' ]]; } && \
+                 [[ "${release}" = '6' ]] && [[ "${pgversion}" = '13' ]]; then
+                # CentOS and OracleLinux 6 doesn't have pg13 packages yet.
+                # So skip building docker images for them.
+                continue
+            fi
             update_rpm_dockerfile "${os}" "${release}" "${pgversion}"
         done
     elif [[ "${os}" = 'pgxn' ]]; then
