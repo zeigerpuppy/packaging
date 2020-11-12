@@ -1,0 +1,5 @@
+addFilter("W: no-soname .*");
+addFilter("W: non-standard-dir-in-usr .*");
+addFilter("W: only-non-binary-in-usr-lib");
+addFilter("W: invalid-url .*");
+addFilter("W: no-documentation");
