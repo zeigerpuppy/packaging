@@ -43,6 +43,13 @@ pgdg_check ()
     fi
 
     yum install -d0 -e0 -y "${repo_url}"
+
+    if ! yum info -q postgresql13-server &> /dev/null; then
+      echo "PGDG repositories don't have postgresql13-server package for your operating system"
+      echo "Cannot install Citus, exiting."
+      exit 1
+    fi
+
     echo "done."
   fi
 }
