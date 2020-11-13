@@ -56,21 +56,16 @@ curl_check ()
 
 pgdg_check ()
 {
-  echo "Checking for postgresql-12..."
-  if apt-cache show postgresql-12 &> /dev/null; then
-    echo "Detected postgresql-12..."
+  echo "Checking for postgresql-13..."
+  if apt-cache show postgresql-13 &> /dev/null; then
+    echo "Detected postgresql-13..."
   else
     pgdg_list='/etc/apt/sources.list.d/pgdg.list'
     pgdg_source_path="deb http://apt.postgresql.org/pub/repos/apt/ ${codename}-pgdg main"
     pgdg_key_url='https://www.postgresql.org/media/keys/ACCC4CF8.asc'
 
     if [ -e $pgdg_list ]; then
-      echo "Unable to install PostgreSQL Apt Repository"
-      echo
-      echo "The file ${pgdg_list} already exists."
-      echo
-      echo "Contact us via https://www.citusdata.com/about/contact_us with information about your system for help."
-      exit 1
+      echo "Overriding ${pgdg_list}"
     fi
 
     echo -n "Installing ${pgdg_list}... "
@@ -87,6 +82,16 @@ pgdg_check ()
     # import the gpg key
     curl -L "${pgdg_key_url}" 2> /dev/null | apt-key add - &>/dev/null
     echo "done."
+
+    echo -n "Running apt-get update... "
+    apt-get update &> /dev/null
+    echo "done."
+
+    if ! apt-cache show postgresql-13 &> /dev/null; then
+      echo "PGDG repositories don't have postgresql-13 package for your operating system"
+      echo "Cannot install Citus, exiting."
+      exit 1
+    fi
   fi
 }
 
