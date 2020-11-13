@@ -7,11 +7,11 @@ Summary:	GDPR compliant logging for Azure
 Name:		%{sname}%{?pkginfix}_%{pgmajorversion}
 Provides:	%{sname}_%{pgmajorversion}
 Conflicts:	%{sname}_%{pgmajorversion}
-Version:	1.0.citus
+Version:	1.1.citus
 Release:	1%{dist}
 License:	AGPLv3
 Group:		Applications/Databases
-Source0:	https://github.com/citusdata/azure_gdpr/archive/v1.0.tar.gz
+Source0:	https://github.com/citusdata/azure_gdpr/archive/v1.1.tar.gz
 URL:		https://github.com/citusdata/azure_gdpr
 BuildRequires:	postgresql%{pgmajorversion}-devel
 Requires:	postgresql%{pgmajorversion}-server
@@ -49,5 +49,8 @@ PostgreSQL extension for GDPR compliant logging for Azure
 %endif
 
 %changelog
+* Fri Nov 13 2020 - Hanefi Önaldi <Hanefi.Onaldi@microsoft.com> 1.1.citus-1
+- Official 1.1 release of Azure_gdpr
+
 * Wed Nov 11 2020 - Hanefi Önaldi <Hanefi.Onaldi@microsoft.com> 1.0.citus-1
 - Official 1.0 release of Azure_gdpr
