@@ -87,6 +87,16 @@ pgdg_check ()
     # import the gpg key
     curl -L "${pgdg_key_url}" 2> /dev/null | apt-key add - &>/dev/null
     echo "done."
+
+    echo -n "Running apt-get update... "
+    apt-get update &> /dev/null
+    echo "done."
+
+    if ! apt-cache show postgresql-13 &> /dev/null; then
+      echo "PGDG repositories don't have postgresql-13 package for your operating system"
+      echo "Cannot install Citus, exiting."
+      exit 1
+    fi
   fi
 }
 
