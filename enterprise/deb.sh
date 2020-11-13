@@ -65,12 +65,7 @@ pgdg_check ()
     pgdg_key_url='https://www.postgresql.org/media/keys/ACCC4CF8.asc'
 
     if [ -e $pgdg_list ]; then
-      echo "Unable to install PostgreSQL Apt Repository"
-      echo
-      echo "The file ${pgdg_list} already exists."
-      echo
-      echo "Contact us via https://www.citusdata.com/about/contact_us with information about your system for help."
-      exit 1
+      echo "Overriding ${pgdg_list}"
     fi
 
     echo -n "Installing ${pgdg_list}... "
