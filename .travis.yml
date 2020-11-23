@@ -38,7 +38,8 @@ env:
     - UNENCRYPTED_PACKAGE=true TARGET_PLATFORM=el/7
     - UNENCRYPTED_PACKAGE=true TARGET_PLATFORM=ol/7
     - UNENCRYPTED_PACKAGE=true TARGET_PLATFORM=el/8
-    - UNENCRYPTED_PACKAGE=true TARGET_PLATFORM=ol/8
+    #  Below commented out, because packagecloud does not support ol/8 packages yet.
+    # - UNENCRYPTED_PACKAGE=true TARGET_PLATFORM=ol/8
     - UNENCRYPTED_PACKAGE=true TARGET_PLATFORM=debian/buster
     - UNENCRYPTED_PACKAGE=true TARGET_PLATFORM=debian/stretch
     - UNENCRYPTED_PACKAGE=true TARGET_PLATFORM=debian/jessie
