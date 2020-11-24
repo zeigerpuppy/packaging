@@ -1,3 +1,11 @@
+citus-enterprise (9.4.3.citus-1) stable; urgency=low
+
+  * Enables PostgreSQL's parallel queries on EXPLAIN ANALYZE
+
+  * Fixes a bug that triggers subplan executions unnecessarily with cursors
+
+ -- Onur Tirtir <Onur.Tirtir@microsoft.com>  Tue, 24 Nov 2020 11:22:00 +0000
+
 citus-enterprise (9.4.2.citus-1) stable; urgency=low
 
   * Fixes a bug that could lead to multiple maintenance daemons
