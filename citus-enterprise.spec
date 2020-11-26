@@ -62,6 +62,47 @@ make %{?_smp_mflags}
 # Install documentation with a better name:
 %{__mkdir} -p %{buildroot}%{pginstdir}/doc/extension
 %{__cp} README.md %{buildroot}%{pginstdir}/doc/extension/README-%{sname}.md
+# Set paths to be packaged other than LICENSE, README & CHANGELOG.md
+echo %{pginstdir}/include/server/citus_*.h >> installation_files.list
+echo %{pginstdir}/include/server/distributed/*.h >> installation_files.list
+echo %{pginstdir}/share/extension/citus-*.sql >> installation_files.list
+%if %{unencrypted_package} != ""
+  echo %{pginstdir}/lib/citus.so >> installation_files.list
+  echo %{pginstdir}/share/extension/citus.control >> installation_files.list
+  %ifarch ppc64 ppc64le
+    %else
+    %if 0%{?rhel} && 0%{?rhel} <= 6
+    %else
+      echo %{pginstdir}/lib/bitcode/%{pname}*.bc >> installation_files.list
+      echo %{pginstdir}/lib/bitcode/%{pname}/*.bc >> installation_files.list
+      echo %{pginstdir}/lib/bitcode/%{pname}/*/*.bc >> installation_files.list
+
+      # Columnar does not exist in Citus versions < 10.0
+      # At this point, we don't have %{pginstdir},
+      # so first check build directory for columnar.
+      [[ -d %{buildroot}%{pginstdir}/lib/bitcode/columnar/ ]] && echo %{pginstdir}/lib/bitcode/columnar/*.bc >> installation_files.list
+    %endif
+  %endif
+%else
+  echo /usr/bin/citus-enterprise-pg-%{pgmajorversion}-setup >> installation_files.list
+  echo %{pginstdir}/lib/citus_secret_files.metadata >> installation_files.list
+  echo %{pginstdir}/lib/citus.so.gpg >> installation_files.list
+  echo %{pginstdir}/share/extension/citus.control.gpg >> installation_files.list
+  %ifarch ppc64 ppc64le
+    %else
+    %if 0%{?rhel} && 0%{?rhel} <= 6
+    %else
+      echo %{pginstdir}/lib/bitcode/%{pname}*.bc.gpg >> installation_files.list
+      echo %{pginstdir}/lib/bitcode/%{pname}/*.bc.gpg >> installation_files.list
+      echo %{pginstdir}/lib/bitcode/%{pname}/*/*.bc.gpg >> installation_files.list
+      
+      # Columnar does not exist in Citus versions < 10.0
+      # At this point, we don't have %{pginstdir},
+      # so first check build directory for columnar.
+      [[ -d %{buildroot}%{pginstdir}/lib/bitcode/columnar/ ]] && echo %{pginstdir}/lib/bitcode/columnar/*.bc.gpg >> installation_files.list
+    %endif
+  %endif
+%endif
 %if %{unencrypted_package} == ""
 
 set -eu
@@ -299,6 +340,7 @@ done < "$secret_files_list"
 %clean
 %{__rm} -rf %{buildroot}
 
+%files -f installation_files.list
 %files
 %defattr(-,root,root,-)
 %doc CHANGELOG.md
@@ -308,37 +350,6 @@ done < "$secret_files_list"
 %license LICENSE
 %endif
 %doc %{pginstdir}/doc/extension/README-%{sname}.md
-%{pginstdir}/include/server/citus_*.h
-%{pginstdir}/include/server/distributed/*.h
-%{pginstdir}/share/extension/citus-*.sql
-
-%if %{unencrypted_package} != ""
-  %{pginstdir}/lib/citus.so
-  %{pginstdir}/share/extension/citus.control
-  %ifarch ppc64 ppc64le
-    %else
-    %if 0%{?rhel} && 0%{?rhel} <= 6
-    %else
-      %{pginstdir}/lib/bitcode/%{pname}*.bc
-      %{pginstdir}/lib/bitcode/%{pname}/*.bc
-      %{pginstdir}/lib/bitcode/%{pname}/*/*.bc
-    %endif
-  %endif
-%else
-  /usr/bin/citus-enterprise-pg-%{pgmajorversion}-setup
-  %{pginstdir}/lib/citus_secret_files.metadata
-  %{pginstdir}/lib/citus.so.gpg
-  %{pginstdir}/share/extension/citus.control.gpg
-  %ifarch ppc64 ppc64le
-    %else
-    %if 0%{?rhel} && 0%{?rhel} <= 6
-    %else
-      %{pginstdir}/lib/bitcode/%{pname}*.bc.gpg
-      %{pginstdir}/lib/bitcode/%{pname}/*.bc.gpg
-      %{pginstdir}/lib/bitcode/%{pname}/*/*.bc.gpg
-    %endif
-  %endif
-%endif
 
 %changelog
 * Tue Nov 24 2020 - Onur Tirtir <Onur.Tirtir@microsoft.com> 9.4.3.citus-1
