@@ -29,6 +29,7 @@ RUN ( [[ -z "" ]] || yum install -y ) \
         hunspell-en \
         libcurl-devel \
         libicu-devel \
+        libstdc++-devel \
         libxml2-devel \
         libxslt-devel \
         openssl-devel \

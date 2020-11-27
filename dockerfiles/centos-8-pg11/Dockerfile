@@ -29,6 +29,7 @@ RUN ( [[ -z "epel-release" ]] || yum install -y epel-release) \
         hunspell-en \
         libcurl-devel \
         libicu-devel \
+        libstdc++-devel \
         libxml2-devel \
         libxslt-devel \
         openssl-devel \
