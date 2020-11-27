@@ -1,3 +1,11 @@
+hll (2.15.citus-1) stable; urgency=low
+
+  * Support for PostgreSQL 13
+  * Support parallel queries and aggregates
+  * Fix for out of range bug
+
+ -- Hanefi Onaldi <Hanefi.Onaldi@microsoft.com>  Thu, 26 Nov 2020 18:40:00 +0300
+
 hll (2.14.citus-1) stable; urgency=low
 
   * Bug fixes
