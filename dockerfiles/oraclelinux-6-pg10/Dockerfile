@@ -53,7 +53,7 @@ RUN curl -sL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 
 # install devtoolset-8-gcc on distros where it is available
 RUN { \
         { yum search devtoolset-8-gcc 2>&1 | grep 'No matches found' ; } \
-        || yum install -y devtoolset-8-gcc ; \
+        || yum install -y devtoolset-8-gcc devtoolset-8-libstdc++-devel; \
     } \
     && yum clean all
 
