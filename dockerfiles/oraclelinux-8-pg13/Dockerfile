@@ -29,6 +29,7 @@ RUN ( [[ -z "oracle-epel-release-el8" ]] || yum install -y oracle-epel-release-e
         hunspell-en \
         libcurl-devel \
         libicu-devel \
+        libstdc++-devel \
         libxml2-devel \
         libxslt-devel \
         openssl-devel \
