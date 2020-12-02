@@ -23,7 +23,6 @@ env:
     - TARGET_PLATFORM=el/8
     - TARGET_PLATFORM=debian/buster
     - TARGET_PLATFORM=debian/stretch
-    - TARGET_PLATFORM=debian/jessie
     - TARGET_PLATFORM=ubuntu/bionic
     - TARGET_PLATFORM=ubuntu/xenial
     - TARGET_PLATFORM=ubuntu/focal
@@ -35,7 +34,6 @@ env:
     - UNENCRYPTED_PACKAGE=true TARGET_PLATFORM=el/8
     - UNENCRYPTED_PACKAGE=true TARGET_PLATFORM=debian/buster
     - UNENCRYPTED_PACKAGE=true TARGET_PLATFORM=debian/stretch
-    - UNENCRYPTED_PACKAGE=true TARGET_PLATFORM=debian/jessie
     - UNENCRYPTED_PACKAGE=true TARGET_PLATFORM=ubuntu/bionic
     - UNENCRYPTED_PACKAGE=true TARGET_PLATFORM=ubuntu/xenial
     - UNENCRYPTED_PACKAGE=true TARGET_PLATFORM=ubuntu/focal
