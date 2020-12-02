@@ -1,3 +1,17 @@
+citus (9.5.1.citus-1) stable; urgency=low
+
+  * Enables PostgreSQL's parallel queries on EXPLAIN ANALYZE
+
+  * Fixes a bug that could cause excessive memory consumption when a partition is
+  created
+
+  * Fixes a bug that triggers subplan executions unnecessarily with cursors
+
+  * Fixes a segfault in connection management due to invalid connection hash
+  entries
+
+ -- Onur Tirtir <Onur.Tirtir@microsoft.com>  Wed, 2 Dec 2020 14:28:44 +0000
+
 citus (9.4.3.citus-1) stable; urgency=low
 
   * Enables PostgreSQL's parallel queries on EXPLAIN ANALYZE
