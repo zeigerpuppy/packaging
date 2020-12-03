@@ -23,7 +23,6 @@ env:
     #- TARGET_PLATFORM=ol/8
     - TARGET_PLATFORM=debian/buster
     - TARGET_PLATFORM=debian/stretch
-    - TARGET_PLATFORM=debian/jessie
     - TARGET_PLATFORM=ubuntu/bionic
     - TARGET_PLATFORM=ubuntu/xenial
     - TARGET_PLATFORM=ubuntu/focal
