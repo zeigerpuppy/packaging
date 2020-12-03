@@ -10,7 +10,7 @@ citus-enterprise (9.5.1.citus-1) stable; urgency=low
   * Fixes a segfault in connection management due to invalid connection hash
   entries
 
- -- Onur Tirtir <Onur.Tirtir@microsoft.com>  Wed, 2 Dec 2020 14:29:1 +0000
+ -- Onur Tirtir <Onur.Tirtir@microsoft.com>  Wed, 2 Dec 2020 14:29:10 +0000
 
 citus-enterprise (9.4.3.citus-1) stable; urgency=low
 
