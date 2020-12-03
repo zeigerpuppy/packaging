@@ -56,6 +56,7 @@ RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ focal-pgdg main' > /etc/a
         libicu-dev \
         libkrb5-dev \
         libpam0g-dev \
+        libreadline-dev \
         libselinux1-dev \
         libssl-dev \
         libxslt-dev \

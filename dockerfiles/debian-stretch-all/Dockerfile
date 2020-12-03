@@ -56,6 +56,7 @@ RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main' > /etc
         libicu-dev \
         libkrb5-dev \
         libpam0g-dev \
+        libreadline-dev \
         libselinux1-dev \
         libssl-dev \
         libxslt-dev \
