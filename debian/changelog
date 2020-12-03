@@ -1,3 +1,9 @@
+pg-auto-failover (1.4.1-1) stable; urgency=low
+
+  * Official 1.4.1 release of pg_auto_failover
+
+ -- Hanefi Onaldi <Hanefi.Onaldi@microsoft.com>  Thu, 3 Dec 2020 15:51:21 +0300
+
 pg-auto-failover (1.4.0-1) stable; urgency=low
 
   * Official 1.4.0 release of pg_auto_failover
