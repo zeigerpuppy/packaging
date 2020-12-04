@@ -30,9 +30,6 @@ Postgres.
 
 %build
 
-# TODO: Fix this in pg_auto_failover
-PG_CONFIG_CFLAGS="$(%{pginstdir}/bin/pg_config --cflags)"
-
 # Flags taken from: https://liquid.microsoft.com/Web/Object/Read/ms.security/Requirements/Microsoft.Security.SystemsADM.10203#guide
 SECURITY_CFLAGS="-fstack-protector-strong -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security"
 SHARED_LIB_SECURITY_CFLAGS="-fpic"
@@ -60,7 +57,7 @@ fi
 
 PATH=%{pginstdir}/bin:$PATH
 make -C src/bin/pg_autoctl %{?_smp_mflags} CFLAGS="$SECURITY_CFLAGS $EXECUTABLE_SECURITY_CFLAGS"
-make -C src/monitor %{?_smp_mflags} CFLAGS="$PG_CONFIG_CFLAGS $SECURITY_CFLAGS $SHARED_LIB_SECURITY_CFLAGS"
+make -C src/monitor %{?_smp_mflags} CFLAGS="$SECURITY_CFLAGS $SHARED_LIB_SECURITY_CFLAGS"
 %if 0%{?rhel} && 0%{?rhel} <= 6
 %else
   export PYTHONPATH=$(echo /usr/local/lib64/python3.*/site-packages):$(echo /usr/local/lib/python3.*/site-packages)
