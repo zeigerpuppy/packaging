@@ -8,7 +8,7 @@ citus (9.4.4.citus-1) stable; urgency=low
 
   * Fixes possible issues that might occur with single shard distributed tables
 
- -- gurkanindibay <gindibay@microsoft.com>  Tue, 5 Jan 2021 8:3:56 +0000
+ -- gurkanindibay <gindibay@microsoft.com>  Tue, 5 Jan 2021 14:58:56 +0000
 
 citus (9.5.1.citus-1) stable; urgency=low
 
