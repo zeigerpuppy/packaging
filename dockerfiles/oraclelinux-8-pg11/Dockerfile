@@ -39,6 +39,10 @@ RUN ( [[ -z "oracle-epel-release-el8" ]] || yum install -y oracle-epel-release-e
         rpmlint \
         spectool \
         tar \
+        lz4 \
+        lz4-devel \
+        libzstd \
+        libzstd-devel \
         llvm-toolset ccache \
     && yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm \
     && ( [[ 8 < 8 ]] || dnf -qy module disable postgresql ) \

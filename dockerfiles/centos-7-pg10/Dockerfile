@@ -39,6 +39,10 @@ RUN ( [[ -z "epel-release centos-release-scl-rh" ]] || yum install -y epel-relea
         rpmlint \
         spectool \
         tar \
+        lz4 \
+        lz4-devel \
+        libzstd \
+        libzstd-devel \
         llvm-toolset-7-clang llvm5.0 \
     && yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm \
     && ( [[ 7 < 8 ]] || dnf -qy module disable postgresql ) \
