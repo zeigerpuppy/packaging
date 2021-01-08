@@ -19,10 +19,17 @@ RUN [[ centos != oraclelinux ]] || [[ 8 != 7 ]] || ( \
             ol7_optional_archive \
         && yum clean all )
 
-RUN if [[ centos  == oraclelinux ]] && [[ 8 == 7 ]]; then yum install -y wget \
+
+RUN if [[ centos   == oraclelinux ]] && [[ 8 == 7 ]]; then yum install -y wget \
         && wget http://mirror.centos.org/centos/7/os/x86_64/Packages/lz4-devel-1.8.3-1.el7.x86_64.rpm \
-        && rpm -ivh lz4-devel-1.8.3-1.el7.x86_64.rpm ; else \
-         yum install -y lz4 lz4-devel ; fi
+        && rpm -ivh lz4-devel-1.8.3-1.el7.x86_64.rpm ; \
+        elif [[ centos   == oraclelinux ]] && [[ 8 == 6 ]]; then yum install -y wget \
+        && wget https://cbs.centos.org/kojifiles/packages/lz4/r131/1.el6/x86_64/lz4-r131-1.el6.x86_64.rpm \
+        && rpm -ivh lz4-r131-1.el6.x86_64.rpm \
+        && wget https://cbs.centos.org/kojifiles/packages/lz4/r131/1.el6/x86_64/lz4-devel-r131-1.el6.x86_64.rpm \
+        && rpm -ivh lz4-devel-r131-1.el6.x86_64.rpm;  \
+        else yum install -y lz4 lz4-devel; fi
+
 
 # install build tools and PostgreSQL development files
 RUN ( [[ -z "epel-release" ]] || yum install -y epel-release) \
