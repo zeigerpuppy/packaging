@@ -19,6 +19,11 @@ RUN [[ oraclelinux != oraclelinux ]] || [[ 8 != 7 ]] || ( \
             ol7_optional_archive \
         && yum clean all )
 
+RUN if [[ oraclelinux  == oraclelinux ]] && [[ 8 == 7 ]]; then yum install -y wget \
+        && wget http://mirror.centos.org/centos/7/os/x86_64/Packages/lz4-devel-1.8.3-1.el7.x86_64.rpm \
+        && rpm -ivh lz4-devel-1.8.3-1.el7.x86_64.rpm ; else \
+         yum install -y lz4 lz4-devel ; fi
+
 # install build tools and PostgreSQL development files
 RUN ( [[ -z "oracle-epel-release-el8" ]] || yum install -y oracle-epel-release-el8) \
     && yum groupinstall -y 'Development Tools' \
@@ -39,8 +44,6 @@ RUN ( [[ -z "oracle-epel-release-el8" ]] || yum install -y oracle-epel-release-e
         rpmlint \
         spectool \
         tar \
-        lz4 \
-        lz4-devel \
         libzstd \
         libzstd-devel \
         llvm-toolset ccache \
