@@ -19,7 +19,10 @@ RUN [[ %%os%% != oraclelinux ]] || [[ %%release%% != 7 ]] || ( \
             ol7_optional_archive \
         && yum clean all )
 
-
+# lz4 1.8 is preloaded in oracle 7 however, lz4-devel is not loaded and only 1.7.5 version exists
+# in oracle 7 repos. So package from centos repo was used
+# There is no package in oracle repos for lz4. Also it is not preloaded. So both lz4 and lz4-devel packages
+# were downloaded from centos el/6 repos
 RUN if [[ %%os%%   == oraclelinux ]] && [[ %%release%% == 7 ]]; then yum install -y wget \
         && wget http://mirror.centos.org/centos/7/os/x86_64/Packages/lz4-devel-1.8.3-1.el7.x86_64.rpm \
         && rpm -ivh lz4-devel-1.8.3-1.el7.x86_64.rpm ; \
