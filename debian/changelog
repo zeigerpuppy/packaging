@@ -1,3 +1,14 @@
+citus-enterprise (9.5.2.citus-1) stable; urgency=low
+
+  * Fixes distributed deadlock detection being blocked by metadata sync
+
+  * Prevents segfaults when SAVEPOINT handling cannot recover from connection
+  failures
+
+  * Fixes possible issues that might occur with single shard distributed tables
+
+ -- Gurkan Indibay <gindibay@microsoft.com>  Thu, 28 Jan 2021 13:35:14 +0000
+
 citus-enterprise (9.4.4.citus-1) stable; urgency=low
 
   * Fixes a bug that could cause router queries with local tables to be pushed
@@ -8,7 +19,7 @@ citus-enterprise (9.4.4.citus-1) stable; urgency=low
 
   * Fixes possible issues that might occur with single shard distributed tables
 
- -- gurkanindibay <gindibay@microsoft.com>  Wed, 6 Jan 2021 6:6:42 +0000
+ -- gurkanindibay <gindibay@microsoft.com>  Wed, 6 Jan 2021 14:10:10 +0000
 
 citus-enterprise (9.5.1.citus-1) stable; urgency=low
 
