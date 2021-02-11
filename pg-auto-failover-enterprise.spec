@@ -371,6 +371,9 @@ rm -f %{pginstdir}/bin/pg_autoctl
 
 
 %changelog
+* Thu Feb 11 2021 - Gurkan Indibay <gindibay@microsoft.com> 1.4.2-1
+- Official 1.4.2 release of pg_auto_failover enterprise
+
 * Fri Feb 5 2021 - Gurkan Indibay <gindibay@microsoft.com> 1.4.2-1
 - Official 1.4.2 release of pg_auto_failover enterprise
 
