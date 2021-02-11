@@ -10,14 +10,14 @@ Name:		%{sname}%{?pkginfix}_%{pgmajorversion}
 Provides:	%{sname}_%{pgmajorversion}
 Conflicts:	%{sname}_%{pgmajorversion}
 Version:	1.4.2
-Release:	1%{dist}
+Release:	2%{dist}
 License:	PostgreSQL
 Group:		Applications/Databases
 Source0:	https://github.com/citusdata/pg-auto-failover/archive/v1.4.2.tar.gz
 URL:		https://github.com/citusdata/pg_auto_failover
 BuildRequires:	postgresql%{pgmajorversion}-devel postgresql%{pgmajorversion}-server libxml2-devel
 BuildRequires:	libxslt-devel openssl-devel pam-devel readline-devel
-Requires:	postgresql%{pgmajorversion}-server openssl
+Requires:	postgresql%{pgmajorversion}-server postgresql%{pgmajorversion}-contrib openssl
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %description
@@ -82,6 +82,9 @@ PATH=%{pginstdir}/bin:$PATH
 
 
 %changelog
+* Thu Feb 11 2021 - Gurkan Indibay <gindibay@microsoft.com> 1.4.2-2
+- Official 1.4.2 release of pg_auto_failover
+
 * Thu Feb 4 2021 - Gurkan Indibay <gindibay@microsoft.com> 1.4.2-1
 - Official 1.4.2 release of pg_auto_failover
 
