@@ -2,12 +2,6 @@ pg-auto-failover-enterprise (1.4.2-1) stable; urgency=low
 
   * Official 1.4.2 release of pg_auto_failover enterprise
 
- -- Gurkan Indibay <gindibay@microsoft.com>  Thu, 11 Feb 2021 14:48:15 +0000
-
-pg-auto-failover-enterprise (1.4.2-1) stable; urgency=low
-
-  * Official 1.4.2 release of pg_auto_failover enterprise
-
  -- Gurkan Indibay <gindibay@microsoft.com>  Fri, 5 Feb 2021 07:16:21 +0000
 
 pg-auto-failover-enterprise (1.4.1-1) stable; urgency=low
