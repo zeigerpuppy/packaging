@@ -10,7 +10,7 @@ Name:		%{sname}%{?pkginfix}_%{pgmajorversion}
 Provides:	%{sname}_%{pgmajorversion}
 Conflicts:	%{sname}_%{pgmajorversion}
 Version:	1.4.2
-Release:	1%{dist}
+Release:	2%{dist}
 License:	PostgreSQL
 Group:		Applications/Databases
 Source0:	https://github.com/citusdata/pg-auto-failover/archive/v1.4.2.tar.gz
