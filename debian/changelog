@@ -2,12 +2,6 @@ pg-auto-failover (1.4.2-1) stable; urgency=low
 
   * Official 1.4.2 release of pg_auto_failover
 
- -- Gurkan Indibay <gindibay@microsoft.com>  Thu, 11 Feb 2021 11:53:25 +0000
-
-pg-auto-failover (1.4.2-1) stable; urgency=low
-
-  * Official 1.4.2 release of pg_auto_failover
-
  -- Gurkan Indibay <gindibay@microsoft.com>  Thu, 4 Feb 2021 12:42:14 +0000
 
 pg-auto-failover (1.4.1-1) stable; urgency=low

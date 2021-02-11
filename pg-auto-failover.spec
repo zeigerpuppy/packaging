@@ -82,7 +82,7 @@ PATH=%{pginstdir}/bin:$PATH
 
 
 %changelog
-* Thu Feb 11 2021 - Gurkan Indibay <gindibay@microsoft.com> 1.4.2-1
+* Thu Feb 11 2021 - Gurkan Indibay <gindibay@microsoft.com> 1.4.2-2
 - Official 1.4.2 release of pg_auto_failover
 
 * Thu Feb 4 2021 - Gurkan Indibay <gindibay@microsoft.com> 1.4.2-1
