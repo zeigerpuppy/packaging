@@ -132,7 +132,7 @@ citus-enterprise (10.0.0.citus-1) stable; urgency=low
   * Prevents empty placement creation in the coordinator when executing
   `master_create_empty_shard()`
 
- -- Gurkan Indibay <gindibay@microsoft.com>  Wed, 17 Feb 2021 8:42:7 +0000
+ -- Gurkan Indibay <gindibay@microsoft.com>  Wed, 17 Feb 2021 8:42:17 +0000
 
 citus-enterprise (10.0.0.citus-1) stable; urgency=low
 
