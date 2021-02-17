@@ -352,6 +352,9 @@ done < "$secret_files_list"
 %doc %{pginstdir}/doc/extension/README-%{sname}.md
 
 %changelog
+* Wed Feb 17 2021 - Gurkan Indibay <gindibay@microsoft.com> 10.0.0.citus-1
+- Official 10.0.0 release of Citus Enterprise
+
 * Tue Feb 16 2021 - Gurkan Indibay <gindibay@microsoft.com> 10.0.0.citus-1
 - Official 10.0.0 release of Citus Enterprise
 
