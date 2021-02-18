@@ -4,7 +4,12 @@ include /usr/share/postgresql-common/pgxs_debian_control.mk
 
 override_dh_auto_build:
 	# Flags taken from: https://liquid.microsoft.com/Web/Object/Read/ms.security/Requirements/Microsoft.Security.SystemsADM.10203#guide
-	+pg_buildext build build-%v '$(CFLAGS) -fstack-protector-strong -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -fpic -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security'
+	#
+	# Plus, we use "-fno-strict-aliasing" to get rid of "dereferencing type-punned
+	# pointer will break strict-aliasing rules" warnings.
+	# This is benefical from security perspective too since otherwise we might violate
+	# the assumptions made by compiler optimizations and then get undefined behavior.
+	+pg_buildext build build-%v '$(CFLAGS) -fstack-protector-strong -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -fpic -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security -fno-strict-aliasing'
 
 override_dh_auto_clean:
 	# This breaks override_dh_auto_configure, so disable it.
