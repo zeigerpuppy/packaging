@@ -40,7 +40,12 @@ commands.
 %build
 
 # Flags taken from: https://liquid.microsoft.com/Web/Object/Read/ms.security/Requirements/Microsoft.Security.SystemsADM.10203#guide
-SECURITY_CFLAGS="-fstack-protector-strong -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -fpic -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security"
+#
+# Plus, we use "-fno-strict-aliasing" to get rid of "dereferencing type-punned
+# pointer will break strict-aliasing rules" warnings.
+# This is benefical from security perspective too since otherwise we might violate
+# the assumptions made by compiler optimizations and then get undefined behavior.
+SECURITY_CFLAGS="-fstack-protector-strong -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -fpic -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security -fno-strict-aliasing"
 
 currentgccver="$(gcc -dumpversion)"
 requiredgccver="4.8.2"
@@ -50,7 +55,7 @@ if [ "$(printf '%s\n' "$requiredgccver" "$currentgccver" | sort -V | head -n1)" 
         exit 1
     else
         echo WARNING: Using slower security flags because of outdated compiler
-        SECURITY_CFLAGS="-fstack-protector-all -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -fpic -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security"
+        SECURITY_CFLAGS="-fstack-protector-all -D_FORTIFY_SOURCE=2 -O2 -z noexecstack -fpic -Wl,-z,relro -Wl,-z,now -Wformat -Wformat-security -Werror=format-security -fno-strict-aliasing"
     fi
 fi
 
